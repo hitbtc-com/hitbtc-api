@@ -151,6 +151,8 @@ Example message:
 
 ### Trading end-point
 
+URL: <wss://api.hitbtc.com:8080>
+
 Trading endpoint requires login and all messages from client should be signed.
 
 Messages:
