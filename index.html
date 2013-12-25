@@ -1,51 +1,692 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="hitbtc API : We bring cutting-edge technology to the Bitcoin ecosystem" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>hitbtc API by hitbtc-com</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>hitbtc API</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
+    <div class="wrapper">
+      <header>
+        <h1>hitbtc API</h1>
+        <p>We bring cutting-edge technology to the Bitcoin ecosystem</p>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/hitbtc-com/hitbtc-api">View on GitHub</a>
+        <p class="view"><a href="https://github.com/hitbtc-com/hitbtc-api">View the Project on GitHub <small>hitbtc-com/hitbtc-api</small></a></p>
 
-          <h1 id="project_title">hitbtc API</h1>
-          <h2 id="project_tagline">We bring cutting-edge technology to the Bitcoin ecosystem</h2>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/hitbtc-com/hitbtc-api/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/hitbtc-com/hitbtc-api/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+        <ul>
+          <li><a href="https://github.com/hitbtc-com/hitbtc-api/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/hitbtc-com/hitbtc-api/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/hitbtc-com/hitbtc-api">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
         <h1>
-<a name="hitbtc-api" class="anchor" href="#hitbtc-api"><span class="octicon octicon-link"></span></a>hitbtc-api</h1>
+<a name="hitbtc-api---streaming-market-data-and-trading-" class="anchor" href="#hitbtc-api---streaming-market-data-and-trading-"><span class="octicon octicon-link"></span></a>hitbtc API - streaming market data and trading </h1>
 
-<p>hitbtc API</p>
+<h3>
+<a name="summary" class="anchor" href="#summary"><span class="octicon octicon-link"></span></a>Summary</h3>
+
+<p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>.</p>
+
+<p>All messages are in JSON format.</p>
+
+<p>The following symbols are traded on hitbtc exchange.</p>
+
+<table>
+<thead><tr>
+<th>Symbol</th>
+<th>Lot size</th>
+<th>Price step</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>BTCUSD</td>
+<td>0.01 BTC</td>
+<td>0.01</td>
+</tr>
+<tr>
+<td>BTCEUR</td>
+<td>0.01 BTC</td>
+<td>0.01</td>
+</tr>
+<tr>
+<td>EURUSD</td>
+<td>1 EUR</td>
+<td>0.0001</td>
+</tr>
+</tbody>
+</table><p>Size values in messages are represented in lots.</p>
+
+<h3>
+<a name="market-data-end-point" class="anchor" href="#market-data-end-point"><span class="octicon octicon-link"></span></a>Market data end-point</h3>
+
+<p>URL: <a>ws://api.hitbtc.com</a></p>
+
+<p>Once client connects to this URL the session is started. </p>
+
+<p>The server broadcasts the following types of messages:</p>
+
+<ul>
+<li>
+<a href="#MarketDataSnapshotFullRefresh">MarketDataSnapshotFullRefresh</a> message contains a full snapshot of the order book.</li>
+<li>
+<a href="#MarketDataIncrementalRefresh">MarketDataIncrementalRefresh</a> message contains incremental changes</li>
+</ul><p>Some recommendations to consider:</p>
+
+<ul>
+<li>The application could receive the first snapshot and maintain the order book by applying incremental updates</li>
+<li>It's recommended to invalidate a state of the application periodically using snapshots</li>
+<li>It's recommended to check sequence numbers and to drop updates with non-increasing sequence numbers</li>
+</ul><p><a name="MarketDataSnapshotFullRefresh"></a></p>
+
+<h5>
+<a name="marketdatasnapshotfullrefresh" class="anchor" href="#marketdatasnapshotfullrefresh"><span class="octicon octicon-link"></span></a>MarketDataSnapshotFullRefresh</h5>
+
+<p>MarketDataSnapshotFullRefresh message contains a full snapshot of the order book.</p>
+
+<p>Example message:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"MarketDataSnapshotFullRefresh"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"snapshotSeqNo"</span><span class="p">:</span> <span class="mi">899009</span><span class="p">,</span>
+    <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+    <span class="nt">"exchangeStatus"</span><span class="p">:</span> <span class="s2">"working"</span><span class="p">,</span>
+    <span class="nt">"ask"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">101.42</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">7</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">101.85</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">5</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">102.59</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">114.53</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">3</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">114.54</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">6</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">114.55</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">19</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">"bid"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">89.72</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">79</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">89.71</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">158</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">89.7</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">166</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">89.69</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">231</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">89.68</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">169</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">89.67</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">186</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">89.66</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">178</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}}</span>
+</pre></div>
+
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>seqNo</td>
+<td>monotone increasing number, each symbol has an own sequencemonotone</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>millisecond timestamp UTC</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td></td>
+</tr>
+<tr>
+<td>exchangeStatus</td>
+<td>
+<code>on</code> or <code>off</code>, <code>off</code> means the trading is suspended</td>
+</tr>
+<tr>
+<td>ask, bid</td>
+<td>sorted arrays of price levels in the order book; full snapshot (all price levels) is provided</td>
+</tr>
+</tbody>
+</table><p><a name="MarketDataIncrementalRefresh"></a></p>
+
+<h5>
+<a name="marketdataincrementalrefresh" class="anchor" href="#marketdataincrementalrefresh"><span class="octicon octicon-link"></span></a>MarketDataIncrementalRefresh</h5>
+
+<p>MarketDataIncrementalRefresh contains incremental changes of the order book and individual trades.</p>
+
+<p>Example message:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"MarketDataIncrementalRefresh"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"seqNo"</span><span class="p">:</span> <span class="mi">546693</span><span class="p">,</span>
+    <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1381394357861</span><span class="p">,</span>
+    <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+    <span class="nt">"exchangeStatus"</span><span class="p">:</span> <span class="s2">"on"</span><span class="p">,</span>
+    <span class="nt">"ask"</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="nt">"bid"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">100.98</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">3</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">"trade"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">"price"</span><span class="p">:</span> <span class="mf">100.98</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1346691273926</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}}</span>
+</pre></div>
+
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>seqNo</td>
+<td>monotone increasing number, each symbol has an own sequence</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>millisecond timestamp UTC</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td></td>
+</tr>
+<tr>
+<td>exchangeStatus</td>
+<td>
+<code>on</code> or <code>off</code>, <code>off</code> means the trading is suspended</td>
+</tr>
+<tr>
+<td>ask, bid, trade</td>
+<td>an array of changes in the order book; <br><code>size</code> means new size, <code>size</code>=0 means price level has been removed</td>
+</tr>
+</tbody>
+</table><h3>
+<a name="trading-end-point" class="anchor" href="#trading-end-point"><span class="octicon octicon-link"></span></a>Trading end-point</h3>
+
+<p>Trading endpoint requires login and all messages from client should be signed.</p>
+
+<p>Messages:</p>
+
+<table>
+<thead><tr>
+<th>Type</th>
+<th>Side</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><a href="#Login">Login</a></td>
+<td>Client -&gt; Server</td>
+</tr>
+<tr>
+<td><a href="#NewOrder">NewOrder</a></td>
+<td>Client -&gt; Server</td>
+</tr>
+<tr>
+<td><a href="#OrderCancel">OrderCancel</a></td>
+<td>Client -&gt; Server</td>
+</tr>
+<tr>
+<td><a href="#ExecutionReport">ExecutionReport</a></td>
+<td>Server -&gt; Client</td>
+</tr>
+<tr>
+<td><a href="#CancelReject">CancelReject</a></td>
+<td>Server -&gt; Client</td>
+</tr>
+</tbody>
+</table><h5>
+<a name="api-keys-and-message-signatures" class="anchor" href="#api-keys-and-message-signatures"><span class="octicon octicon-link"></span></a>API keys and message signatures</h5>
+
+<p>in the following manner:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"apikey"</span><span class="p">:</span> <span class="s2">"23857823952452"</span><span class="p">,</span>
+    <span class="nt">"signature"</span><span class="p">:</span> <span class="s2">"83578345789348578934567"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:{</span>
+        <span class="nt">"nonce"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="nt">"payload"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"Login"</span><span class="p">:</span> <span class="p">{}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>nonce</td>
+<td>should monotonous in the same connection</td>
+</tr>
+<tr>
+<td>signature</td>
+<td>hmac-sha512(binary representation of the message)</td>
+</tr>
+</tbody>
+</table><p><a name="Login"></a></p>
+
+<h5>
+<a name="login" class="anchor" href="#login"><span class="octicon octicon-link"></span></a>Login</h5>
+
+<p>Example:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"apikey"</span><span class="p">:</span> <span class="s2">"23857823952452"</span><span class="p">,</span>
+    <span class="nt">"signature"</span><span class="p">:</span> <span class="s2">"83578345789348578934567"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:{</span>
+        <span class="nt">"nonce"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> 
+        <span class="nt">"payload"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"Login"</span><span class="p">:</span> <span class="p">{}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Parameters: no parameters</p>
+
+<p>If client doesn't send valid logon message in 10 second the connection will be dropped.</p>
+
+<p><a name="NewOrder"></a></p>
+
+<h5>
+<a name="neworder" class="anchor" href="#neworder"><span class="octicon octicon-link"></span></a>NewOrder</h5>
+
+<p>Example:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"apikey"</span><span class="p">:</span> <span class="s2">"23857823952452"</span><span class="p">,</span>
+    <span class="nt">"signature"</span><span class="p">:</span> <span class="s2">"83578345789348578934567"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:{</span>
+        <span class="nt">"nonce"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="nt">"payload"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"NewOrder"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b-2dca962ff705"</span><span class="p">,</span>
+                <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+                <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span><span class="p">,</span>
+                <span class="nt">"quantity"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+                <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"limit"</span><span class="p">,</span>
+                <span class="nt">"price"</span><span class="p">:</span> <span class="mf">788.12</span><span class="p">,</span>
+                <span class="nt">"timeInForce"</span><span class="p">:</span> <span class="s2">"GTC"</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Parameters:</p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type / Enum</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>clientOrderId</td>
+<td>should be unique</td>
+<td></td>
+</tr>
+<tr>
+<td>symbol</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>side</td>
+<td>order side</td>
+<td>
+<code>buy</code>, <code>sell</code>
+</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>quantity in lots</td>
+<td>integer</td>
+</tr>
+<tr>
+<td>type</td>
+<td>order type</td>
+<td>only <code>limit</code> orders are currently supported</td>
+</tr>
+<tr>
+<td>price</td>
+<td>price (in currency)</td>
+<td>decimal, consider price steps</td>
+</tr>
+<tr>
+<td>timeInForce</td>
+<td>time in force</td>
+<td>
+<code>GTC</code> - Good-Til-Canceled <br><code>IOK</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill</td>
+</tr>
+</tbody>
+</table><p><a name="OrderCancel"></a></p>
+
+<h5>
+<a name="ordercancel" class="anchor" href="#ordercancel"><span class="octicon octicon-link"></span></a>OrderCancel</h5>
+
+<p>Example:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"apikey"</span><span class="p">:</span> <span class="s2">"23857823952452"</span><span class="p">,</span>
+    <span class="nt">"signature"</span><span class="p">:</span> <span class="s2">"83578345789348578934567"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:{</span>
+        <span class="nt">"nonce"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="nt">"payload"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"OrderCancel"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b-2dca962ff705"</span><span class="p">,</span>
+                <span class="nt">"cancelRequestClientOrderId"</span><span class="p">:</span>   <span class="s2">"2c4d7127-6fbc-450c-b851-c6c1e8954545"</span><span class="p">,</span>
+                <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+                <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Parameters:</p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type / Enum</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>clientOrderId</td>
+<td>clientOrderId sent in NewOrder message</td>
+<td></td>
+</tr>
+<tr>
+<td>cancelRequestClientOrderId</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>symbol</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>side</td>
+<td>order side</td>
+<td>
+<code>buy</code>, <code>sell</code>
+</td>
+</tr>
+<tr>
+<td>type</td>
+<td>order type</td>
+<td>only <code>limit</code> orders are currently supported</td>
+</tr>
+</tbody>
+</table><p><a name="ExecutionReport"></a></p>
+
+<h5>
+<a name="executionreport" class="anchor" href="#executionreport"><span class="octicon octicon-link"></span></a>ExecutionReport</h5>
+
+<p>Example:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"ExecutionReport"</span><span class="p">:{</span>
+        <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"64283442"</span><span class="p">,</span>
+        <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b-2dca962ff705"</span><span class="p">,</span>
+        <span class="nt">"execReportType"</span><span class="p">:</span> <span class="s2">"new"</span><span class="p">,</span>
+        <span class="nt">"orderStatus"</span><span class="p">:</span> <span class="s2">"new"</span>
+        <span class="s2">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+        <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span><span class="p">,</span>
+        <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1346691273926</span><span class="p">,</span>
+        <span class="nt">"price"</span><span class="p">:</span> <span class="mf">690.99</span><span class="p">,</span>
+        <span class="nt">"quantity"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"limit"</span><span class="p">,</span>
+        <span class="nt">"timeInForce"</span><span class="p">:</span> <span class="s2">"GTC"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Fields:</p>
+
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Description</th>
+<th>Type / Enum</th>
+<th>Required</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>orderId</td>
+<td>Order ID on the Exchange</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>clientOrderId</td>
+<td>clientOrderId sent in NewOrder message</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>execReportType</td>
+<td>execution report type</td>
+<td>
+<code>new</code> <br><code>canceled</code> <br><code>rejected</code> <br><code>expired</code> <br><code>trade</code> <br><code>status</code>
+</td>
+<td>required</td>
+</tr>
+<tr>
+<td>orderStatus</td>
+<td>order status</td>
+<td>
+<code>new</code> <br><code>partiallyFilled</code> <br><code>filled</code> <br><code>canceled</code> <br><code>rejected</code> <br><code>expired</code>
+</td>
+<td>required</td>
+</tr>
+<tr>
+<td>orderRejectReason</td>
+<td>Relevant only for the orders in rejected state</td>
+<td>
+<code>unknownSymbol</code> <br><code>exchangeClosed</code> <br><code>orderExceedsLimit</code> <br><code>unknownOrder</code> <br><code>duplicateOrder</code> <br><code>unsupportedOrder</code> <br><code>unknownAccount</code> <br><code>other</code>
+</td>
+<td></td>
+</tr>
+<tr>
+<td>symbol</td>
+<td></td>
+<td></td>
+<td>required</td>
+</tr>
+<tr>
+<td>side</td>
+<td></td>
+<td>
+<code>buy</code> or <code>sell</code>
+</td>
+<td>required</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>UTC timestamp in milliseconds</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>price</td>
+<td></td>
+<td>decimal</td>
+<td></td>
+</tr>
+<tr>
+<td>quantity</td>
+<td></td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>type</td>
+<td></td>
+<td>only <code>limit</code> orders are currently supported</td>
+<td>required</td>
+</tr>
+<tr>
+<td>timeInForce</td>
+<td>time in force</td>
+<td>
+<code>GTC</code> - Good-Til-Canceled <br><code>IOK</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill</td>
+<td>required</td>
+</tr>
+<tr>
+<td>tradeId</td>
+<td>Trade ID on the exchange</td>
+<td></td>
+<td>for trades</td>
+</tr>
+<tr>
+<td>lastQuantity</td>
+<td></td>
+<td>integer</td>
+<td>for trades</td>
+</tr>
+<tr>
+<td>lastPrice</td>
+<td></td>
+<td>decimal</td>
+<td>for trades</td>
+</tr>
+<tr>
+<td>leavesQuantity</td>
+<td></td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>cumQuantity</td>
+<td></td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>averagePrice</td>
+<td></td>
+<td>decimal, will be 0 if 'cumQuantity'=0</td>
+<td></td>
+</tr>
+</tbody>
+</table><p><a name="CancelReject"></a></p>
+
+<h5>
+<a name="cancelreject" class="anchor" href="#cancelreject"><span class="octicon octicon-link"></span></a>CancelReject</h5>
+
+<p>Example:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"CancelReject"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b-2dca962ff705"</span><span class="p">,</span>
+    <span class="nt">"cancelRequestClientOrderId"</span><span class="p">:</span> <span class="s2">"2c4d7127-6fbc-450c-b851-c6c1e8954545"</span><span class="p">,</span>
+    <span class="nt">"rejectReasonCode"</span><span class="p">:</span> <span class="s2">"orderNotFound"</span><span class="p">,</span>
+    <span class="nt">"rejectReasonText"</span><span class="p">:</span> <span class="s2">"Order not found"</span><span class="p">,</span>
+    <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">726892347829</span>
+<span class="p">}}</span>
+</pre></div>
+
+<p>Fields:</p>
+
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Description</th>
+<th>Type / Enum</th>
+<th>Required</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>cancelRequestClientOrderId</td>
+<td>
+<code>cancelRequestClientOrderId</code> from OrderCancel</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>clientOrderId</td>
+<td>
+<code>clientOrderId</code> from OrderCancel</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>rejectReasonCode</td>
+<td></td>
+<td>
+<code>orderNotFound</code> <br><code>unknownSymbol</code> <br><code>unknownUser</code> <br><code>other</code>
+</td>
+<td>required</td>
+</tr>
+<tr>
+<td>rejectReasonText</td>
+<td>Optional reject reason text</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody>
+</table><h3>
+<a name="useful-tools" class="anchor" href="#useful-tools"><span class="octicon octicon-link"></span></a>Useful tools</h3>
+
+<p>Chrome extension Simple WebSocket Client (<a href="https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo">https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo</a>)</p>
       </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">hitbtc API maintained by <a href="https://github.com/hitbtc-com">hitbtc-com</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/hitbtc-com">hitbtc-com</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
-
+    <script src="javascripts/scale.fix.js"></script>
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -56,7 +697,6 @@
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
-
 
   </body>
 </html>
