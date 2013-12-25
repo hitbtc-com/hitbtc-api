@@ -217,7 +217,7 @@ Parameters:
 | quantity | quantity in lots | integer |
 | type | order type	| only `limit` orders are currently supported |
 | price	| price (in currency) | decimal, consider price steps |
-| timeInForce | time in force | `GTC` - good till cancel <br>`IOK` - immediate or cancel<br>FOK - fill or kill |
+| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOK` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill |
 
 <a name="OrderCancel"/>
 ##### OrderCancel
