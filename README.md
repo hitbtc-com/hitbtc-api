@@ -1,10 +1,11 @@
 hitbtc API - streaming market data and trading 
 ================================
 
-### General considerations
+### Summary
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket).
-All messages are encoded as JSON.
+
+All messages are in JSON format.
 
 The following symbols are traded on hitbtc exchange.
 
@@ -278,12 +279,71 @@ Parameters:
 <a name="ExecutionReport"/>
 ##### ExecutionReport
 
-TBD
+Example:
+
+```json
+{
+    "ExecutionReport":{
+        "orderId": "64283442",
+        "clientOrderId": "68f82819-723a-4b60-ad6b-2dca962ff705",
+        "execReportType": "new",
+        "orderStatus": "new"
+        "symbol": "BTCUSD",
+        "side": "buy",
+        "timestamp": 1346691273926,
+        "price": 690.99,
+        "quantity": 0.1,
+        "type": "limit",
+        "timeInForce": "GTC"
+    }
+}
+```
+
+Fields:
+
+| Field	| Description | Type / Enum | Required |
+| --- | --- | --- | --- |
+| orderId | Order ID on the Exchange | string | required |
+| clientOrderId | clientOrderId sent in NewOrder message | string | required |
+| execReportType | execution report type | `new` <br> `canceled` <br> `rejected` <br> `expired` <br> `trade` <br> `status` | required |
+| orderStatus | order status | `new` <br> `partiallyFilled` <br> `filled` <br> `canceled` <br> `rejected` <br> `expired` | required |
+| orderRejectReason | Relevant only for the orders in rejected state | `unknownSymbol` <br> `exchangeClosed` <br>`orderExceedsLimit` <br> `unknownOrder` <br> `duplicateOrder` <br> `unsupportedOrder` <br> `unknownAccount` <br> `other`| |
+| symbol | | | required |
+| side | | `buy` or `sell` | required |
+| timestamp | UTC timestamp in milliseconds | | |
+| price | | decimal | |
+| quantity | | integer | required |
+| type | | only `limit` orders are currently supported | required |
+| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOK` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill | required |
+| tradeId | Trade ID on the exchange | | for trades |
+| lastQuantity | | integer | for trades |
+| lastPrice | | decimal | for trades |
+| leavesQuantity | | integer |  |
+| cumQuantity | | integer | |
+| averagePrice | | decimal, will be 0 if 'cumQuantity'=0 | |
 
 <a name="CancelReject"/>
 ##### CancelReject
 
-TBD
+Example:
+```json
+{"CancelReject": {
+    "clientOrderId": "68f82819-723a-4b60-ad6b-2dca962ff705",
+    "cancelRequestClientOrderId": "2c4d7127-6fbc-450c-b851-c6c1e8954545",
+    "rejectReasonCode": "orderNotFound",
+    "rejectReasonText": "Order not found",
+    "timestamp": 726892347829
+}}
+```
+
+Fields:
+
+| Field	| Description | Type / Enum | Required |
+| --- | --- | --- | --- |
+| cancelRequestClientOrderId | `cancelRequestClientOrderId` from OrderCancel | string | required |
+| clientOrderId | `clientOrderId` from OrderCancel | string | required |
+| rejectReasonCode | | `orderNotFound` <br> `unknownSymbol` <br> `unknownUser` <br> `other` | required |
+| rejectReasonText | Optional reject reason text | string | |
 
 ### Useful tools
 
