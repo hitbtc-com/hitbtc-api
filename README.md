@@ -207,6 +207,29 @@ If client doesn't send valid logon message in 10 second the connection will be d
 <a name="NewOrder"/>
 ##### NewOrder
 
+Example:
+
+```json
+{
+    "apikey": "23857823952452",
+    "signature": "83578345789348578934567",
+    "message":{
+        "nonce": 12,
+        "payload": {
+            "NewOrder": {
+                "clientOrderId": "68f82819-723a-4b60-ad6b-2dca962ff705",
+                "symbol": "BTCUSD",
+                "side": "buy",
+                "quantity": 10,
+                "type": "limit",
+                "price": 788.12,
+                "timeInForce": "GTC"
+            }
+        }
+    }
+}
+```
+
 Parameters:
 
 | Parameter	| Description | Type / Enum |
@@ -222,7 +245,35 @@ Parameters:
 <a name="OrderCancel"/>
 ##### OrderCancel
 
-TBD
+Example:
+
+```json
+{
+    "apikey": "23857823952452",
+    "signature": "83578345789348578934567",
+    "message":{
+        "nonce": 12,
+        "payload": {
+            "OrderCancel": {
+                "clientOrderId": "68f82819-723a-4b60-ad6b-2dca962ff705",
+                "cancelRequestClientOrderId":   "2c4d7127-6fbc-450c-b851-c6c1e8954545",
+                "symbol": "BTCUSD",
+                "side": "buy"
+            }
+        }
+    }
+}
+```
+
+Parameters:
+
+| Parameter	| Description | Type / Enum |
+| --- | --- | --- |
+| clientOrderId | clientOrderId sent in NewOrder message | |
+| cancelRequestClientOrderId | | |
+| symbol | | |
+| side | order side | `buy`, `sell` |
+| type | order type	| only `limit` orders are currently supported |
 
 <a name="ExecutionReport"/>
 ##### ExecutionReport
