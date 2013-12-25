@@ -1,11 +1,8 @@
-hitbtc API - streaming market data and trading 
-================================
-
 ## Summary
 
-Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket).
+This document provides the complete reference for [hitbtc](https://hitbtc.com) streaming API.
 
-All messages are in JSON format.
+Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
 The following symbols are traded on hitbtc exchange.
 
