@@ -30,9 +30,9 @@ The server broadcasts the following types of messages:
 
 Some recommendations to consider:
 
-* The application could receive the first snapshot and maintain the order book by applying incremental updates
-* It's recommended to invalidate a state of the application periodically using snapshots
-* It's recommended to check sequence numbers and to drop updates with non-increasing sequence numbers
+* The application could receive the first snapshot and maintain the order book by applying incremental updates.
+* It's recommended to invalidate a state of the application periodically using snapshots.
+* It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.
 
 <a name="MarketDataSnapshotFullRefresh"/>
 ##### MarketDataSnapshotFullRefresh
@@ -104,9 +104,11 @@ Example message:
 }}
 ```
 
+Fields:
+
 | Field | Description |
 | --- | --- |
-| seqNo | monotone increasing number, each symbol has an own sequencemonotone |
+| seqNo | monotone increasing number, each symbol has an own sequence |
 | timestamp | millisecond timestamp UTC |
 | symbol | |
 | exchangeStatus | `on` or `off`, `off` means the trading is suspended |
@@ -141,6 +143,8 @@ Example message:
 }}
 ```
 
+Fields:
+
 | Field | Description |
 | --- | --- |
 | seqNo	| monotone increasing number, each symbol has an own sequence
@@ -153,11 +157,11 @@ Example message:
 
 URL: <wss://api.hitbtc.com:8080>
 
-Trading endpoint requires login and all messages from client should be signed.
+Trading endpoint requires sending login message after connection esteblished. All client messages should be signed and should contain valid and active API key
 
-Messages:
+The following message types are supported:
 
-| Type | Side |
+| Type |  |
 | --- | --- | --- |
 | [Login](#Login) | Client -> Server |
 | [NewOrder](#NewOrder) | Client -> Server |
@@ -165,8 +169,10 @@ Messages:
 | [ExecutionReport](#ExecutionReport) | Server -> Client |
 | [CancelReject](#CancelReject) | Server -> Client |
 
+
 ##### API keys and message signatures
- in the following manner:
+
+All client messages should be signed in the following manner:
 
 ```json
 {
@@ -183,8 +189,8 @@ Messages:
 
 | Field | Description |
 | --- | --- |
-| nonce | should monotonous in the same connection |
-| signature | hmac-sha512(binary representation of the message) |
+| nonce | should be monotonous within the same connection |
+| signature | base64 [hmac-sha512](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code)(binary representation of the message) |
 
 <a name="Login"/>
 ##### Login 
@@ -350,4 +356,36 @@ Fields:
 ### Useful tools
 
 Chrome extension Simple WebSocket Client (https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo)
+
+### Sample code
+
+##### Node.js snippet: message signature
+
+```javascript
+    var crypto = require('crypto');
+    
+    ...
+    
+    var msg = {
+        'apikey': apikey,
+        'signature': '',
+        'message': {
+            'nonce': nonce,
+            'payload': {
+                'NewOrder': {
+                    'clientOrderId': clientOrderId,
+                    'symbol': symbol,
+                    'side': side,
+                    'quantity': quantity,
+                    'type': type,
+                    'price': price,
+                    'timeInForce': timeInForce
+                }
+            }
+        }
+    };
+    msg.signature = crypto.createHmac('sha512', secretkey).update(JSON.stringify(msg.message)).digest('base64');
+    return JSON.stringify(msg);
+```
+
 
