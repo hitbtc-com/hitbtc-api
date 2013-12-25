@@ -1,7 +1,7 @@
 hitbtc API - streaming market data and trading 
 ================================
 
-### Summary
+## Summary
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket).
 
@@ -17,7 +17,7 @@ The following symbols are traded on hitbtc exchange.
 
 Size values in messages are represented in lots.
 
-### Market data end-point
+## Market data end-point
 
 URL: [ws://api.hitbtc.com](ws://api.hitbtc.com)
 
@@ -35,7 +35,7 @@ Some recommendations to consider:
 * It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.
 
 <a name="MarketDataSnapshotFullRefresh"/>
-##### MarketDataSnapshotFullRefresh
+### MarketDataSnapshotFullRefresh
 
 MarketDataSnapshotFullRefresh message contains a full snapshot of the order book.
 
@@ -115,7 +115,7 @@ Fields:
 | ask, bid | sorted arrays of price levels in the order book; full snapshot (all price levels) is provided |
 
 <a name="MarketDataIncrementalRefresh"/>
-##### MarketDataIncrementalRefresh
+### MarketDataIncrementalRefresh
 
 MarketDataIncrementalRefresh contains incremental changes of the order book and individual trades.
 
@@ -153,7 +153,7 @@ Fields:
 | exchangeStatus |  `on` or `off`, `off` means the trading is suspended |
 | ask, bid, trade | an array of changes in the order book; <br> `size` means new size, `size`=0 means price level has been removed |
 
-### Trading end-point
+## Trading end-point
 
 URL: <wss://api.hitbtc.com:8080>
 
@@ -170,7 +170,7 @@ The following message types are supported:
 | [CancelReject](#CancelReject) | Server -> Client |
 
 
-##### API keys and message signatures
+### API keys and message signatures
 
 All client messages should be signed in the following manner:
 
@@ -193,7 +193,7 @@ All client messages should be signed in the following manner:
 | signature | base64 [hmac-sha512](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code)(binary representation of the message) |
 
 <a name="Login"/>
-##### Login 
+### Login 
 
 Example:
 ```json
@@ -214,7 +214,7 @@ Parameters: no parameters
 If client doesn't send valid logon message in 10 second the connection will be dropped.
 
 <a name="NewOrder"/>
-##### NewOrder
+### NewOrder
 
 Example:
 
@@ -252,7 +252,7 @@ Parameters:
 | timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOK` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill |
 
 <a name="OrderCancel"/>
-##### OrderCancel
+### OrderCancel
 
 Example:
 
@@ -285,7 +285,7 @@ Parameters:
 | type | order type	| only `limit` orders are currently supported |
 
 <a name="ExecutionReport"/>
-##### ExecutionReport
+### ExecutionReport
 
 Example:
 
@@ -331,7 +331,7 @@ Fields:
 | averagePrice | | decimal, will be 0 if 'cumQuantity'=0 | |
 
 <a name="CancelReject"/>
-##### CancelReject
+### CancelReject
 
 Example:
 ```json
@@ -353,13 +353,13 @@ Fields:
 | rejectReasonCode | | `orderNotFound` <br> `unknownSymbol` <br> `unknownUser` <br> `other` | required |
 | rejectReasonText | Optional reject reason text | string | |
 
-### Useful tools
+## Useful tools
 
 Chrome extension Simple WebSocket Client (https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo)
 
-### Sample code
+## Sample code
 
-##### Node.js snippet: message signature
+### Node.js snippet: message signature
 
 ```javascript
     var crypto = require('crypto');
