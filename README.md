@@ -1,0 +1,4 @@
+hitbtc-api
+==========
+
+hitbtc API
