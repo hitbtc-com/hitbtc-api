@@ -4,6 +4,7 @@ hitbtc API - streaming market data and trading
 ### General considerations
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket).
+All messages are encoded as JSON.
 
 The following symbols are traded on hitbtc exchange.
 
@@ -149,8 +150,89 @@ Example message:
 
 ### Trading end-point
 
+Trading endpoint requires login and all messages from client should be signed.
+
+Messages:
+
+| Type | Side |
+| --- | --- | --- |
+| [Login](#Login) | Client -> Server |
+| [NewOrder](#NewOrder) | Client -> Server |
+| [OrderCancel](#OrderCancel) | Client -> Server  |
+| [ExecutionReport](#ExecutionReport) | Server -> Client |
+| [CancelReject](#CancelReject) | Server -> Client |
+
+##### API keys and message signatures
+ in the following manner:
+
+```json
+{
+    "apikey": "23857823952452",
+    "signature": "83578345789348578934567",
+    "message":{
+        "nonce": 12,
+        "payload": {
+            "Login": {}
+        }
+    }
+}
+```
+
+| Field | Description |
+| --- | --- |
+| nonce | should monotonous in the same connection |
+| signature | hmac-sha512(binary representation of the message) |
+
+<a name="Login"/>
+##### Login 
+
+Example:
+```json
+{
+	"apikey": "23857823952452",
+	"signature": "83578345789348578934567",
+	"message":{
+		"nonce": 12, 
+		"payload": {
+			"Login": {}
+		}
+	}
+}
+```
+
+Parameters: no parameters
+
+If client doesn't send valid logon message in 10 second the connection will be dropped.
+
+<a name="NewOrder"/>
+##### NewOrder
+
+Parameters:
+
+| Parameter	| Description | Type / Enum |
+| --- | --- | --- |
+| clientOrderId | should be unique | |
+| symbol | | |
+| side | order side | `buy`, `sell` |
+| quantity | quantity in lots | integer |
+| type | order type	| only `limit` orders are currently supported |
+| price	| price (in currency) | decimal, consider price steps |
+| timeInForce | time in force | `GTC` - good till cancel <br>`IOK` - immediate or cancel<br>FOK - fill or kill |
+
+<a name="OrderCancel"/>
+##### OrderCancel
+
 TBD
 
+<a name="ExecutionReport"/>
+##### ExecutionReport
+
+TBD
+
+<a name="CancelReject"/>
+##### CancelReject
+
+TBD
 
 ### Useful tools
 
