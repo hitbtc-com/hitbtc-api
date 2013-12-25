@@ -1,38 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
     <title>hitbtc API by hitbtc-com</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
-
   <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/hitbtc-com/hitbtc-api">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/hitbtc-com/hitbtc-api/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/hitbtc-com/hitbtc-api/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
 
-    <header>
-      <div class="container">
-        <h1>hitbtc API</h1>
-        <h2>We bring cutting-edge technology to the Bitcoin ecosystem</h2>
+    <div class="wrapper">
 
-        <section id="downloads">
-          <a href="https://github.com/hitbtc-com/hitbtc-api/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/hitbtc-com/hitbtc-api/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/hitbtc-com/hitbtc-api" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
+      <section>
+        <div id="title">
+          <h1>hitbtc API</h1>
+          <p>We bring cutting-edge technology to the Bitcoin ecosystem</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/hitbtc-com">hitbtc-com</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
 
-    <div class="container">
-      <section id="main_content">
         <h1>
 <a name="hitbtc-api---streaming-market-data-and-trading-" class="anchor" href="#hitbtc-api---streaming-market-data-and-trading-"><span class="octicon octicon-link"></span></a>hitbtc API - streaming market data and trading </h1>
 
-<h3>
-<a name="summary" class="anchor" href="#summary"><span class="octicon octicon-link"></span></a>Summary</h3>
+<h2>
+<a name="summary" class="anchor" href="#summary"><span class="octicon octicon-link"></span></a>Summary</h2>
 
 <p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>.</p>
 
@@ -65,8 +75,8 @@
 </tbody>
 </table><p>Size values in messages are represented in lots.</p>
 
-<h3>
-<a name="market-data-end-point" class="anchor" href="#market-data-end-point"><span class="octicon octicon-link"></span></a>Market data end-point</h3>
+<h2>
+<a name="market-data-end-point" class="anchor" href="#market-data-end-point"><span class="octicon octicon-link"></span></a>Market data end-point</h2>
 
 <p>URL: <a>ws://api.hitbtc.com</a></p>
 
@@ -82,13 +92,13 @@
 </ul><p>Some recommendations to consider:</p>
 
 <ul>
-<li>The application could receive the first snapshot and maintain the order book by applying incremental updates</li>
-<li>It's recommended to invalidate a state of the application periodically using snapshots</li>
-<li>It's recommended to check sequence numbers and to drop updates with non-increasing sequence numbers</li>
+<li>The application could receive the first snapshot and maintain the order book by applying incremental updates.</li>
+<li>It's recommended to invalidate a state of the application periodically using snapshots.</li>
+<li>It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.</li>
 </ul><p><a name="MarketDataSnapshotFullRefresh"></a></p>
 
-<h5>
-<a name="marketdatasnapshotfullrefresh" class="anchor" href="#marketdatasnapshotfullrefresh"><span class="octicon octicon-link"></span></a>MarketDataSnapshotFullRefresh</h5>
+<h3>
+<a name="marketdatasnapshotfullrefresh" class="anchor" href="#marketdatasnapshotfullrefresh"><span class="octicon octicon-link"></span></a>MarketDataSnapshotFullRefresh</h3>
 
 <p>MarketDataSnapshotFullRefresh message contains a full snapshot of the order book.</p>
 
@@ -157,6 +167,8 @@
 <span class="p">}}</span>
 </pre></div>
 
+<p>Fields:</p>
+
 <table>
 <thead><tr>
 <th>Field</th>
@@ -165,7 +177,7 @@
 <tbody>
 <tr>
 <td>seqNo</td>
-<td>monotone increasing number, each symbol has an own sequencemonotone</td>
+<td>monotone increasing number, each symbol has an own sequence</td>
 </tr>
 <tr>
 <td>timestamp</td>
@@ -187,8 +199,8 @@
 </tbody>
 </table><p><a name="MarketDataIncrementalRefresh"></a></p>
 
-<h5>
-<a name="marketdataincrementalrefresh" class="anchor" href="#marketdataincrementalrefresh"><span class="octicon octicon-link"></span></a>MarketDataIncrementalRefresh</h5>
+<h3>
+<a name="marketdataincrementalrefresh" class="anchor" href="#marketdataincrementalrefresh"><span class="octicon octicon-link"></span></a>MarketDataIncrementalRefresh</h3>
 
 <p>MarketDataIncrementalRefresh contains incremental changes of the order book and individual trades.</p>
 
@@ -215,6 +227,8 @@
     <span class="p">]</span>
 <span class="p">}}</span>
 </pre></div>
+
+<p>Fields:</p>
 
 <table>
 <thead><tr>
@@ -244,19 +258,19 @@
 <td>an array of changes in the order book; <br><code>size</code> means new size, <code>size</code>=0 means price level has been removed</td>
 </tr>
 </tbody>
-</table><h3>
-<a name="trading-end-point" class="anchor" href="#trading-end-point"><span class="octicon octicon-link"></span></a>Trading end-point</h3>
+</table><h2>
+<a name="trading-end-point" class="anchor" href="#trading-end-point"><span class="octicon octicon-link"></span></a>Trading end-point</h2>
 
 <p>URL: <a>wss://api.hitbtc.com:8080</a></p>
 
-<p>Trading endpoint requires login and all messages from client should be signed.</p>
+<p>Trading endpoint requires sending login message after connection esteblished. All client messages should be signed and should contain valid and active API key</p>
 
-<p>Messages:</p>
+<p>The following message types are supported:</p>
 
 <table>
 <thead><tr>
 <th>Type</th>
-<th>Side</th>
+<th></th>
 </tr></thead>
 <tbody>
 <tr>
@@ -280,10 +294,10 @@
 <td>Server -&gt; Client</td>
 </tr>
 </tbody>
-</table><h5>
-<a name="api-keys-and-message-signatures" class="anchor" href="#api-keys-and-message-signatures"><span class="octicon octicon-link"></span></a>API keys and message signatures</h5>
+</table><h3>
+<a name="api-keys-and-message-signatures" class="anchor" href="#api-keys-and-message-signatures"><span class="octicon octicon-link"></span></a>API keys and message signatures</h3>
 
-<p>in the following manner:</p>
+<p>All client messages should be signed in the following manner:</p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"apikey"</span><span class="p">:</span> <span class="s2">"23857823952452"</span><span class="p">,</span>
@@ -305,17 +319,17 @@
 <tbody>
 <tr>
 <td>nonce</td>
-<td>should monotonous in the same connection</td>
+<td>should be monotonous within the same connection</td>
 </tr>
 <tr>
 <td>signature</td>
-<td>hmac-sha512(binary representation of the message)</td>
+<td>base64 <a href="http://en.wikipedia.org/wiki/Hash-based_message_authentication_code">hmac-sha512</a>(binary representation of the message)</td>
 </tr>
 </tbody>
 </table><p><a name="Login"></a></p>
 
-<h5>
-<a name="login" class="anchor" href="#login"><span class="octicon octicon-link"></span></a>Login</h5>
+<h3>
+<a name="login" class="anchor" href="#login"><span class="octicon octicon-link"></span></a>Login</h3>
 
 <p>Example:</p>
 
@@ -337,8 +351,8 @@
 
 <p><a name="NewOrder"></a></p>
 
-<h5>
-<a name="neworder" class="anchor" href="#neworder"><span class="octicon octicon-link"></span></a>NewOrder</h5>
+<h3>
+<a name="neworder" class="anchor" href="#neworder"><span class="octicon octicon-link"></span></a>NewOrder</h3>
 
 <p>Example:</p>
 
@@ -412,8 +426,8 @@
 </tbody>
 </table><p><a name="OrderCancel"></a></p>
 
-<h5>
-<a name="ordercancel" class="anchor" href="#ordercancel"><span class="octicon octicon-link"></span></a>OrderCancel</h5>
+<h3>
+<a name="ordercancel" class="anchor" href="#ordercancel"><span class="octicon octicon-link"></span></a>OrderCancel</h3>
 
 <p>Example:</p>
 
@@ -473,8 +487,8 @@
 </tbody>
 </table><p><a name="ExecutionReport"></a></p>
 
-<h5>
-<a name="executionreport" class="anchor" href="#executionreport"><span class="octicon octicon-link"></span></a>ExecutionReport</h5>
+<h3>
+<a name="executionreport" class="anchor" href="#executionreport"><span class="octicon octicon-link"></span></a>ExecutionReport</h3>
 
 <p>Example:</p>
 
@@ -625,8 +639,8 @@
 </tbody>
 </table><p><a name="CancelReject"></a></p>
 
-<h5>
-<a name="cancelreject" class="anchor" href="#cancelreject"><span class="octicon octicon-link"></span></a>CancelReject</h5>
+<h3>
+<a name="cancelreject" class="anchor" href="#cancelreject"><span class="octicon octicon-link"></span></a>CancelReject</h3>
 
 <p>Example:</p>
 
@@ -678,13 +692,46 @@
 <td></td>
 </tr>
 </tbody>
-</table><h3>
-<a name="useful-tools" class="anchor" href="#useful-tools"><span class="octicon octicon-link"></span></a>Useful tools</h3>
+</table><h2>
+<a name="useful-tools" class="anchor" href="#useful-tools"><span class="octicon octicon-link"></span></a>Useful tools</h2>
 
 <p>Chrome extension Simple WebSocket Client (<a href="https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo">https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo</a>)</p>
-      </section>
-    </div>
 
+<h2>
+<a name="sample-code" class="anchor" href="#sample-code"><span class="octicon octicon-link"></span></a>Sample code</h2>
+
+<h3>
+<a name="nodejs-snippet-message-signature" class="anchor" href="#nodejs-snippet-message-signature"><span class="octicon octicon-link"></span></a>Node.js snippet: message signature</h3>
+
+<div class="highlight highlight-javascript"><pre>    <span class="kd">var</span> <span class="nx">crypto</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'crypto'</span><span class="p">);</span>
+
+    <span class="p">...</span>
+
+    <span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'apikey'</span><span class="o">:</span> <span class="nx">apikey</span><span class="p">,</span>
+        <span class="s1">'signature'</span><span class="o">:</span> <span class="s1">''</span><span class="p">,</span>
+        <span class="s1">'message'</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s1">'nonce'</span><span class="o">:</span> <span class="nx">nonce</span><span class="p">,</span>
+            <span class="s1">'payload'</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s1">'NewOrder'</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="s1">'clientOrderId'</span><span class="o">:</span> <span class="nx">clientOrderId</span><span class="p">,</span>
+                    <span class="s1">'symbol'</span><span class="o">:</span> <span class="nx">symbol</span><span class="p">,</span>
+                    <span class="s1">'side'</span><span class="o">:</span> <span class="nx">side</span><span class="p">,</span>
+                    <span class="s1">'quantity'</span><span class="o">:</span> <span class="nx">quantity</span><span class="p">,</span>
+                    <span class="s1">'type'</span><span class="o">:</span> <span class="nx">type</span><span class="p">,</span>
+                    <span class="s1">'price'</span><span class="o">:</span> <span class="nx">price</span><span class="p">,</span>
+                    <span class="s1">'timeInForce'</span><span class="o">:</span> <span class="nx">timeInForce</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="nx">msg</span><span class="p">.</span><span class="nx">signature</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="s1">'sha512'</span><span class="p">,</span> <span class="nx">secretkey</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">message</span><span class="p">)).</span><span class="nx">digest</span><span class="p">(</span><span class="s1">'base64'</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">msg</span><span class="p">);</span>
+</pre></div>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
