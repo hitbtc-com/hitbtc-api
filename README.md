@@ -104,7 +104,7 @@ Example message:
 
 | Field | Description |
 | --- | --- |
-| seqNo | monotone increasing number, each symbol has an own sequencemonotone increasing number, each symbol has an own sequence |
+| seqNo | monotone increasing number, each symbol has an own sequencemonotone |
 | timestamp | millisecond timestamp UTC |
 | symbol | |
 | exchangeStatus | `on` or `off`, `off` means the trading is suspended |
