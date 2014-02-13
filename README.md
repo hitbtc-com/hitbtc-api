@@ -10,6 +10,9 @@ The following symbols are traded on hitbtc exchange.
 | --- | --- | --- |
 | BTCUSD |	0.01 BTC |	0.01 |
 | BTCEUR |	0.01 BTC |	0.01 |
+| LTCBTC | 0.1 LTC |	0.00001 |
+| LTCUSD | 0.1 LTC |	0.001 |
+| LTCEUR | 0.1 LTC |	0.001 |
 | EURUSD | 1 EUR |	0.0001 |
 
 Size values in messages are represented in lots.
