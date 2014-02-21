@@ -176,8 +176,8 @@ All client messages should be signed in the following manner:
 
 ```json
 {
-    "apikey": "23857823952452",
-    "signature": "83578345789348578934567",
+    "apikey": "e418f5b4a15608b78185540ef583b9fc",
+    "signature": "FN6/9dnMfLh3wZj+cAFr82HcSvmwuniMQqUlRxSQ9WxRqFpYrjY2xlvDzLC5+qSZAHts8R7KR7HbjiI3SzVxHg==",
     "message":{
         "nonce": 12,
         "payload": {
@@ -198,8 +198,8 @@ All client messages should be signed in the following manner:
 Example:
 ```json
 {
-	"apikey": "23857823952452",
-	"signature": "83578345789348578934567",
+	"apikey": "e418f5b4a15608b78185540ef583b9fc",
+	"signature": "FN6/9dnMfLh3wZj+cAFr82HcSvmwuniMQqUlRxSQ9WxRqFpYrjY2xlvDzLC5+qSZAHts8R7KR7HbjiI3SzVxHg==",
 	"message":{
 		"nonce": 12, 
 		"payload": {
@@ -220,8 +220,8 @@ Example:
 
 ```json
 {
-    "apikey": "23857823952452",
-    "signature": "83578345789348578934567",
+    "apikey": "e418f5b4a15608b78185540ef583b9fc",
+    "signature": "FN6/9dnMfLh3wZj+cAFr82HcSvmwuniMQqUlRxSQ9WxRqFpYrjY2xlvDzLC5+qSZAHts8R7KR7HbjiI3SzVxHg==",
     "message":{
         "nonce": 12,
         "payload": {
@@ -258,8 +258,8 @@ Example:
 
 ```json
 {
-    "apikey": "23857823952452",
-    "signature": "83578345789348578934567",
+    "apikey": "e418f5b4a15608b78185540ef583b9fc",
+    "signature": "FN6/9dnMfLh3wZj+cAFr82HcSvmwuniMQqUlRxSQ9WxRqFpYrjY2xlvDzLC5+qSZAHts8R7KR7HbjiI3SzVxHg==",
     "message":{
         "nonce": 12,
         "payload": {
