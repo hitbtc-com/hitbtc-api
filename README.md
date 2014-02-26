@@ -226,7 +226,7 @@ Example:
         "nonce": 12,
         "payload": {
             "NewOrder": {
-                "clientOrderId": "68f82819-723a-4b60-ad6b-2dca962ff705",
+                "clientOrderId": "68f82819-723a-4b60-ad6b",
                 "symbol": "BTCUSD",
                 "side": "buy",
                 "quantity": 10,
@@ -243,7 +243,7 @@ Parameters:
 
 | Parameter	| Description | Type / Enum |
 | --- | --- | --- |
-| clientOrderId | should be unique | |
+| clientOrderId | should be unique, <= 30 characters | |
 | symbol | | |
 | side | order side | `buy`, `sell` |
 | quantity | quantity in lots | integer |
@@ -264,7 +264,7 @@ Example:
         "nonce": 12,
         "payload": {
             "OrderCancel": {
-                "clientOrderId": "68f82819-723a-4b60-ad6b-2dca962ff705",
+                "clientOrderId": "68f82819-723a-4b60-ad6b",
                 "cancelRequestClientOrderId":   "2c4d7127-6fbc-450c-b851-c6c1e8954545",
                 "symbol": "BTCUSD",
                 "side": "buy"
@@ -279,7 +279,7 @@ Parameters:
 | Parameter	| Description | Type / Enum |
 | --- | --- | --- |
 | clientOrderId | clientOrderId sent in NewOrder message | |
-| cancelRequestClientOrderId | | |
+| cancelRequestClientOrderId | <= 30 characters | |
 | symbol | | |
 | side | order side | `buy`, `sell` |
 | type | order type	| only `limit` orders are currently supported |
@@ -293,7 +293,7 @@ Example:
 {
     "ExecutionReport":{
         "orderId": "64283442",
-        "clientOrderId": "68f82819-723a-4b60-ad6b-2dca962ff705",
+        "clientOrderId": "68f82819-723a-4b60-ad6b",
         "execReportType": "new",
         "orderStatus": "new"
         "symbol": "BTCUSD",
@@ -336,8 +336,8 @@ Fields:
 Example:
 ```json
 {"CancelReject": {
-    "clientOrderId": "68f82819-723a-4b60-ad6b-2dca962ff705",
-    "cancelRequestClientOrderId": "2c4d7127-6fbc-450c-b851-c6c1e8954545",
+    "clientOrderId": "68f82819-723a-4b60-ad6b",
+    "cancelRequestClientOrderId": "2c4d7127-6fbc-450c-b851",
     "rejectReasonCode": "orderNotFound",
     "rejectReasonText": "Order not found",
     "timestamp": 726892347829
