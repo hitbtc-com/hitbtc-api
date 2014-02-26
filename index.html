@@ -375,7 +375,7 @@
         <span class="nt">"nonce"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
         <span class="nt">"payload"</span><span class="p">:</span> <span class="p">{</span>
             <span class="nt">"NewOrder"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b-2dca962ff705"</span><span class="p">,</span>
+                <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b"</span><span class="p">,</span>
                 <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
                 <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span><span class="p">,</span>
                 <span class="nt">"quantity"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
@@ -399,7 +399,7 @@
 <tbody>
 <tr>
 <td>clientOrderId</td>
-<td>should be unique</td>
+<td>should be unique, &lt;= 30 characters</td>
 <td></td>
 </tr>
 <tr>
@@ -450,7 +450,7 @@
         <span class="nt">"nonce"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
         <span class="nt">"payload"</span><span class="p">:</span> <span class="p">{</span>
             <span class="nt">"OrderCancel"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b-2dca962ff705"</span><span class="p">,</span>
+                <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b"</span><span class="p">,</span>
                 <span class="nt">"cancelRequestClientOrderId"</span><span class="p">:</span>   <span class="s2">"2c4d7127-6fbc-450c-b851-c6c1e8954545"</span><span class="p">,</span>
                 <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
                 <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span>
@@ -476,7 +476,7 @@
 </tr>
 <tr>
 <td>cancelRequestClientOrderId</td>
-<td></td>
+<td>&lt;= 30 characters</td>
 <td></td>
 </tr>
 <tr>
@@ -507,7 +507,7 @@
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"ExecutionReport"</span><span class="p">:{</span>
         <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"64283442"</span><span class="p">,</span>
-        <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b-2dca962ff705"</span><span class="p">,</span>
+        <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b"</span><span class="p">,</span>
         <span class="nt">"execReportType"</span><span class="p">:</span> <span class="s2">"new"</span><span class="p">,</span>
         <span class="nt">"orderStatus"</span><span class="p">:</span> <span class="s2">"new"</span>
         <span class="s2">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
@@ -657,8 +657,8 @@
 <p>Example:</p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"CancelReject"</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b-2dca962ff705"</span><span class="p">,</span>
-    <span class="nt">"cancelRequestClientOrderId"</span><span class="p">:</span> <span class="s2">"2c4d7127-6fbc-450c-b851-c6c1e8954545"</span><span class="p">,</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b"</span><span class="p">,</span>
+    <span class="nt">"cancelRequestClientOrderId"</span><span class="p">:</span> <span class="s2">"2c4d7127-6fbc-450c-b851"</span><span class="p">,</span>
     <span class="nt">"rejectReasonCode"</span><span class="p">:</span> <span class="s2">"orderNotFound"</span><span class="p">,</span>
     <span class="nt">"rejectReasonText"</span><span class="p">:</span> <span class="s2">"Order not found"</span><span class="p">,</span>
     <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">726892347829</span>
