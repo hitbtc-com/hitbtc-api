@@ -41,9 +41,7 @@
         <h2>
 <a name="summary" class="anchor" href="#summary"><span class="octicon octicon-link"></span></a>Summary</h2>
 
-<p>This document provides the complete reference for <a href="https://hitbtc.com">hitbtc</a> streaming API.</p>
-
-<p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
+<p>This document provides the complete reference for <a href="https://hitbtc.com">hitbtc</a> API.</p>
 
 <p>The following symbols are traded on hitbtc exchange.</p>
 
@@ -85,10 +83,160 @@
 <td>0.0001</td>
 </tr>
 </tbody>
-</table><p>Size values in messages are represented in lots.</p>
+</table><p>Size representation:</p>
+
+<ul>
+<li>Size values in streaming messages are represented in lots.</li>
+<li>Size values in RESTful market data are represented in money (e.g. in coins or in USD). </li>
+</ul><h2>
+<a name="market-data-restful-api" class="anchor" href="#market-data-restful-api"><span class="octicon octicon-link"></span></a>Market data RESTful API</h2>
+
+<p>Endpoint URL: <a href="http://api.hitbtc.com">http://api.hitbtc.com</a></p>
+
+<h3>
+<a name="api1publictime" class="anchor" href="#api1publictime"><span class="octicon octicon-link"></span></a>/api/1/public/time</h3>
+
+<p>Request: <code>GET /api/1/public/time</code></p>
+
+<p>Example: <code>/api/1/public/time</code></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1393492619000</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="api1publicsymbols" class="anchor" href="#api1publicsymbols"><span class="octicon octicon-link"></span></a>/api/1/public/symbols</h3>
+
+<p>Request: <code>GET /api/1/public/symbols</code></p>
+
+<p>Example: <code>/api/1/public/symbols</code></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"symbols"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span>
+            <span class="s2">"step"</span><span class="p">:</span> <span class="s2">"0.01"</span><span class="p">,</span>
+            <span class="nt">"lot"</span><span class="p">:</span> <span class="s2">"0.01"</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCEUR"</span>
+            <span class="s2">"step"</span><span class="p">:</span> <span class="s2">"0.01"</span><span class="p">,</span>
+            <span class="nt">"lot"</span><span class="p">:</span> <span class="s2">"0.01"</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="err">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="api1publicsymbolticker" class="anchor" href="#api1publicsymbolticker"><span class="octicon octicon-link"></span></a>/api/1/public/:symbol/ticker</h3>
+
+<p>Request: <code>GET /api/1/public/:symbol/ticker</code></p>
+
+<p>Example: <code>/api/1/public/BTCUSD/ticker</code></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"last"</span><span class="p">:</span> <span class="s2">"550.73"</span><span class="p">,</span>
+    <span class="nt">"bid"</span><span class="p">:</span> <span class="s2">"549.56"</span><span class="p">,</span>
+    <span class="nt">"ask"</span><span class="p">:</span> <span class="s2">"554.12"</span><span class="p">,</span>
+    <span class="nt">"high"</span><span class="p">:</span> <span class="s2">"600.1"</span><span class="p">,</span>
+    <span class="nt">"low"</span><span class="p">:</span> <span class="s2">"400.7"</span><span class="p">,</span>
+    <span class="nt">"volume"</span><span class="p">:</span> <span class="s2">"567.9"</span><span class="p">,</span>
+    <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1393492619000</span>
+<span class="p">}</span>
+</pre></div>
+
+<ul>
+<li>24h means last 24h + last incomplete minute</li>
+<li>high - highest trade price / 24 h</li>
+<li>low - lowest trade price / 24 h</li>
+<li>volume - volume / 24h</li>
+</ul><h3>
+<a name="api1publicsymbolorderbook" class="anchor" href="#api1publicsymbolorderbook"><span class="octicon octicon-link"></span></a>/api/1/public/:symbol/orderbook</h3>
+
+<p>Request: <code>GET /api/1/public/:symbol/orderbook</code></p>
+
+<p>Alias: <code>/api/1/request/:symbol/orderbook.json</code></p>
+
+<p>Example: <code>/api/1/public/BTCUSD/orderbook</code></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"asks"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">[</span> <span class="s2">"405.71"</span><span class="p">,</span> <span class="s2">"0.09"</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="s2">"406.65"</span><span class="p">,</span> <span class="s2">"0.06"</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="s2">"409.51"</span><span class="p">,</span> <span class="s2">"0.15"</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="s2">"413.93"</span><span class="p">,</span> <span class="s2">"51.6"</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="s2">"414.59"</span><span class="p">,</span> <span class="s2">"47.1"</span> <span class="p">]</span>
+    <span class="p">],</span>
+    <span class="nt">"bids"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">[</span> <span class="s2">"398.3"</span><span class="p">,</span> <span class="s2">"0.15"</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="s2">"396.99"</span><span class="p">,</span> <span class="s2">"0.13"</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="s2">"395"</span><span class="p">,</span> <span class="s2">"0.5"</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="s2">"391.93"</span><span class="p">,</span> <span class="s2">"42.4"</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="s2">"383.67"</span><span class="p">,</span> <span class="s2">"145.4"</span> <span class="p">]</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="api1publicsymboltrades" class="anchor" href="#api1publicsymboltrades"><span class="octicon octicon-link"></span></a>/api/1/public/:symbol/trades</h3>
+
+<p>Request: <code>GET /api/1/public/:symbol/trades</code></p>
+
+<p>Alias: <code>/api/1/request/:symbol/trades.json?since={trade_id}</code></p>
+
+<p>Parameters:</p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>from</td>
+<td>required, int, trade_id or timestamp</td>
+</tr>
+<tr>
+<td>till</td>
+<td>optional, int, trade_id or timestamp</td>
+</tr>
+<tr>
+<td>by</td>
+<td>required, filter and sort by <code>trade_id</code> or <code>ts</code> (timestamp)</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>optional, <code>asc</code> (default) or <code>desc</code>
+</td>
+</tr>
+<tr>
+<td>start_index</td>
+<td>required, int</td>
+</tr>
+<tr>
+<td>max_results</td>
+<td>required, int, max value = 1000</td>
+</tr>
+</tbody>
+</table><p>Example: <code>/api/1/public/BTCUSD/trades?from=0&amp;by=trade_id&amp;sort=desc&amp;start_index=0&amp;max_results=100</code></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"trades"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">[</span> <span class="mi">3814483</span><span class="p">,</span> <span class="s2">"575.64"</span><span class="p">,</span> <span class="s2">"0.02"</span><span class="p">,</span> <span class="mi">1393492619000</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mi">3814482</span><span class="p">,</span> <span class="s2">"574.3"</span><span class="p">,</span> <span class="s2">"0.12"</span><span class="p">,</span> <span class="mi">1393492619000</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mi">3814481</span><span class="p">,</span> <span class="s2">"573.67"</span><span class="p">,</span> <span class="s2">"3.8"</span><span class="p">,</span> <span class="mi">1393492619000</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mi">3814479</span><span class="p">,</span> <span class="s2">"571"</span><span class="p">,</span> <span class="s2">"0.01"</span><span class="p">,</span> <span class="mi">1393492619000</span> <span class="p">],</span>
+        <span class="err">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
 
 <h2>
-<a name="market-data-end-point" class="anchor" href="#market-data-end-point"><span class="octicon octicon-link"></span></a>Market data end-point</h2>
+<a name="market-data-streaming-end-point" class="anchor" href="#market-data-streaming-end-point"><span class="octicon octicon-link"></span></a>Market data streaming end-point</h2>
+
+<p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
 
 <p>URL: <a>ws://api.hitbtc.com</a></p>
 
@@ -271,7 +419,9 @@
 </tr>
 </tbody>
 </table><h2>
-<a name="trading-end-point" class="anchor" href="#trading-end-point"><span class="octicon octicon-link"></span></a>Trading end-point</h2>
+<a name="trading-streaming-end-point" class="anchor" href="#trading-streaming-end-point"><span class="octicon octicon-link"></span></a>Trading streaming end-point</h2>
+
+<p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
 
 <p>URL: <a>wss://api.hitbtc.com:8080</a></p>
 
