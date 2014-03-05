@@ -14,7 +14,9 @@ The following symbols are traded on hitbtc exchange.
 | LTCEUR | 0.1 LTC |	0.001 |
 | EURUSD | 1 EUR |	0.0001 |
 
-Size values in messages are represented in lots.
+Size representation:
+* Size values in streaming messages are represented in lots.
+* Size values in RESTful market data are represented in money (e.g. in coins or in USD). 
 
 ## Market data RESTful API
 
