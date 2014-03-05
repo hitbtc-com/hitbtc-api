@@ -1,8 +1,7 @@
 ## Summary
 
-This document provides the complete reference for [hitbtc](https://hitbtc.com) streaming API.
+This document provides the complete reference for [hitbtc](https://hitbtc.com) API.
 
-Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
 The following symbols are traded on hitbtc exchange.
 
@@ -17,7 +16,127 @@ The following symbols are traded on hitbtc exchange.
 
 Size values in messages are represented in lots.
 
-## Market data end-point
+## Market data RESTful API
+
+Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com)
+
+### /api/1/public/time
+
+Request: `GET /api/1/public/time`
+
+Example: `/api/1/public/time`
+``` json
+{
+    "timestamp": 1393492619000
+}
+```
+
+### /api/1/public/symbols
+
+Request: `GET /api/1/public/symbols`
+
+Example: `/api/1/public/symbols`
+``` json
+{
+    "symbols": [
+        {
+            "symbol": "BTCUSD"
+            "step": "0.01",
+            "lot": "0.01",
+        },
+        {
+            "symbol": "BTCEUR"
+            "step": "0.01",
+            "lot": "0.01",
+        },
+        ...
+    ]
+}
+```
+
+### /api/1/public/:symbol/ticker
+
+Request: `GET /api/1/public/:symbol/ticker`
+
+Example: `/api/1/public/BTCUSD/ticker`
+
+``` json
+{
+    "last": "550.73",
+    "bid": "549.56",
+    "ask": "554.12",
+    "high": "600.1",
+    "low": "400.7",
+    "volume": "567.9",
+    "timestamp": 1393492619000
+}
+```
+
+* 24h means last 24h + last incomplete minute
+* high - highest trade price / 24 h
+* low - lowest trade price / 24 h
+* volume - volume / 24h
+
+### /api/1/public/:symbol/orderbook
+
+Request: `GET /api/1/public/:symbol/orderbook`
+
+Alias: `/api/1/request/:symbol/orderbook.json`
+
+Example: `/api/1/public/BTCUSD/orderbook`
+``` json
+{
+    "asks": [
+        [ "405.71", "0.09" ],
+        [ "406.65", "0.06" ],
+        [ "409.51", "0.15" ],
+        [ "413.93", "51.6" ],
+        [ "414.59", "47.1" ]
+    ],
+    "bids": [
+        [ "398.3", "0.15" ],
+        [ "396.99", "0.13" ],
+        [ "395", "0.5" ],
+        [ "391.93", "42.4" ],
+        [ "383.67", "145.4" ]
+    ]
+}
+```
+
+### /api/1/public/:symbol/trades
+
+Request: `GET /api/1/public/:symbol/trades`
+
+Alias: `/api/1/request/:symbol/trades.json?since={trade_id}`
+
+Parameters:
+
+| Parameter | Description |
+| --- | --- |
+| from | required, int, trade_id or timestamp |
+| till | optional, int, trade_id or timestamp |
+| by | required, filter and sort by `trade_id` or `ts` (timestamp) |
+| sort | optional, `asc` (default) or `desc` |
+| start_index | required, int |
+| max_results | required, int, max value = 1000 |
+
+Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100`
+``` json
+{
+    "trades": [
+        [ 3814483, "575.64", "0.02", 1393492619000 ],
+        [ 3814482, "574.3", "0.12", 1393492619000 ],
+        [ 3814481, "573.67", "3.8", 1393492619000 ],
+        [ 3814479, "571", "0.01", 1393492619000 ],
+        ...
+    ]
+}
+```
+
+
+## Market data streaming end-point
+
+Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
 URL: [ws://api.hitbtc.com](ws://api.hitbtc.com)
 
@@ -153,7 +272,9 @@ Fields:
 | exchangeStatus |  `on` or `off`, `off` means the trading is suspended |
 | ask, bid, trade | an array of changes in the order book; <br> `size` means new size, `size`=0 means price level has been removed |
 
-## Trading end-point
+## Trading streaming end-point
+
+Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
 URL: <wss://api.hitbtc.com:8080>
 
