@@ -157,7 +157,30 @@
 
 <p>Request: <code>GET /api/1/public/:symbol/orderbook</code></p>
 
-<p>Alias: <code>/api/1/request/:symbol/orderbook.json</code></p>
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>format_price</td>
+<td>optional, "string" (default) or "number"</td>
+<td></td>
+</tr>
+<tr>
+<td>format_amount</td>
+<td>optional, "string" (default) or "number"</td>
+<td></td>
+</tr>
+<tr>
+<td>format_amount_unit</td>
+<td>optional, "currency" (default) or "lot"</td>
+<td></td>
+</tr>
+</tbody>
+</table><p>Alias: <code>/api/1/request/:symbol/orderbook.json</code> -&gt; <code>/api/1/public/:symbol/orderbook?format_price=number&amp;format_amount=number</code></p>
 
 <p>Example: <code>/api/1/public/BTCUSD/orderbook</code></p>
 
@@ -179,48 +202,110 @@
 <span class="p">}</span>
 </pre></div>
 
+<p>Example: <code>/api/1/public/BTCUSD/orderbook?format_price=number&amp;format_amount=number</code></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"asks"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">[</span> <span class="mf">405.71</span><span class="p">,</span> <span class="mf">0.09</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mf">406.65</span><span class="p">,</span> <span class="mf">0.06</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mf">409.51</span><span class="p">,</span> <span class="mf">0.15</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mf">413.93</span><span class="p">,</span> <span class="mf">51.6</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mf">414.59</span><span class="p">,</span> <span class="mf">47.1</span> <span class="p">]</span>
+    <span class="p">],</span>
+    <span class="nt">"bids"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">[</span> <span class="mf">398.3</span><span class="p">,</span> <span class="mf">0.15</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mf">396.99</span><span class="p">,</span> <span class="mf">0.13</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mi">395</span><span class="p">,</span> <span class="mf">0.5</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mf">391.93</span><span class="p">,</span> <span class="mf">42.4</span> <span class="p">],</span>
+        <span class="p">[</span> <span class="mf">383.67</span><span class="p">,</span> <span class="mf">145.4</span> <span class="p">]</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
 <h3>
 <a name="api1publicsymboltrades" class="anchor" href="#api1publicsymboltrades"><span class="octicon octicon-link"></span></a>/api/1/public/:symbol/trades</h3>
 
 <p>Request: <code>GET /api/1/public/:symbol/trades</code></p>
-
-<p>Alias: <code>/api/1/request/:symbol/trades.json?since={trade_id}</code></p>
 
 <p>Parameters:</p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
 <td>from</td>
 <td>required, int, trade_id or timestamp</td>
+<td>returns trades with trade_id &gt; specified trade_id <br> returns trades with timestamp &gt;= specified timestamp</td>
 </tr>
 <tr>
 <td>till</td>
 <td>optional, int, trade_id or timestamp</td>
+<td>returns trades with trade_id &lt; specified trade_id <br> returns trades with timestamp &lt; specified timestamp</td>
 </tr>
 <tr>
 <td>by</td>
 <td>required, filter and sort by <code>trade_id</code> or <code>ts</code> (timestamp)</td>
+<td></td>
 </tr>
 <tr>
 <td>sort</td>
 <td>optional, <code>asc</code> (default) or <code>desc</code>
 </td>
+<td></td>
 </tr>
 <tr>
 <td>start_index</td>
 <td>required, int</td>
+<td>zero-based</td>
 </tr>
 <tr>
 <td>max_results</td>
 <td>required, int, max value = 1000</td>
+<td></td>
+</tr>
+<tr>
+<td>format_item</td>
+<td>optional, "array" (default) or "object"</td>
+<td></td>
+</tr>
+<tr>
+<td>format_price</td>
+<td>optional, "string" (default) or "number"</td>
+<td></td>
+</tr>
+<tr>
+<td>format_amount</td>
+<td>optional, "string" (default) or "number"</td>
+<td></td>
+</tr>
+<tr>
+<td>format_amount_unit</td>
+<td>optional, "currency" (default) or "lot"</td>
+<td></td>
+</tr>
+<tr>
+<td>format_tid</td>
+<td>optional, "string" or "number" (default)</td>
+<td></td>
+</tr>
+<tr>
+<td>format_timestamp</td>
+<td>optional, "millisecond" (default) or "second"</td>
+<td></td>
+</tr>
+<tr>
+<td>format_wrap</td>
+<td>optional, "true" (default) or "false"</td>
+<td></td>
 </tr>
 </tbody>
-</table><p>Example: <code>/api/1/public/BTCUSD/trades?from=0&amp;by=trade_id&amp;sort=desc&amp;start_index=0&amp;max_results=100</code></p>
+</table><p>Alias: <code>/api/1/request/:symbol/trades.json?since=&lt;trade_id&gt;</code> -&gt; <code>/api/1/public/:symbol/trades?from=&lt;trade_id&gt;&amp;by=trade_id&amp;start_index=0&amp;format_numbers=number&amp;format_tradeid=string&amp;format_objects=object&amp;format_timestamp=second</code></p>
+
+<p>Example: <code>/api/1/public/BTCUSD/trades?from=0&amp;by=trade_id&amp;sort=desc&amp;start_index=0&amp;max_results=100</code></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"trades"</span><span class="p">:</span> <span class="p">[</span>
@@ -231,6 +316,17 @@
         <span class="err">...</span>
     <span class="p">]</span>
 <span class="p">}</span>
+</pre></div>
+
+<p>Example: <code>/api/1/public/BTCUSD/trades?from=0&amp;by=trade_id&amp;sort=desc&amp;start_index=0&amp;max_results=100&amp;format_item=object&amp;format_price=number&amp;format_amount=number&amp;format_tid=string&amp;format_timestamp=second&amp;format_wrap=false</code></p>
+
+<div class="highlight highlight-json"><pre><span class="p">[</span>
+    <span class="p">{</span><span class="nt">"date"</span><span class="p">:</span> <span class="mi">1393492619</span><span class="p">,</span> <span class="nt">"price"</span><span class="p">:</span> <span class="mf">575.64</span><span class="p">,</span> <span class="nt">"amount"</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span> <span class="nt">"tid"</span><span class="p">:</span> <span class="s2">"3814483"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"date"</span><span class="p">:</span> <span class="mi">1393492619</span><span class="p">,</span> <span class="nt">"price"</span><span class="p">:</span> <span class="mf">574.3</span><span class="p">,</span> <span class="nt">"amount"</span><span class="p">:</span> <span class="mf">0.12</span><span class="p">,</span> <span class="nt">"tid"</span><span class="p">:</span> <span class="s2">"3814482"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"date"</span><span class="p">:</span> <span class="mi">1393492619</span><span class="p">,</span> <span class="nt">"price"</span><span class="p">:</span> <span class="mf">573.67</span><span class="p">,</span> <span class="nt">"amount"</span><span class="p">:</span> <span class="mf">3.8</span><span class="p">,</span> <span class="nt">"tid"</span><span class="p">:</span> <span class="s2">"3814481"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"date"</span><span class="p">:</span> <span class="mi">1393492619</span><span class="p">,</span> <span class="nt">"price"</span><span class="p">:</span> <span class="mi">571</span><span class="p">,</span> <span class="nt">"amount"</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="nt">"tid"</span><span class="p">:</span> <span class="s2">"3814479"</span><span class="p">},</span>
+    <span class="err">...</span>
+<span class="p">]</span>
 </pre></div>
 
 <h2>
