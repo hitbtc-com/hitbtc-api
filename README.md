@@ -83,7 +83,13 @@ Example: `/api/1/public/BTCUSD/ticker`
 
 Request: `GET /api/1/public/:symbol/orderbook`
 
-Alias: `/api/1/request/:symbol/orderbook.json`
+| Parameter | Type | Description |
+| --- | --- | --- |
+| format_price | optional, "string" (default) or "number" | |
+| format_amount | optional, "string" (default) or "number" | |
+| format_amount_unit | optional, "currency" (default) or "lot" | |
+
+Alias: `/api/1/request/:symbol/orderbook.json` -> `/api/1/public/:symbol/orderbook?format_price=number&format_amount=number`
 
 Example: `/api/1/public/BTCUSD/orderbook`
 ``` json
@@ -105,22 +111,49 @@ Example: `/api/1/public/BTCUSD/orderbook`
 }
 ```
 
+Example: `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=number`
+``` json
+{
+    "asks": [
+        [ 405.71, 0.09 ],
+        [ 406.65, 0.06 ],
+        [ 409.51, 0.15 ],
+        [ 413.93, 51.6 ],
+        [ 414.59, 47.1 ]
+    ],
+    "bids": [
+        [ 398.3, 0.15 ],
+        [ 396.99, 0.13 ],
+        [ 395, 0.5 ],
+        [ 391.93, 42.4 ],
+        [ 383.67, 145.4 ]
+    ]
+}
+```
+
 ### /api/1/public/:symbol/trades
 
 Request: `GET /api/1/public/:symbol/trades`
 
-Alias: `/api/1/request/:symbol/trades.json?since={trade_id}`
-
 Parameters:
 
-| Parameter | Description |
-| --- | --- |
-| from | required, int, trade_id or timestamp |
-| till | optional, int, trade_id or timestamp |
-| by | required, filter and sort by `trade_id` or `ts` (timestamp) |
-| sort | optional, `asc` (default) or `desc` |
-| start_index | required, int |
-| max_results | required, int, max value = 1000 |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| from | required, int, trade_id or timestamp | returns trades with trade_id > specified trade_id <br> returns trades with timestamp >= specified timestamp |
+| till | optional, int, trade_id or timestamp | returns trades with trade_id < specified trade_id <br> returns trades with timestamp < specified timestamp |
+| by | required, filter and sort by `trade_id` or `ts` (timestamp) | |
+| sort | optional, `asc` (default) or `desc` | |
+| start_index | required, int | zero-based |
+| max_results | required, int, max value = 1000 | |
+| format_item | optional, "array" (default) or "object" |  |
+| format_price | optional, "string" (default) or "number" | |
+| format_amount | optional, "string" (default) or "number" | |
+| format_amount_unit | optional, "currency" (default) or "lot" | |
+| format_tid | optional, "string" or "number" (default) | |
+| format_timestamp | optional, "millisecond" (default) or "second" | |
+| format_wrap | optional, "true" (default) or "false" | |
+
+Alias: `/api/1/request/:symbol/trades.json?since=<trade_id>` -> `/api/1/public/:symbol/trades?from=<trade_id>&by=trade_id&start_index=0&format_numbers=number&format_tradeid=string&format_objects=object&format_timestamp=second`
 
 Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100`
 ``` json
@@ -135,6 +168,17 @@ Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0
 }
 ```
 
+
+Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false`
+``` json
+[
+    {"date": 1393492619, "price": 575.64, "amount": 0.02, "tid": "3814483"},
+    {"date": 1393492619, "price": 574.3, "amount": 0.12, "tid": "3814482"},
+    {"date": 1393492619, "price": 573.67, "amount": 3.8, "tid": "3814481"},
+    {"date": 1393492619, "price": 571, "amount": 0.01, "tid": "3814479"},
+    ...
+]
+```
 
 ## Market data streaming end-point
 
