@@ -180,6 +180,118 @@ Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0
 ]
 ```
 
+## Trading RESTful API
+
+Base URL: [https://api.hitbtc.com](https://api.hitbtc.com)
+
+### Authentication
+
+RESTful Trading API requires a HMAC-SHA512 signatures for each request.
+
+You should get your API key and Secret key from the Settings page on [https://hitbtc.com](https://hitbtc.com) in order to use this API endpoint. 
+
+Each request should include three parameters: `apikey`, `signature` and `nonce`.
+
+* `nonce` - unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp for `nonce`. This parameter should be added as a query string parameter `nonce`.
+* `apikey` - API key from Settings page. This parameter should be added as a query string parameter `apikey`.
+* `signature` - hex representation of hmac-sha512 of concatenated `uri` and `postData`. This parameter should be added as a HTTP header `X-Signature`.
+
+Signture generation pseudo-code:
+
+```
+message = uri + postData
+signature = hex(hmac_sha512(message, secret_key))
+```
+
+Javascript code (example):
+``` js
+   var crypto = require('crypto');
+
+   ...
+
+   var signature = crypto.createHmac('sha512', secretKey).update(message).digest('hex');
+```
+
+### Error codes
+
+RESTful Trading API can return the following errors:
+
+| HTTP code | Text | Description |
+| --- | --- | --- |
+| 403 | Invalid apikey | API key doesn't exist or API key is currently used on another endpoint (last ~5 min) |
+| 403 | Nonce has been used | nonce is not monotonous |
+| 403 | Nonce is not valid | too big number or not a number |
+| 403 | Wrong signature | |
+
+### /api/1/trading/balance
+
+Request: `GET /api/1/trading/balance`
+
+Summary: returns trading balance.
+
+Parameters: no parameters
+
+Example: 
+``` json
+{"balance": [
+  {
+    "currency_code": "BTC",
+    "cash": 0.045457701,
+    "reserved": 0.01
+  },
+  {
+    "currency_code": "EUR",
+    "cash": 0.0445544,
+    "reserved": 0
+  },
+  {
+    "currency_code": "LTC",
+    "cash": 0.7,
+    "reserved": 0.1
+  },
+  {
+    "currency_code": "USD",
+    "cash": 2.9415029,
+    "reserved": 1.001
+  }
+]}
+```
+
+### /api/1/trading/orders/active
+
+Request: `GET /api/1/trading/orders/active`
+
+Summary: returns all active orders (`new` or `partiallyFilled`).
+
+Parameters: 
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| symbols | string, comma-delimeted list of symbols, optional, default - all symbols | |
+
+Example:
+
+``` json
+{"orders": [
+  {
+    "orderId": "51521638",
+    "orderStatus": "new",
+    "lastTimestamp": 1394798401494,
+    "orderPrice": 1000,
+    "orderQuantity": 1,
+    "avgPrice": 0,
+    "quantityLeaves": 1,
+    "type": "limit",
+    "timeInForce": "GTC",
+    "cumQuantity": 0,
+    "clientOrderId": "7fb8756ec8045847c3b840e84d43bd83",
+    "symbol": "LTCBTC",
+    "side": "sell",
+    "execQuantity": 0
+  }
+]}
+```
+
 ## Market data streaming end-point
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
