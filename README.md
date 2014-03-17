@@ -192,7 +192,7 @@ You should get your API key and Secret key from the Settings page on [https://hi
 
 Each request should include three parameters: `apikey`, `signature` and `nonce`.
 
-* `nonce` - unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp for `nonce`. This parameter should be added as a query string parameter `nonce`.
+* `nonce` - unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp for `nonce`. This parameter should be added as a query string parameter `nonce`. `nonce` should be < (2^53-1).
 * `apikey` - API key from Settings page. This parameter should be added as a query string parameter `apikey`.
 * `signature` - hex representation of hmac-sha512 of concatenated `uri` and `postData`. This parameter should be added as a HTTP header `X-Signature`.
 
@@ -218,7 +218,7 @@ RESTful Trading API can return the following errors:
 
 | HTTP code | Text | Description |
 | --- | --- | --- |
-| 403 | Invalid apikey | API key doesn't exist or API key is currently used on another endpoint (last ~5 min) |
+| 403 | Invalid apikey | API key doesn't exist or API key is currently used on another endpoint (max last 15 min) |
 | 403 | Nonce has been used | nonce is not monotonous |
 | 403 | Nonce is not valid | too big number or not a number |
 | 403 | Wrong signature | |
