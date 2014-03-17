@@ -199,7 +199,7 @@ Each request should include three parameters: `apikey`, `signature` and `nonce`.
 Signture generation pseudo-code:
 
 ```
-uri = path + query (e.g. /api/1/trading/orders/activeBTCUSD)
+uri = path + '?' + query (example: /api/1/trading/orders/active?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d&symbols=EURUSD)
 message = uri + postData
 signature = hex(hmac_sha512(message, secret_key))
 ```
