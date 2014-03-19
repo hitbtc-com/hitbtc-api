@@ -392,7 +392,7 @@ Example response:
      "averagePrice": 0 } }
 ```
 
-### /api/1/trading/cancel-order
+### /api/1/trading/cancel_order
 
 Request: `GET /api/1/trading/cancel_order`
 
