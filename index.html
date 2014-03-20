@@ -115,13 +115,13 @@
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"symbols"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span>
-            <span class="s2">"step"</span><span class="p">:</span> <span class="s2">"0.01"</span><span class="p">,</span>
+            <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+            <span class="nt">"step"</span><span class="p">:</span> <span class="s2">"0.01"</span><span class="p">,</span>
             <span class="nt">"lot"</span><span class="p">:</span> <span class="s2">"0.01"</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCEUR"</span>
-            <span class="s2">"step"</span><span class="p">:</span> <span class="s2">"0.01"</span><span class="p">,</span>
+            <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCEUR"</span><span class="p">,</span>
+            <span class="nt">"step"</span><span class="p">:</span> <span class="s2">"0.01"</span><span class="p">,</span>
             <span class="nt">"lot"</span><span class="p">:</span> <span class="s2">"0.01"</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="err">...</span>
@@ -327,6 +327,494 @@
     <span class="p">{</span><span class="nt">"date"</span><span class="p">:</span> <span class="mi">1393492619</span><span class="p">,</span> <span class="nt">"price"</span><span class="p">:</span> <span class="mi">571</span><span class="p">,</span> <span class="nt">"amount"</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="nt">"tid"</span><span class="p">:</span> <span class="s2">"3814479"</span><span class="p">},</span>
     <span class="err">...</span>
 <span class="p">]</span>
+</pre></div>
+
+<h2>
+<a name="trading-restful-api" class="anchor" href="#trading-restful-api"><span class="octicon octicon-link"></span></a>Trading RESTful API</h2>
+
+<p>Base URL: <a href="https://api.hitbtc.com">https://api.hitbtc.com</a></p>
+
+<h3>
+<a name="authentication" class="anchor" href="#authentication"><span class="octicon octicon-link"></span></a>Authentication</h3>
+
+<p>RESTful Trading API requires a HMAC-SHA512 signatures for each request.</p>
+
+<p>You should get your API key and Secret key from the Settings page on <a href="https://hitbtc.com">https://hitbtc.com</a> in order to use this API endpoint. </p>
+
+<p>Each request should include three parameters: <code>apikey</code>, <code>signature</code> and <code>nonce</code>.</p>
+
+<ul>
+<li>
+<code>nonce</code> - unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp for <code>nonce</code>. This parameter should be added as a query string parameter <code>nonce</code>. <code>nonce</code> should be &lt; (2^53-1).</li>
+<li>
+<code>apikey</code> - API key from Settings page. This parameter should be added as a query string parameter <code>apikey</code>.</li>
+<li>
+<code>signature</code> - hex representation of hmac-sha512 of concatenated <code>uri</code> and <code>postData</code>. This parameter should be added as a HTTP header <code>X-Signature</code>.</li>
+</ul><p>Signture generation pseudo-code:</p>
+
+<pre><code>uri = path + '?' + query (example: /api/1/trading/orders/active?nonce=1395049771755&amp;apikey=f6ab189hd7a2007e01d95667de3c493d&amp;symbols=EURUSD)
+message = uri + postData
+signature = hex(hmac_sha512(message, secret_key))
+</code></pre>
+
+<p>Javascript code (example):</p>
+
+<div class="highlight highlight-js"><pre>   <span class="kd">var</span> <span class="nx">crypto</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'crypto'</span><span class="p">);</span>
+
+   <span class="p">...</span>
+
+   <span class="kd">var</span> <span class="nx">signature</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="s1">'sha512'</span><span class="p">,</span> <span class="nx">secretKey</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">message</span><span class="p">).</span><span class="nx">digest</span><span class="p">(</span><span class="s1">'hex'</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="error-codes" class="anchor" href="#error-codes"><span class="octicon octicon-link"></span></a>Error codes</h3>
+
+<p>RESTful Trading API can return the following errors:</p>
+
+<table>
+<thead><tr>
+<th>HTTP code</th>
+<th>Text</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>403</td>
+<td>Invalid apikey</td>
+<td>API key doesn't exist or API key is currently used on another endpoint (max last 15 min)</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Nonce has been used</td>
+<td>nonce is not monotonous</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Nonce is not valid</td>
+<td>too big number or not a number</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Wrong signature</td>
+<td></td>
+</tr>
+</tbody>
+</table><h3>
+<a name="execution-reports" class="anchor" href="#execution-reports"><span class="octicon octicon-link"></span></a>Execution reports</h3>
+
+<p>The API uses <code>ExecutionReport</code> as an object that represents change of order status.</p>
+
+<p>The following fields are used in this object:</p>
+
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Description</th>
+<th>Type / Enum</th>
+<th>Required</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>orderId</td>
+<td>Order ID on the Exchange</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>clientOrderId</td>
+<td>clientOrderId sent in NewOrder message</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>execReportType</td>
+<td>execution report type</td>
+<td>
+<code>new</code> <br><code>canceled</code> <br><code>rejected</code> <br><code>expired</code> <br><code>trade</code> <br><code>status</code>
+</td>
+<td>required</td>
+</tr>
+<tr>
+<td>orderStatus</td>
+<td>order status</td>
+<td>
+<code>new</code> <br><code>partiallyFilled</code> <br><code>filled</code> <br><code>canceled</code> <br><code>rejected</code> <br><code>expired</code>
+</td>
+<td>required</td>
+</tr>
+<tr>
+<td>orderRejectReason</td>
+<td>Relevant only for the orders in rejected state</td>
+<td>
+<code>unknownSymbol</code> <br><code>exchangeClosed</code> <br><code>orderExceedsLimit</code> <br><code>unknownOrder</code> <br><code>duplicateOrder</code> <br><code>unsupportedOrder</code> <br><code>unknownAccount</code> <br><code>other</code>
+</td>
+<td>for rejects</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td></td>
+<td>string, e.g. <code>BTCUSD</code>
+</td>
+<td>required</td>
+</tr>
+<tr>
+<td>side</td>
+<td></td>
+<td>
+<code>buy</code> or <code>sell</code>
+</td>
+<td>required</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>UTC timestamp in milliseconds</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>price</td>
+<td></td>
+<td>decimal</td>
+<td></td>
+</tr>
+<tr>
+<td>quantity</td>
+<td></td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>type</td>
+<td></td>
+<td>only <code>limit</code> orders are currently supported</td>
+<td>required</td>
+</tr>
+<tr>
+<td>timeInForce</td>
+<td>time in force</td>
+<td>
+<code>GTC</code> - Good-Til-Canceled <br><code>IOK</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill<br><code>DAY</code> - day orders&lt;</td>
+<td>required</td>
+</tr>
+<tr>
+<td>tradeId</td>
+<td>Trade ID on the exchange</td>
+<td></td>
+<td>for trades</td>
+</tr>
+<tr>
+<td>lastQuantity</td>
+<td></td>
+<td>integer</td>
+<td>for trades</td>
+</tr>
+<tr>
+<td>lastPrice</td>
+<td></td>
+<td>decimal</td>
+<td>for trades</td>
+</tr>
+<tr>
+<td>leavesQuantity</td>
+<td></td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>cumQuantity</td>
+<td></td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>averagePrice</td>
+<td></td>
+<td>decimal, will be 0 if 'cumQuantity'=0</td>
+<td></td>
+</tr>
+</tbody>
+</table><p>Example:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span> <span class="nt">"ExecutionReport"</span><span class="p">:</span> <span class="p">{</span> 
+   <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"5852103"</span><span class="p">,</span>
+   <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"11111112"</span><span class="p">,</span>
+   <span class="nt">"execReportType"</span><span class="p">:</span> <span class="s2">"new"</span><span class="p">,</span>
+   <span class="nt">"orderStatus"</span><span class="p">:</span> <span class="s2">"new"</span><span class="p">,</span>
+   <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+   <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span><span class="p">,</span>
+   <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1395236779235</span><span class="p">,</span>
+   <span class="nt">"price"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+   <span class="nt">"quantity"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+   <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"limit"</span><span class="p">,</span>
+   <span class="nt">"timeInForce"</span><span class="p">:</span> <span class="s2">"GTC"</span><span class="p">,</span>
+   <span class="nt">"lastQuantity"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+   <span class="nt">"lastPrice"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+   <span class="nt">"leavesQuantity"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+   <span class="nt">"cumQuantity"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+   <span class="nt">"averagePrice"</span><span class="p">:</span> <span class="mi">0</span> 
+<span class="p">}</span> <span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="api1tradingbalance" class="anchor" href="#api1tradingbalance"><span class="octicon octicon-link"></span></a>/api/1/trading/balance</h3>
+
+<p>Request: <code>GET /api/1/trading/balance</code></p>
+
+<p>Summary: returns trading balance.</p>
+
+<p>Parameters: no parameters</p>
+
+<p>Example: </p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"balance"</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"BTC"</span><span class="p">,</span>
+    <span class="nt">"cash"</span><span class="p">:</span> <span class="mf">0.045457701</span><span class="p">,</span>
+    <span class="nt">"reserved"</span><span class="p">:</span> <span class="mf">0.01</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"EUR"</span><span class="p">,</span>
+    <span class="nt">"cash"</span><span class="p">:</span> <span class="mf">0.0445544</span><span class="p">,</span>
+    <span class="nt">"reserved"</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"LTC"</span><span class="p">,</span>
+    <span class="nt">"cash"</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+    <span class="nt">"reserved"</span><span class="p">:</span> <span class="mf">0.1</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"USD"</span><span class="p">,</span>
+    <span class="nt">"cash"</span><span class="p">:</span> <span class="mf">2.9415029</span><span class="p">,</span>
+    <span class="nt">"reserved"</span><span class="p">:</span> <span class="mf">1.001</span>
+  <span class="p">}</span>
+<span class="p">]}</span>
+</pre></div>
+
+<h3>
+<a name="api1tradingordersactive" class="anchor" href="#api1tradingordersactive"><span class="octicon octicon-link"></span></a>/api/1/trading/orders/active</h3>
+
+<p>Request: <code>GET /api/1/trading/orders/active</code></p>
+
+<p>Summary: returns all active orders (<code>new</code> or <code>partiallyFilled</code>).</p>
+
+<p>Parameters: </p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td>symbols</td>
+<td>string, comma-delimeted list of symbols, optional, default - all symbols</td>
+<td></td>
+</tr></tbody>
+</table><p>Example:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"orders"</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"51521638"</span><span class="p">,</span>
+    <span class="nt">"orderStatus"</span><span class="p">:</span> <span class="s2">"new"</span><span class="p">,</span>
+    <span class="nt">"lastTimestamp"</span><span class="p">:</span> <span class="mi">1394798401494</span><span class="p">,</span>
+    <span class="nt">"orderPrice"</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="nt">"orderQuantity"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"avgPrice"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">"quantityLeaves"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"limit"</span><span class="p">,</span>
+    <span class="nt">"timeInForce"</span><span class="p">:</span> <span class="s2">"GTC"</span><span class="p">,</span>
+    <span class="nt">"cumQuantity"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"7fb8756ec8045847c3b840e84d43bd83"</span><span class="p">,</span>
+    <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"LTCBTC"</span><span class="p">,</span>
+    <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"sell"</span><span class="p">,</span>
+    <span class="nt">"execQuantity"</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">}</span>
+<span class="p">]}</span>
+</pre></div>
+
+<h3>
+<a name="api1tradingnew_order" class="anchor" href="#api1tradingnew_order"><span class="octicon octicon-link"></span></a>/api/1/trading/new_order</h3>
+
+<p>Request: <code>POST /api/1/trading/new_order</code></p>
+
+<p>Summary: place a new order.</p>
+
+<p>Parameters: </p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>clientOrderId</td>
+<td>string, &gt;=8 characters, &lt;= 30 characters, required</td>
+<td>unique order id generated by client</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>string, required</td>
+<td>e.g. <code>BTCUSD</code>
+</td>
+</tr>
+<tr>
+<td>side</td>
+<td>
+<code>buy</code> or <code>sell</code>, required</td>
+<td></td>
+</tr>
+<tr>
+<td>price</td>
+<td>decimal, required</td>
+<td>order price, required for limit orders</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>int</td>
+<td>order quantity in lots</td>
+</tr>
+<tr>
+<td>type</td>
+<td>
+<code>limit</code> or <code>market</code>
+</td>
+<td>order type</td>
+</tr>
+<tr>
+<td>timeInForce</td>
+<td>
+<code>GTC</code> - Good-Til-Canceled <br><code>IOK</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill<br><code>DAY</code> - day</td>
+<td>use <code>GTC</code> by default</td>
+</tr>
+</tbody>
+</table><p>Return value: returns a JSON object <code>ExecutionReport</code> that respresent a status of the order.</p>
+
+<p>Example:</p>
+
+<pre><code>post url: /api/1/trading/new_order?nonce=1395049771755&amp;apikey=f6ab189hd7a2007e01d95667de3c493d
+post data: clientOrderId=11111112&amp;symbol=BTCUSD&amp;side=buy&amp;price=0.1&amp;quantity=100&amp;type=limit&amp;timeInForce=GTC
+</code></pre>
+
+<p>Example response:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span> <span class="nt">"ExecutionReport"</span><span class="p">:</span> 
+   <span class="p">{</span> <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"58521038"</span><span class="p">,</span>
+     <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"11111112"</span><span class="p">,</span>
+     <span class="nt">"execReportType"</span><span class="p">:</span> <span class="s2">"new"</span><span class="p">,</span>
+     <span class="nt">"orderStatus"</span><span class="p">:</span> <span class="s2">"new"</span><span class="p">,</span>
+     <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+     <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span><span class="p">,</span>
+     <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1395236779235</span><span class="p">,</span>
+     <span class="nt">"price"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+     <span class="nt">"quantity"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+     <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"limit"</span><span class="p">,</span>
+     <span class="nt">"timeInForce"</span><span class="p">:</span> <span class="s2">"GTC"</span><span class="p">,</span>
+     <span class="nt">"lastQuantity"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+     <span class="nt">"lastPrice"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+     <span class="nt">"leavesQuantity"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+     <span class="nt">"cumQuantity"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+     <span class="nt">"averagePrice"</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="api1tradingcancel_order" class="anchor" href="#api1tradingcancel_order"><span class="octicon octicon-link"></span></a>/api/1/trading/cancel_order</h3>
+
+<p>Request: <code>GET /api/1/trading/cancel_order</code></p>
+
+<p>Summary: cancels an order.</p>
+
+<p>Parameters: </p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>clientOrderId</td>
+<td>string, &gt;=8 characters, &lt;= 30 characters, required</td>
+<td>the same an in your order</td>
+</tr>
+<tr>
+<td>cancelRequestClientOrderId</td>
+<td>string, &gt;=8 characters, &lt;= 30 characters, required</td>
+<td>unqiue id generated by client</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>string, required</td>
+<td>the same an in your order</td>
+</tr>
+<tr>
+<td>side</td>
+<td>
+<code>buy</code> or <code>sell</code>, required</td>
+<td>the same an in your order</td>
+</tr>
+<tr>
+<td>price</td>
+<td>decimal, required</td>
+<td>the same an in your order</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>int</td>
+<td>the same an in your order</td>
+</tr>
+<tr>
+<td>type</td>
+<td>
+<code>limit</code> or <code>market</code>
+</td>
+<td>the same an in your order</td>
+</tr>
+<tr>
+<td>timeInForce</td>
+<td>
+<code>GTC</code> - Good-Til-Canceled <br><code>IOK</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill<br><code>DAY</code> - day</td>
+<td>the same an in your order</td>
+</tr>
+</tbody>
+</table><p>Return values: could return <code>ExecutionReport</code> JSON object or <code>CancelReject</code> JSON object.</p>
+
+<p>Example:</p>
+
+<pre><code>post url: /api/1/trading/cancel_order?nonce=1395049771755&amp;apikey=f6ab189hd7a2007e01d95667de3c493d
+post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=38257825798349578945&amp;symbol=BTCUSD&amp;side=buy&amp;price=0.1&amp;quantity=100&amp;type=limit&amp;timeInForce=GTC
+</code></pre>
+
+<p>Example response:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span> <span class="nt">"ExecutionReport"</span><span class="p">:</span> 
+   <span class="p">{</span> <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"58521038"</span><span class="p">,</span>
+     <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"11111112"</span><span class="p">,</span>
+     <span class="nt">"execReportType"</span><span class="p">:</span> <span class="s2">"canceled"</span><span class="p">,</span>
+     <span class="nt">"orderStatus"</span><span class="p">:</span> <span class="s2">"canceled"</span><span class="p">,</span>
+     <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+     <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span><span class="p">,</span>
+     <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1395236779346</span><span class="p">,</span>
+     <span class="nt">"price"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+     <span class="nt">"quantity"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+     <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"limit"</span><span class="p">,</span>
+     <span class="nt">"timeInForce"</span><span class="p">:</span> <span class="s2">"GTC"</span><span class="p">,</span>
+     <span class="nt">"lastQuantity"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+     <span class="nt">"lastPrice"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+     <span class="nt">"leavesQuantity"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+     <span class="nt">"cumQuantity"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+     <span class="nt">"averagePrice"</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">}</span>
+</pre></div>
+
+<p><code>CancelReject</code> example:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span> <span class="nt">"CancelReject"</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="nt">"cancelRequestClientOrderId"</span><span class="p">:</span> <span class="s2">"011111112"</span><span class="p">,</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"11111112"</span><span class="p">,</span>
+    <span class="nt">"rejectReasonCode"</span><span class="p">:</span> <span class="s2">"orderNotFound"</span> 
+<span class="p">}</span> <span class="p">}</span>
 </pre></div>
 
 <h2>
