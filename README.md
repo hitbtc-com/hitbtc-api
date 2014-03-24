@@ -451,6 +451,91 @@ Example response:
 } }
 ```
 
+### /api/1/trading/trades
+
+Request: `GET /api/1/trading/trades`
+
+Summary: returns an user's trading history.
+
+Parameters: 
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `by` | `trade_id` or `ts` (timestamp) | |
+| `start_index` | int, optional, default(0) | zero-based index |
+| `max_results` | int, required, <=1000 | |
+| `symbols` | string, comma-delimited | |
+| `sort` | `asc` (default) or `desc` | |
+| `from` | optional | start `trade_id` or `ts`, see `by` |
+| `till` | optional | end `trade_id` or `ts`, see `by` |
+
+Return values: could return an array of user's trades.
+
+The following fields are used in `trade` object:
+
+| Field	| Description | Type / Enum |
+| --- | --- | --- |
+| `tradeId` | Trade ID on the exchange  | int, required | 
+| `execPrice` | Trade price  | decimal, required | 
+| `timestamp` |   | millisecond timestamp, required |
+| `originalOrderId` | Order ID on the exchange | |
+| `fee` | Fee for the trade | decimal, negative means rebate |
+| `clientOrderId` | Unique client-generated ID | string |
+| `symbol` | | string |
+| `side` | | `buy` or `sell` |
+| `execQuantity` | trade size, in lots | int |
+
+Example response:
+
+``` json
+{"trades": [
+  {
+    "tradeId": 39,
+    "execPrice": 150,
+    "timestamp": 1395231854030,
+    "originalOrderId": "114",
+    "fee": 0.03,
+    "clientOrderId": "FTO18jd4ou41--25",
+    "symbol": "BTCUSD",
+    "side": "sell",
+    "execQuantity": 10
+  },
+  {
+    "tradeId": 38,
+    "execPrice": 140.1,
+    "timestamp": 1395231853882,
+    "originalOrderId": "112",
+    "fee": 0.028,
+    "clientOrderId": "FTO18jd4ou3n--15",
+    "symbol": "BTCUSD",
+    "side": "buy",
+    "execQuantity": 10
+  },
+  {
+    "tradeId": 2,
+    "execPrice": 150,
+    "timestamp": 1394789991659,
+    "originalOrderId": "24",
+    "fee": 0.03,
+    "clientOrderId": "FTO18ivvcbvt--25",
+    "symbol": "BTCUSD",
+    "side": "sell",
+    "execQuantity": 10
+  },
+  {
+    "tradeId": 1,
+    "execPrice": 140,
+    "timestamp": 1394789991527,
+    "originalOrderId": "22",
+    "fee": 0.028,
+    "clientOrderId": "FTO18ivvcbvj--15",
+    "symbol": "BTCUSD",
+    "side": "buy",
+    "execQuantity": 10
+  }
+]}
+```
+
 ## Market data streaming end-point
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
