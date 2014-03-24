@@ -536,6 +536,94 @@ Example response:
 ]}
 ```
 
+### /api/1/trading/orders/recent
+
+Request: `GET /api/1/trading/orders/recent`
+
+Summary: returns an user's recent orders.
+
+Parameters: 
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `start_index` | int, optional, default(0) | zero-based index |
+| `max_results` | int, required, <=1000 | |
+| `symbols` | string, comma-delimited | |
+| `statuses` | string, comma-delimited, `new`, `partiallyFilled`, `filled`, `canceled`, `expired`, `rejected` | |
+
+Return values: could return an array of user's recent orders.
+
+The following fields are used in `order` object:
+
+| Field	| Description | Type / Enum |
+| --- | --- | --- |
+| `orderId` | Order ID on the exchange | |
+| `orderStatus` |  | `new`, `partiallyFilled`, `filled`, `canceled`, `expired`, `rejected` |
+| `lastTimestamp` | last change  | millisecond timestamp, required |
+| `orderPrice` | Order price  | decimal, required for limit orders | 
+| `orderQuantity` | Order quantity in lots | int, required | 
+| `avgPrice` | Avg. price  | decimal | 
+| `quantityLeaves` | Remaining quantity in lots | int, required | 
+| `type` |  | `limit` or `market` |
+| `timeInForce` | | `GTC` - Good-Til-Canceled <br>`IOK` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day |
+| `clientOrderId` | Unique client-generated ID | string |
+| `symbol` | | string |
+| `side` | | `buy` or `sell` |
+| `execQuantity` | last executed quantity in lots | int |
+
+Example response:
+
+``` json
+{"orders": [
+  {
+    "orderId": "1",
+    "orderStatus": "new",
+    "lastTimestamp": 1395659434845,
+    "orderPrice": 1,
+    "orderQuantity": 1,
+    "avgPrice": 0,
+    "quantityLeaves": 1,
+    "type": "limit",
+    "timeInForce": "GTC",
+    "clientOrderId": "111111111111111111111111",
+    "symbol": "BTCUSD",
+    "side": "buy",
+    "execQuantity": 0
+  },
+  {
+    "orderId": "2",
+    "orderStatus": "new",
+    "lastTimestamp": 1395664550770,
+    "orderPrice": 1,
+    "orderQuantity": 1,
+    "avgPrice": 0,
+    "quantityLeaves": 1,
+    "type": "limit",
+    "timeInForce": "GTC",
+    "clientOrderId": "111111111111111111111112",
+    "symbol": "BTCUSD",
+    "side": "sell",
+    "execQuantity": 0
+  },
+  {
+    "orderId": "3",
+    "orderStatus": "canceled",
+    "lastTimestamp": 1395664737500,
+    "orderPrice": 1,
+    "orderQuantity": 1,
+    "avgPrice": 0,
+    "quantityLeaves": 1,
+    "type": "limit",
+    "timeInForce": "GTC",
+    "clientOrderId": "111111111111111111111113",
+    "symbol": "BTCUSD",
+    "side": "buy",
+    "execQuantity": 0
+  }
+]}
+```
+
+
 ## Market data streaming end-point
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
