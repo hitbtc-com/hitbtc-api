@@ -817,6 +817,345 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <span class="p">}</span> <span class="p">}</span>
 </pre></div>
 
+<h3>
+<a name="api1tradingtrades" class="anchor" href="#api1tradingtrades"><span class="octicon octicon-link"></span></a>/api/1/trading/trades</h3>
+
+<p>Request: <code>GET /api/1/trading/trades</code></p>
+
+<p>Summary: returns an user's trading history.</p>
+
+<p>Parameters: </p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>by</code></td>
+<td>
+<code>trade_id</code> or <code>ts</code> (timestamp)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>start_index</code></td>
+<td>int, optional, default(0)</td>
+<td>zero-based index</td>
+</tr>
+<tr>
+<td><code>max_results</code></td>
+<td>int, required, &lt;=1000</td>
+<td></td>
+</tr>
+<tr>
+<td><code>symbols</code></td>
+<td>string, comma-delimited</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td>
+<code>asc</code> (default) or <code>desc</code>
+</td>
+<td></td>
+</tr>
+<tr>
+<td><code>from</code></td>
+<td>optional</td>
+<td>start <code>trade_id</code> or <code>ts</code>, see <code>by</code>
+</td>
+</tr>
+<tr>
+<td><code>till</code></td>
+<td>optional</td>
+<td>end <code>trade_id</code> or <code>ts</code>, see <code>by</code>
+</td>
+</tr>
+</tbody>
+</table><p>Return values: could return an array of user's trades.</p>
+
+<p>The following fields are used in <code>trade</code> object:</p>
+
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Description</th>
+<th>Type / Enum</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>tradeId</code></td>
+<td>Trade ID on the exchange</td>
+<td>int, required</td>
+</tr>
+<tr>
+<td><code>execPrice</code></td>
+<td>Trade price</td>
+<td>decimal, required</td>
+</tr>
+<tr>
+<td><code>timestamp</code></td>
+<td></td>
+<td>millisecond timestamp, required</td>
+</tr>
+<tr>
+<td><code>originalOrderId</code></td>
+<td>Order ID on the exchange</td>
+<td></td>
+</tr>
+<tr>
+<td><code>fee</code></td>
+<td>Fee for the trade</td>
+<td>decimal, negative means rebate</td>
+</tr>
+<tr>
+<td><code>clientOrderId</code></td>
+<td>Unique client-generated ID</td>
+<td>string</td>
+</tr>
+<tr>
+<td><code>symbol</code></td>
+<td></td>
+<td>string</td>
+</tr>
+<tr>
+<td><code>side</code></td>
+<td></td>
+<td>
+<code>buy</code> or <code>sell</code>
+</td>
+</tr>
+<tr>
+<td><code>execQuantity</code></td>
+<td>trade size, in lots</td>
+<td>int</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"trades"</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">"tradeId"</span><span class="p">:</span> <span class="mi">39</span><span class="p">,</span>
+    <span class="nt">"execPrice"</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+    <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1395231854030</span><span class="p">,</span>
+    <span class="nt">"originalOrderId"</span><span class="p">:</span> <span class="s2">"114"</span><span class="p">,</span>
+    <span class="nt">"fee"</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"FTO18jd4ou41--25"</span><span class="p">,</span>
+    <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+    <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"sell"</span><span class="p">,</span>
+    <span class="nt">"execQuantity"</span><span class="p">:</span> <span class="mi">10</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">"tradeId"</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span>
+    <span class="nt">"execPrice"</span><span class="p">:</span> <span class="mf">140.1</span><span class="p">,</span>
+    <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1395231853882</span><span class="p">,</span>
+    <span class="nt">"originalOrderId"</span><span class="p">:</span> <span class="s2">"112"</span><span class="p">,</span>
+    <span class="nt">"fee"</span><span class="p">:</span> <span class="mf">0.028</span><span class="p">,</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"FTO18jd4ou3n--15"</span><span class="p">,</span>
+    <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+    <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span><span class="p">,</span>
+    <span class="nt">"execQuantity"</span><span class="p">:</span> <span class="mi">10</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">"tradeId"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="nt">"execPrice"</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+    <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1394789991659</span><span class="p">,</span>
+    <span class="nt">"originalOrderId"</span><span class="p">:</span> <span class="s2">"24"</span><span class="p">,</span>
+    <span class="nt">"fee"</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"FTO18ivvcbvt--25"</span><span class="p">,</span>
+    <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+    <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"sell"</span><span class="p">,</span>
+    <span class="nt">"execQuantity"</span><span class="p">:</span> <span class="mi">10</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">"tradeId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"execPrice"</span><span class="p">:</span> <span class="mi">140</span><span class="p">,</span>
+    <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1394789991527</span><span class="p">,</span>
+    <span class="nt">"originalOrderId"</span><span class="p">:</span> <span class="s2">"22"</span><span class="p">,</span>
+    <span class="nt">"fee"</span><span class="p">:</span> <span class="mf">0.028</span><span class="p">,</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"FTO18ivvcbvj--15"</span><span class="p">,</span>
+    <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+    <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span><span class="p">,</span>
+    <span class="nt">"execQuantity"</span><span class="p">:</span> <span class="mi">10</span>
+  <span class="p">}</span>
+<span class="p">]}</span>
+</pre></div>
+
+<h3>
+<a name="api1tradingordersrecent" class="anchor" href="#api1tradingordersrecent"><span class="octicon octicon-link"></span></a>/api/1/trading/orders/recent</h3>
+
+<p>Request: <code>GET /api/1/trading/orders/recent</code></p>
+
+<p>Summary: returns an user's recent orders.</p>
+
+<p>Parameters: </p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>start_index</code></td>
+<td>int, optional, default(0)</td>
+<td>zero-based index</td>
+</tr>
+<tr>
+<td><code>max_results</code></td>
+<td>int, required, &lt;=1000</td>
+<td></td>
+</tr>
+<tr>
+<td><code>symbols</code></td>
+<td>string, comma-delimited</td>
+<td></td>
+</tr>
+<tr>
+<td><code>statuses</code></td>
+<td>string, comma-delimited, <code>new</code>, <code>partiallyFilled</code>, <code>filled</code>, <code>canceled</code>, <code>expired</code>, <code>rejected</code>
+</td>
+<td></td>
+</tr>
+</tbody>
+</table><p>Return values: could return an array of user's recent orders.</p>
+
+<p>The following fields are used in <code>order</code> object:</p>
+
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Description</th>
+<th>Type / Enum</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>orderId</code></td>
+<td>Order ID on the exchange</td>
+<td></td>
+</tr>
+<tr>
+<td><code>orderStatus</code></td>
+<td></td>
+<td>
+<code>new</code>, <code>partiallyFilled</code>, <code>filled</code>, <code>canceled</code>, <code>expired</code>, <code>rejected</code>
+</td>
+</tr>
+<tr>
+<td><code>lastTimestamp</code></td>
+<td>last change</td>
+<td>millisecond timestamp, required</td>
+</tr>
+<tr>
+<td><code>orderPrice</code></td>
+<td>Order price</td>
+<td>decimal, required for limit orders</td>
+</tr>
+<tr>
+<td><code>orderQuantity</code></td>
+<td>Order quantity in lots</td>
+<td>int, required</td>
+</tr>
+<tr>
+<td><code>avgPrice</code></td>
+<td>Avg. price</td>
+<td>decimal</td>
+</tr>
+<tr>
+<td><code>quantityLeaves</code></td>
+<td>Remaining quantity in lots</td>
+<td>int, required</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td></td>
+<td>
+<code>limit</code> or <code>market</code>
+</td>
+</tr>
+<tr>
+<td><code>timeInForce</code></td>
+<td></td>
+<td>
+<code>GTC</code> - Good-Til-Canceled <br><code>IOK</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill<br><code>DAY</code> - day</td>
+</tr>
+<tr>
+<td><code>clientOrderId</code></td>
+<td>Unique client-generated ID</td>
+<td>string</td>
+</tr>
+<tr>
+<td><code>symbol</code></td>
+<td></td>
+<td>string</td>
+</tr>
+<tr>
+<td><code>side</code></td>
+<td></td>
+<td>
+<code>buy</code> or <code>sell</code>
+</td>
+</tr>
+<tr>
+<td><code>execQuantity</code></td>
+<td>last executed quantity in lots</td>
+<td>int</td>
+</tr>
+</tbody>
+</table><p>Example response:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"orders"</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span>
+    <span class="nt">"orderStatus"</span><span class="p">:</span> <span class="s2">"new"</span><span class="p">,</span>
+    <span class="nt">"lastTimestamp"</span><span class="p">:</span> <span class="mi">1395659434845</span><span class="p">,</span>
+    <span class="nt">"orderPrice"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"orderQuantity"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"avgPrice"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">"quantityLeaves"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"limit"</span><span class="p">,</span>
+    <span class="nt">"timeInForce"</span><span class="p">:</span> <span class="s2">"GTC"</span><span class="p">,</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"111111111111111111111111"</span><span class="p">,</span>
+    <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+    <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span><span class="p">,</span>
+    <span class="nt">"execQuantity"</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span>
+    <span class="nt">"orderStatus"</span><span class="p">:</span> <span class="s2">"new"</span><span class="p">,</span>
+    <span class="nt">"lastTimestamp"</span><span class="p">:</span> <span class="mi">1395664550770</span><span class="p">,</span>
+    <span class="nt">"orderPrice"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"orderQuantity"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"avgPrice"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">"quantityLeaves"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"limit"</span><span class="p">,</span>
+    <span class="nt">"timeInForce"</span><span class="p">:</span> <span class="s2">"GTC"</span><span class="p">,</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"111111111111111111111112"</span><span class="p">,</span>
+    <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+    <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"sell"</span><span class="p">,</span>
+    <span class="nt">"execQuantity"</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"3"</span><span class="p">,</span>
+    <span class="nt">"orderStatus"</span><span class="p">:</span> <span class="s2">"canceled"</span><span class="p">,</span>
+    <span class="nt">"lastTimestamp"</span><span class="p">:</span> <span class="mi">1395664737500</span><span class="p">,</span>
+    <span class="nt">"orderPrice"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"orderQuantity"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"avgPrice"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">"quantityLeaves"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"limit"</span><span class="p">,</span>
+    <span class="nt">"timeInForce"</span><span class="p">:</span> <span class="s2">"GTC"</span><span class="p">,</span>
+    <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"111111111111111111111113"</span><span class="p">,</span>
+    <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
+    <span class="nt">"side"</span><span class="p">:</span> <span class="s2">"buy"</span><span class="p">,</span>
+    <span class="nt">"execQuantity"</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">}</span>
+<span class="p">]}</span>
+</pre></div>
+
 <h2>
 <a name="market-data-streaming-end-point" class="anchor" href="#market-data-streaming-end-point"><span class="octicon octicon-link"></span></a>Market data streaming end-point</h2>
 
