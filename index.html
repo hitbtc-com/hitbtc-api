@@ -349,12 +349,12 @@
 <li>
 <code>apikey</code> - API key from Settings page. This parameter should be added as a query string parameter <code>apikey</code>.</li>
 <li>
-<code>signature</code> - hex representation of hmac-sha512 of concatenated <code>uri</code> and <code>postData</code>. This parameter should be added as a HTTP header <code>X-Signature</code>.</li>
+<code>signature</code> - <em>lower-case</em> hex representation of hmac-sha512 of concatenated <code>uri</code> and <code>postData</code>. This parameter should be added as a HTTP header <code>X-Signature</code>.</li>
 </ul><p>Signture generation pseudo-code:</p>
 
 <pre><code>uri = path + '?' + query (example: /api/1/trading/orders/active?nonce=1395049771755&amp;apikey=f6ab189hd7a2007e01d95667de3c493d&amp;symbols=EURUSD)
 message = uri + postData
-signature = hex(hmac_sha512(message, secret_key))
+signature = lower_case(hex(hmac_sha512(message, secret_key)))
 </code></pre>
 
 <p>Javascript code (example):</p>
@@ -365,6 +365,8 @@ signature = hex(hmac_sha512(message, secret_key))
 
    <span class="kd">var</span> <span class="nx">signature</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="s1">'sha512'</span><span class="p">,</span> <span class="nx">secretKey</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">message</span><span class="p">).</span><span class="nx">digest</span><span class="p">(</span><span class="s1">'hex'</span><span class="p">);</span>
 </pre></div>
+
+<p>Here is a C# example code: <a href="https://gist.github.com/hitbtc-com/9808530">https://gist.github.com/hitbtc-com/9808530</a></p>
 
 <h3>
 <a name="error-codes" class="anchor" href="#error-codes"><span class="octicon octicon-link"></span></a>Error codes</h3>
