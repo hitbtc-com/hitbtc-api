@@ -194,14 +194,14 @@ Each request should include three parameters: `apikey`, `signature` and `nonce`.
 
 * `nonce` - unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp for `nonce`. This parameter should be added as a query string parameter `nonce`. `nonce` should be < (2^53-1).
 * `apikey` - API key from Settings page. This parameter should be added as a query string parameter `apikey`.
-* `signature` - hex representation of hmac-sha512 of concatenated `uri` and `postData`. This parameter should be added as a HTTP header `X-Signature`.
+* `signature` - _lower-case_ hex representation of hmac-sha512 of concatenated `uri` and `postData`. This parameter should be added as a HTTP header `X-Signature`.
 
 Signture generation pseudo-code:
 
 ```
 uri = path + '?' + query (example: /api/1/trading/orders/active?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d&symbols=EURUSD)
 message = uri + postData
-signature = hex(hmac_sha512(message, secret_key))
+signature = lower_case(hex(hmac_sha512(message, secret_key)))
 ```
 
 Javascript code (example):
@@ -212,6 +212,8 @@ Javascript code (example):
 
    var signature = crypto.createHmac('sha512', secretKey).update(message).digest('hex');
 ```
+
+Here is a C# example code: https://gist.github.com/hitbtc-com/9808530
 
 ### Error codes
 
