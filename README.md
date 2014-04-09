@@ -18,9 +18,14 @@ Size representation:
 * Size values in streaming messages are represented in lots.
 * Size values in RESTful market data are represented in money (e.g. in coins or in USD). 
 
+### Demo trading
+
+Hitbtc provides a demo trading option.  You can enable demo mode and acquire demo API keys on the Settings page.
+
 ## Market data RESTful API
 
 Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com)
+Demo endoint: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
 ### /api/1/public/time
 
@@ -183,6 +188,7 @@ Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0
 ## Trading RESTful API
 
 Base URL: [https://api.hitbtc.com](https://api.hitbtc.com)
+Demo endoint: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
 ### Authentication
 
@@ -631,6 +637,7 @@ Example response:
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
 URL: [ws://api.hitbtc.com](ws://api.hitbtc.com)
+Demo URL: [ws://demo-api.hitbtc.com]ws://demo-api.hitbtc.com)
 
 Once client connects to this URL the session is started. 
 
@@ -769,6 +776,7 @@ Fields:
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
 URL: <wss://api.hitbtc.com:8080>
+Demo URL: <ws://demo-api.hitbtc.com:8080>
 
 Trading endpoint requires sending login message after connection esteblished. All client messages should be signed and should contain valid and active API key
 
