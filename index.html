@@ -88,10 +88,17 @@
 <ul>
 <li>Size values in streaming messages are represented in lots.</li>
 <li>Size values in RESTful market data are represented in money (e.g. in coins or in USD). </li>
-</ul><h2>
+</ul><h3>
+<a name="demo-trading" class="anchor" href="#demo-trading"><span class="octicon octicon-link"></span></a>Demo trading</h3>
+
+<p>Hitbtc provides a demo trading option.  You can enable demo mode and acquire demo API keys on the Settings page.</p>
+
+<h2>
 <a name="market-data-restful-api" class="anchor" href="#market-data-restful-api"><span class="octicon octicon-link"></span></a>Market data RESTful API</h2>
 
 <p>Endpoint URL: <a href="http://api.hitbtc.com">http://api.hitbtc.com</a></p>
+
+<p>Demo endoint: <a href="http://demo-api.hitbtc.com">http://demo-api.hitbtc.com</a></p>
 
 <h3>
 <a name="api1publictime" class="anchor" href="#api1publictime"><span class="octicon octicon-link"></span></a>/api/1/public/time</h3>
@@ -333,6 +340,8 @@
 <a name="trading-restful-api" class="anchor" href="#trading-restful-api"><span class="octicon octicon-link"></span></a>Trading RESTful API</h2>
 
 <p>Base URL: <a href="https://api.hitbtc.com">https://api.hitbtc.com</a></p>
+
+<p>Demo endoint: <a href="http://demo-api.hitbtc.com">http://demo-api.hitbtc.com</a></p>
 
 <h3>
 <a name="authentication" class="anchor" href="#authentication"><span class="octicon octicon-link"></span></a>Authentication</h3>
@@ -1165,6 +1174,8 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 
 <p>URL: <a>ws://api.hitbtc.com</a></p>
 
+<p>Demo URL: [ws://demo-api.hitbtc.com]ws://demo-api.hitbtc.com)</p>
+
 <p>Once client connects to this URL the session is started. </p>
 
 <p>The server broadcasts the following types of messages:</p>
@@ -1349,6 +1360,8 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
 
 <p>URL: <a>wss://api.hitbtc.com:8080</a></p>
+
+<p>Demo URL: <a>ws://demo-api.hitbtc.com:8080</a></p>
 
 <p>Trading endpoint requires sending login message after connection esteblished. All client messages should be signed and should contain valid and active API key</p>
 
