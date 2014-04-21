@@ -1172,6 +1172,201 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 </pre></div>
 
 <h2>
+<a name="payment-restful-api" class="anchor" href="#payment-restful-api"><span class="octicon octicon-link"></span></a>Payment RESTful API</h2>
+
+<p>Base URL: <a href="https://api.hitbtc.com">https://api.hitbtc.com</a></p>
+
+<p>Demo endoint: the Payment API is not available in demo mode.</p>
+
+<h3>
+<a name="api1paymentbalance" class="anchor" href="#api1paymentbalance"><span class="octicon octicon-link"></span></a>/api/1/payment/balance</h3>
+
+<p>Request: <code>GET /api/1/payment/balance</code></p>
+
+<p>Summary: returns a balance of the main account.</p>
+
+<p>Parameters: no parameters</p>
+
+<p>Return values: returns multi-currency balance of the main account.</p>
+
+<p>Example response:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"balance"</span><span class="p">:</span> <span class="p">[{</span><span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"USD"</span><span class="p">,</span> <span class="nt">"balance"</span><span class="p">:</span> <span class="mf">13.12</span><span class="p">},</span> <span class="p">{</span><span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"EUR"</span><span class="p">,</span> <span class="nt">"balance"</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"LTC"</span><span class="p">,</span> <span class="nt">"balance"</span><span class="p">:</span> <span class="mf">1.07</span><span class="p">},</span> <span class="p">{</span><span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"BTC"</span><span class="p">,</span> <span class="nt">"balance"</span><span class="p">:</span> <span class="mf">11.9</span><span class="p">}]}</span>
+</pre></div>
+
+<h3>
+<a name="api1paymenttransfer_" class="anchor" href="#api1paymenttransfer_"><span class="octicon octicon-link"></span></a>/api/1/payment/transfer_*</h3>
+
+<p>Request: <code>POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main</code></p>
+
+<p>Summary: transfer funds between main and trading accounts.</p>
+
+<p>Parameters:</p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>amount</code></td>
+<td>decimal, required</td>
+<td>amount</td>
+</tr>
+<tr>
+<td><code>currency_code</code></td>
+<td>string, required, e.g. <code>BTC</code>
+</td>
+<td></td>
+</tr>
+</tbody>
+</table><p>Return values: returns a transaction id or an error.</p>
+
+<p>Example responses:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Balance not enough"</span><span class="p">,</span> <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">409</span><span class="p">,</span> <span class="nt">"body"</span><span class="p">:</span> <span class="s2">"Balance not enough"</span><span class="p">}</span>
+</pre></div>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"transaction"</span><span class="p">:</span> <span class="s2">"52976-103925-18443984"</span><span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="api1paymentaddress" class="anchor" href="#api1paymentaddress"><span class="octicon octicon-link"></span></a>/api/1/payment/address/</h3>
+
+<p>Request: <code>GET /api/1/payment/address/:currency</code></p>
+
+<p>Example request: <code>GET /api/1/payment/address/BTC</code></p>
+
+<p>Summary: returns the last created incoming cryptocurrency address</p>
+
+<p>Parameters: no parameters</p>
+
+<p>Return values: returns an address that can be used to deposit cryptocurrency.</p>
+
+<p>Example response:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"address"</span><span class="p">:</span><span class="s2">"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"</span><span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="api1paymentaddress-1" class="anchor" href="#api1paymentaddress-1"><span class="octicon octicon-link"></span></a>/api/1/payment/address/</h3>
+
+<p>Request: <code>POST /api/1/payment/address/:currency</code></p>
+
+<p>Example request: <code>POST /api/1/payment/address/BTC</code></p>
+
+<p>Summary: creates a incoming new cryptocurrency address.</p>
+
+<p>Parameters: no parameters</p>
+
+<p>Return values: returns an address that can be used to deposit cryptocurrency.</p>
+
+<p>Example response:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"address"</span><span class="p">:</span><span class="s2">"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"</span><span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="api1paymentpayout" class="anchor" href="#api1paymentpayout"><span class="octicon octicon-link"></span></a>/api/1/payment/payout</h3>
+
+<p>Request: <code>POST /api/1/payment/payout</code></p>
+
+<p>Summary: withdraws money and creates an outgoing crypotocurrency transaction.</p>
+
+<p>Parameters:</p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>amount</code></td>
+<td>decimal, required</td>
+<td>amount</td>
+</tr>
+<tr>
+<td><code>currency_code</code></td>
+<td>string, required, e.g. <code>BTC</code>
+</td>
+<td></td>
+</tr>
+<tr>
+<td><code>address</code></td>
+<td>string, required</td>
+<td>BTC/LTC address</td>
+</tr>
+</tbody>
+</table><p>Example: <code>amount=0.001&amp;currency_code=BTC&amp;address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5</code></p>
+
+<p>Return values: returns a transaction id on the exchange or an error.</p>
+
+<p>Example response:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"transaction"</span><span class="p">:</span> <span class="s2">"51545-103004-18442681"</span><span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="api1paymenttransactions" class="anchor" href="#api1paymenttransactions"><span class="octicon octicon-link"></span></a>/api/1/payment/transactions</h3>
+
+<p>Request: <code>GET /api/1/payment/transactions</code></p>
+
+<p>Summary: return a list of payment transactions and their statuses.</p>
+
+<p>Parameters:</p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>offset</code></td>
+<td>int, optional, default = 0</td>
+<td>start index for the query</td>
+</tr>
+<tr>
+<td><code>limit</code></td>
+<td>int, required</td>
+<td>max results for the query</td>
+</tr>
+<tr>
+<td><code>dir</code></td>
+<td>string, optional, <code>ask</code> or <code>desc</code> default = <code>desc</code>
+</td>
+<td>sort direction</td>
+</tr>
+</tbody>
+</table><p>Response: array of transactions.</p>
+
+<p>Example response:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"transactions"</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"49720-104765-18440728"</span><span class="p">,</span>
+    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"payin"</span><span class="p">,</span>
+    <span class="nt">"status"</span><span class="p">:</span> <span class="s2">"pending"</span><span class="p">,</span>
+    <span class="nt">"created"</span><span class="p">:</span> <span class="mi">1397056648</span><span class="p">,</span>
+    <span class="nt">"finished"</span><span class="p">:</span> <span class="mi">1397056646</span><span class="p">,</span>
+    <span class="nt">"amount_from"</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="nt">"currency_code_from"</span><span class="p">:</span> <span class="s2">"BTC"</span><span class="p">,</span>
+    <span class="nt">"amount_to"</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="nt">"currency_code_to"</span><span class="p">:</span> <span class="s2">"BTC"</span><span class="p">,</span>
+    <span class="nt">"destination_data"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nt">"commission_percent"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">"bitcoin_address"</span><span class="p">:</span> <span class="s2">"1KnVXD1Wc1wZbTHiB1TDgMcnSRi2PnMHAV"</span><span class="p">,</span>
+    <span class="nt">"bitcoin_return_address"</span><span class="p">:</span> <span class="s2">"1QBuhFksjoWTQWJKWUPyQ37wsQohLAhJvK"</span>
+  <span class="p">}</span>
+<span class="p">]}</span>
+</pre></div>
+
+<h2>
 <a name="market-data-streaming-end-point" class="anchor" href="#market-data-streaming-end-point"><span class="octicon octicon-link"></span></a>Market data streaming end-point</h2>
 
 <p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
