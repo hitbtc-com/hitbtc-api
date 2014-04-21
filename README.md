@@ -635,6 +635,148 @@ Example response:
 ]}
 ```
 
+## Payment RESTful API
+
+Base URL: [https://api.hitbtc.com](https://api.hitbtc.com)
+
+Demo endoint: the Payment API is not available in demo mode.
+
+### /api/1/payment/balance
+
+Request: `GET /api/1/payment/balance`
+
+Summary: returns a balance of the main account.
+
+Parameters: no parameters
+
+Return values: returns multi-currency balance of the main account.
+
+Example response:
+
+``` json
+{"balance": [{"currency_code": "USD", "balance": 13.12}, {"currency_code": "EUR", "balance": 0}, {"currency_code": "LTC", "balance": 1.07}, {"currency_code": "BTC", "balance": 11.9}]}
+```
+
+### /api/1/payment/transfer_*
+
+Request: `POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main`
+
+Summary: transfer funds between main and trading accounts.
+
+Parameters:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `amount` | decimal, required | amount |
+| `currency_code` | string, required, e.g. `BTC` | |
+
+Return values: returns a transaction id or an error.
+
+Example responses:
+
+```json
+{"message": "Balance not enough", "statusCode": 409, "body": "Balance not enough"}
+```
+
+```json
+{"transaction": "52976-103925-18443984"}
+```
+
+### /api/1/payment/address/
+
+Request: `GET /api/1/payment/address/:currency`
+
+Example request: `GET /api/1/payment/address/BTC`
+
+Summary: returns the last created incoming cryptocurrency address
+
+Parameters: no parameters
+
+Return values: returns an address that can be used to deposit cryptocurrency.
+
+Example response:
+
+```json
+{"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
+```
+
+### /api/1/payment/address/
+
+Request: `POST /api/1/payment/address/:currency`
+
+Example request: `POST /api/1/payment/address/BTC`
+
+Summary: creates a incoming new cryptocurrency address.
+
+Parameters: no parameters
+
+Return values: returns an address that can be used to deposit cryptocurrency.
+
+Example response:
+
+```json
+{"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
+```
+
+### /api/1/payment/payout
+
+Request: `POST /api/1/payment/payout`
+
+Summary: withdraws money and creates an outgoing crypotocurrency transaction.
+
+Parameters:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `amount` | decimal, required | amount |
+| `currency_code` | string, required, e.g. `BTC` | |
+| `address` | string, required | BTC/LTC address |
+
+Example: ```amount=0.001&currency_code=BTC&address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5```
+
+Return values: returns a transaction id on the exchange or an error.
+
+Example response:
+```json
+{"transaction": "51545-103004-18442681"}
+```
+
+### /api/1/payment/transactions
+
+Request: `GET /api/1/payment/transactions`
+
+Summary: return a list of payment transactions and their statuses.
+
+Parameters:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `offset` | int, optional, default = 0 | start index for the query |
+| `limit` | int, required | max results for the query |
+| `dir` | string, optional, `ask` or `desc` default = `desc` | sort direction |
+
+Response: array of transactions.
+
+Example response:
+```json
+{"transactions": [
+  {
+    "id": "49720-104765-18440728",
+    "type": "payin",
+    "status": "pending",
+    "created": 1397056648,
+    "finished": 1397056646,
+    "amount_from": 0.001,
+    "currency_code_from": "BTC",
+    "amount_to": 0.001,
+    "currency_code_to": "BTC",
+    "destination_data": null,
+    "commission_percent": 0,
+    "bitcoin_address": "1KnVXD1Wc1wZbTHiB1TDgMcnSRi2PnMHAV",
+    "bitcoin_return_address": "1QBuhFksjoWTQWJKWUPyQ37wsQohLAhJvK"
+  }
+]}
+```
 
 ## Market data streaming end-point
 
