@@ -221,7 +221,9 @@ Javascript code (example):
    var signature = crypto.createHmac('sha512', secretKey).update(message).digest('hex');
 ```
 
-Here is a C# example code: https://gist.github.com/hitbtc-com/9808530
+Check out examples that are provided by the community:
+* C# example code: https://gist.github.com/hitbtc-com/9808530
+* PHP example code: https://gist.github.com/hitbtc-com/10885873 
 
 ### Error codes
 
