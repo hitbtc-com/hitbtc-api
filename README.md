@@ -791,11 +791,16 @@ Socket.io URL: `http://api.hitbtc.com:8081`
 
 Socket.io demo URL: `http://demo-api.hitbtc.com:8081`
 
-### `trades' namespace
+### `trades` namespace
 
 Namespace: `trades`
 
 URLs: `/trades/:symbol` e.g. `/trades/BTCUSD`
+
+Message example:
+```json
+{"price":478.33,"amount":0.15}
+```
 
 Live example (both demo and primary api): http://jsfiddle.net/He6AU/13/
 
@@ -832,7 +837,7 @@ Example message:
     "symbol": "BTCUSD",
     "exchangeStatus": "working",
     "ask": [
-        {
+        {http://jsfiddle.net/He6AU/13/
             "price": 101.42,
             "size": 7
         },
