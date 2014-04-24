@@ -1368,6 +1368,33 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 </pre></div>
 
 <h2>
+<a name="socketio-market-data" class="anchor" href="#socketio-market-data"><span class="octicon octicon-link"></span></a>socket.io Market Data</h2>
+
+<p>The socket.io market data based on socket.io protocol and supports WebSocket, xhr-polling and jsonp-polling transports.</p>
+
+<p>The API support multiplexing a single connection with socket.io namespaces. </p>
+
+<p>Please refer to official socket.io documentation on <a href="http://socket.io/">http://socket.io/</a>.</p>
+
+<p>Socket.io URL: <code>http://api.hitbtc.com:8081</code></p>
+
+<p>Socket.io demo URL: <code>http://demo-api.hitbtc.com:8081</code></p>
+
+<h3>
+<a name="trades-namespace" class="anchor" href="#trades-namespace"><span class="octicon octicon-link"></span></a><code>trades</code> namespace</h3>
+
+<p>Namespace: <code>trades</code></p>
+
+<p>URLs: <code>/trades/:symbol</code> e.g. <code>/trades/BTCUSD</code></p>
+
+<p>Message example:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"price"</span><span class="p">:</span><span class="mf">478.33</span><span class="p">,</span><span class="nt">"amount"</span><span class="p">:</span><span class="mf">0.15</span><span class="p">}</span>
+</pre></div>
+
+<p>Live example (both demo and primary api): <a href="http://jsfiddle.net/He6AU/13/">http://jsfiddle.net/He6AU/13/</a></p>
+
+<h2>
 <a name="market-data-streaming-end-point" class="anchor" href="#market-data-streaming-end-point"><span class="octicon octicon-link"></span></a>Market data streaming end-point</h2>
 
 <p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
@@ -1405,7 +1432,7 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
     <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
     <span class="nt">"exchangeStatus"</span><span class="p">:</span> <span class="s2">"working"</span><span class="p">,</span>
     <span class="nt">"ask"</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span>
+        <span class="p">{</span><span class="err">http://jsfiddle.net/He6AU/13/</span>
             <span class="nt">"price"</span><span class="p">:</span> <span class="mf">101.42</span><span class="p">,</span>
             <span class="nt">"size"</span><span class="p">:</span> <span class="mi">7</span>
         <span class="p">},</span>
