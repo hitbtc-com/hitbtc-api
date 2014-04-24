@@ -788,6 +788,7 @@ The API support multiplexing a single connection with socket.io namespaces.
 Please refer to official socket.io documentation on http://socket.io/.
 
 Socket.io URL: `http://api.hitbtc.com:8081`
+
 Socket.io demo URL: `http://demo-api.hitbtc.com:8081`
 
 ### `trades' namespace
