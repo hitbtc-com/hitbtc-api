@@ -17,6 +17,7 @@ The following symbols are traded on hitbtc exchange.
 Size representation:
 * Size values in streaming messages are represented in lots.
 * Size values in RESTful market data are represented in money (e.g. in coins or in USD). 
+* Size values in RESTful trade are represented in lots (e.g. 1 means 0.01 BTC for BTCUSD)
 
 ### Demo trading
 
