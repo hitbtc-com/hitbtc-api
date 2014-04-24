@@ -779,6 +779,25 @@ Example response:
 ]}
 ```
 
+## socket.io Market Data
+
+The socket.io market data based on socket.io protocol and supports WebSocket, xhr-polling and jsonp-polling transports.
+
+The API support multiplexing a single connection with socket.io namespaces. 
+
+Please refer to official socket.io documentation on http://socket.io/.
+
+Socket.io URL: `http://api.hitbtc.com:8081`
+Socket.io demo URL: `http://demo-api.hitbtc.com:8081`
+
+### `trades' namespace
+
+Namespace: `trades`
+
+URLs: `/trades/:symbol` e.g. `/trades/BTCUSD`
+
+Live example (both demo and primary api): http://jsfiddle.net/He6AU/13/
+
 ## Market data streaming end-point
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
