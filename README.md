@@ -797,7 +797,9 @@ Namespace: `trades`
 
 URLs: `/trades/:symbol` e.g. `/trades/BTCUSD`
 
-Message example:
+Event: `trade`
+
+Event example:
 ```json
 {"price":478.33,"amount":0.15}
 ```
