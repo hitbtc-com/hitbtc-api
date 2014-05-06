@@ -407,7 +407,7 @@ Example response:
 
 ### /api/1/trading/cancel_order
 
-Request: `GET /api/1/trading/cancel_order`
+Request: `POST /api/1/trading/cancel_order`
 
 Summary: cancels an order.
 
