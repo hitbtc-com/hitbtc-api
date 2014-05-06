@@ -737,7 +737,7 @@ post data: clientOrderId=11111112&amp;symbol=BTCUSD&amp;side=buy&amp;price=0.1&a
 <h3>
 <a name="api1tradingcancel_order" class="anchor" href="#api1tradingcancel_order"><span class="octicon octicon-link"></span></a>/api/1/trading/cancel_order</h3>
 
-<p>Request: <code>GET /api/1/trading/cancel_order</code></p>
+<p>Request: <code>POST /api/1/trading/cancel_order</code></p>
 
 <p>Summary: cancels an order.</p>
 
@@ -771,36 +771,13 @@ post data: clientOrderId=11111112&amp;symbol=BTCUSD&amp;side=buy&amp;price=0.1&a
 <code>buy</code> or <code>sell</code>, required</td>
 <td>the same an in your order</td>
 </tr>
-<tr>
-<td>price</td>
-<td>decimal, required</td>
-<td>the same an in your order</td>
-</tr>
-<tr>
-<td>quantity</td>
-<td>int</td>
-<td>the same an in your order</td>
-</tr>
-<tr>
-<td>type</td>
-<td>
-<code>limit</code> or <code>market</code>
-</td>
-<td>the same an in your order</td>
-</tr>
-<tr>
-<td>timeInForce</td>
-<td>
-<code>GTC</code> - Good-Til-Canceled <br><code>IOK</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill<br><code>DAY</code> - day</td>
-<td>the same an in your order</td>
-</tr>
 </tbody>
 </table><p>Return values: could return <code>ExecutionReport</code> JSON object or <code>CancelReject</code> JSON object.</p>
 
 <p>Example:</p>
 
 <pre><code>post url: /api/1/trading/cancel_order?nonce=1395049771755&amp;apikey=f6ab189hd7a2007e01d95667de3c493d
-post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=38257825798349578945&amp;symbol=BTCUSD&amp;side=buy&amp;price=0.1&amp;quantity=100&amp;type=limit&amp;timeInForce=GTC
+post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=38257825798349578945&amp;symbol=BTCUSD&amp;side=buy
 </code></pre>
 
 <p>Example response:</p>
