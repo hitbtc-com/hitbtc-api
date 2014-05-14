@@ -256,7 +256,7 @@ The following fields are used in this object:
 | price | | decimal | |
 | quantity | | integer | required |
 | type | | only `limit` orders are currently supported | required |
-| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOK` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day orders< | required |
+| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day orders< | required |
 | tradeId | Trade ID on the exchange | | for trades |
 | lastQuantity | | integer | for trades |
 | lastPrice | | decimal | for trades |
@@ -373,7 +373,7 @@ Parameters:
 | price | decimal, required | order price, required for limit orders |
 | quantity | int | order quantity in lots |
 | type | `limit` or `market` | order type |
-| timeInForce | `GTC` - Good-Til-Canceled <br>`IOK` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | use `GTC` by default |
+| timeInForce | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | use `GTC` by default |
 
 Return value: returns a JSON object `ExecutionReport` that respresent a status of the order.
 
@@ -574,7 +574,7 @@ The following fields are used in `order` object:
 | `avgPrice` | Avg. price  | decimal | 
 | `quantityLeaves` | Remaining quantity in lots | int, required | 
 | `type` |  | `limit` or `market` |
-| `timeInForce` | | `GTC` - Good-Til-Canceled <br>`IOK` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day |
+| `timeInForce` | | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day |
 | `clientOrderId` | Unique client-generated ID | string |
 | `symbol` | | string |
 | `side` | | `buy` or `sell` |
@@ -1042,7 +1042,7 @@ Parameters:
 | quantity | quantity in lots | integer |
 | type | order type	| only `limit` orders are currently supported |
 | price	| price (in currency) | decimal, consider price steps |
-| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOK` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill |
+| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill |
 
 <a name="OrderCancel"/>
 ### OrderCancel
@@ -1115,7 +1115,7 @@ Fields:
 | price | | decimal | |
 | quantity | | integer | required |
 | type | | only `limit` orders are currently supported | required |
-| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOK` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill | required |
+| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill | required |
 | tradeId | Trade ID on the exchange | | for trades |
 | lastQuantity | | integer | for trades |
 | lastPrice | | decimal | for trades |
