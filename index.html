@@ -82,8 +82,38 @@
 <td>1 EUR</td>
 <td>0.0001</td>
 </tr>
+<tr>
+<td>MDOGEBTC</td>
+<td>0.001 <strong>MDOGE</strong>
+</td>
+<td>0.001</td>
+</tr>
+<tr>
+<td>MDOGELTC</td>
+<td>0.001 <strong>MDOGE</strong>
+</td>
+<td>0.01</td>
+</tr>
+<tr>
+<td>MDOGEUSD</td>
+<td>0.001 <strong>MDOGE</strong>
+</td>
+<td>0.1</td>
+</tr>
+<tr>
+<td>MDOGEEUR</td>
+<td>0.001 <strong>MDOGE</strong>
+</td>
+<td>0.1</td>
+</tr>
 </tbody>
-</table><p>Size representation:</p>
+</table><blockquote>
+<p><strong>MDOGE</strong> is equal to 1 000 000 DOGE</p>
+
+<p>When pulling your balance from the API it will be denominated in natural DOGE units. However all other functions of the API parse values (e.g. price, lot size) denominated in MDOGE and will return values (e.g. amount, prices) denominated in MDOGE as well. Please be careful when submitting orders as DOGE denominated values will be parsed INCORRECTLY. </p>
+</blockquote>
+
+<p>Size representation:</p>
 
 <ul>
 <li>Size values in streaming messages are represented in lots.</li>
@@ -1358,7 +1388,8 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <p>Socket.io demo URL: <code>http://demo-api.hitbtc.com:8081</code></p>
 
 <h3>
-<a name="trades-namespace" class="anchor" href="#trades-namespace"><span class="octicon octicon-link"></span></a><code>trades</code> namespace</h3>
+<a name="trades-namespace" class="anchor" href="#trades-namespace"><span class="octicon octicon-link"></span></a>
+<code>trades</code> namespace</h3>
 
 <p>Namespace: <code>trades</code></p>
 
@@ -1378,7 +1409,7 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 
 <p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
 
-<p>URL: <a>ws://api.hitbtc.com</a></p>
+<p>URL: ws://api.hitbtc.com</p>
 
 <p>Demo URL: [ws://demo-api.hitbtc.com]ws://demo-api.hitbtc.com)</p>
 
@@ -1565,9 +1596,9 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 
 <p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
 
-<p>URL: <a>wss://api.hitbtc.com:8080</a></p>
+<p>URL: wss://api.hitbtc.com:8080</p>
 
-<p>Demo URL: <a>ws://demo-api.hitbtc.com:8080</a></p>
+<p>Demo URL: ws://demo-api.hitbtc.com:8080</p>
 
 <p>Trading endpoint requires sending login message after connection esteblished. All client messages should be signed and should contain valid and active API key</p>
 
