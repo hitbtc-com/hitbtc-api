@@ -13,6 +13,12 @@ The following symbols are traded on hitbtc exchange.
 | LTCUSD | 0.1 LTC |	0.001 |
 | LTCEUR | 0.1 LTC |	0.001 |
 | EURUSD | 1 EUR |	0.0001 |
+| MDOGEBTC | 0.001 **MDOGE** |	0.001 |
+| MDOGELTC | 0.001 **MDOGE** |	0.01 |
+| MDOGEUSD | 0.001 **MDOGE** |	0.1 |
+| MDOGEEUR | 0.001 **MDOGE** |	0.1 |
+
+> **MDOGE** equal to 1 000 000 DOGE
 
 Size representation:
 * Size values in streaming messages are represented in lots.
