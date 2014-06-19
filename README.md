@@ -18,7 +18,8 @@ The following symbols are traded on hitbtc exchange.
 | MDOGEUSD | 0.001 **MDOGE** |	0.1 |
 | MDOGEEUR | 0.001 **MDOGE** |	0.1 |
 
-> **MDOGE** equal to 1 000 000 DOGE
+> **MDOGE** is equal to 1 000 000 DOGE
+> When pulling your balance from the API it will be denominated in natural DOGE units. However all other functions of the API parse values (e.g. price, lot size) denominated in MDOGE and will return values (e.g. amount, prices) denominated in MDOGE as well. Please be careful when submitting orders as DOGE denominated values will be parsed INCORRECTLY. 
 
 Size representation:
 * Size values in streaming messages are represented in lots.
