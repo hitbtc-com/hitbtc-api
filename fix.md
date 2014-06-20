@@ -176,6 +176,13 @@ From FIX gateway to Client:
 | ---- | ---- | ---- | ---- |
 | 55 | Symbol | e.g. "BTCUSD | | |
 
+### Parties block
+
+| Tag | Name | Values | Comments |
+| ---- | ---- | ---- | ---- |
+| 453 | 	NoPartyIDs | 1 | | |
+| 448 | 	PartyID | user id | | |
+
 ### MarketDataRequestReject [type 'Y']
 
 
