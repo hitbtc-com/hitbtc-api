@@ -14,8 +14,7 @@ The following symbols are traded on hitbtc exchange.
 | LTCEUR | 0.1 LTC |	0.001 |
 | EURUSD | 1 EUR |	0.0001 |
 | DOGEBTC | 1000 DOGE |	0.000000001 |
-| DOGEUSD | 1000 DOGE |	0.000001 |
-| DOGEEUR | 1000 DOGE |	0.000001 |
+| XMRBTC | 0.01 XMR |	0.01 |
 
 Size representation:
 * Size values in streaming messages are represented in lots.
