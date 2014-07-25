@@ -4,40 +4,30 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>hitbtc API by hitbtc-com</title>
+
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/hitbtc-com/hitbtc-api">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/hitbtc-com/hitbtc-api/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/hitbtc-com/hitbtc-api/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
-
     <div class="wrapper">
+      <header>
+        <h1>hitbtc API</h1>
+        <p>We bring cutting-edge technology to the Bitcoin ecosystem</p>
 
+        <p class="view"><a href="https://github.com/hitbtc-com/hitbtc-api">View the Project on GitHub <small>hitbtc-com/hitbtc-api</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/hitbtc-com/hitbtc-api/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/hitbtc-com/hitbtc-api/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/hitbtc-com/hitbtc-api">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
       <section>
-        <div id="title">
-          <h1>hitbtc API</h1>
-          <p>We bring cutting-edge technology to the Bitcoin ecosystem</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/hitbtc-com">hitbtc-com</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
-        </div>
-
         <h2>
 <a name="summary" class="anchor" href="#summary"><span class="octicon octicon-link"></span></a>Summary</h2>
 
@@ -92,8 +82,20 @@
 <td>0.01 XMR</td>
 <td>0.01</td>
 </tr>
+<tr>
+<td>BCNBTC</td>
+<td>100 BCN</td>
+<td>0.000000001</td>
+</tr>
+<tr>
+<td>XDNBTC</td>
+<td>100 XDN</td>
+<td>0.000000001</td>
+</tr>
 </tbody>
-</table><p>Size representation:</p>
+</table><p>(/api/1/public/symbols returns an actual list of symbols)</p>
+
+<p>Size representation:</p>
 
 <ul>
 <li>Size values in streaming messages are represented in lots.</li>
@@ -991,7 +993,7 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 
 <p>Request: <code>GET /api/1/trading/orders/recent</code></p>
 
-<p>Summary: returns an user's recent orders.</p>
+<p>Summary: returns an user's recent orders (for last 24 hours) sorted by order update time.</p>
 
 <p>Parameters: </p>
 
@@ -1013,6 +1015,12 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <td></td>
 </tr>
 <tr>
+<td><code>sort</code></td>
+<td>
+<code>asc</code> or <code>desc</code> (<code>asc</code> by default)</td>
+<td></td>
+</tr>
+<tr>
 <td><code>symbols</code></td>
 <td>string, comma-delimited</td>
 <td></td>
@@ -1024,7 +1032,7 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <td></td>
 </tr>
 </tbody>
-</table><p>Return values: could return an array of user's recent orders.</p>
+</table><p>Return values: returns an array of user's recent orders.</p>
 
 <p>The following fields are used in <code>order</code> object:</p>
 
@@ -2046,9 +2054,12 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
     <span class="k">return</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">msg</span><span class="p">);</span>
 </pre></div>
       </section>
-
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/hitbtc-com">hitbtc-com</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    <script src="javascripts/scale.fix.js"></script>
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
