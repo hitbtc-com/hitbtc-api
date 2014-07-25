@@ -555,7 +555,7 @@ Example response:
 
 Request: `GET /api/1/trading/orders/recent`
 
-Summary: returns an user's recent orders (for last 24 hours).
+Summary: returns an user's recent orders (for last 24 hours) sorted by order update time.
 
 Parameters: 
 
@@ -563,6 +563,7 @@ Parameters:
 | --- | --- | --- |
 | `start_index` | int, optional, default(0) | zero-based index |
 | `max_results` | int, required, <=1000 | |
+| `sort` | `asc` or `desc` (`asc` by default) | |
 | `symbols` | string, comma-delimited | |
 | `statuses` | string, comma-delimited, `new`, `partiallyFilled`, `filled`, `canceled`, `expired`, `rejected` | |
 
