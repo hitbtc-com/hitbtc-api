@@ -15,6 +15,10 @@ The following symbols are traded on hitbtc exchange.
 | EURUSD | 1 EUR |	0.0001 |
 | DOGEBTC | 1000 DOGE |	0.000000001 |
 | XMRBTC | 0.01 XMR |	0.01 |
+| BCNBTC | 100 BCN | 0.000000001 |
+| XDNBTC | 100 XDN | 0.000000001 |
+
+(/api/1/public/symbols returns an actual list of symbols)
 
 Size representation:
 * Size values in streaming messages are represented in lots.
@@ -551,7 +555,7 @@ Example response:
 
 Request: `GET /api/1/trading/orders/recent`
 
-Summary: returns an user's recent orders.
+Summary: returns an user's recent orders (for last 24 hours).
 
 Parameters: 
 
@@ -562,7 +566,7 @@ Parameters:
 | `symbols` | string, comma-delimited | |
 | `statuses` | string, comma-delimited, `new`, `partiallyFilled`, `filled`, `canceled`, `expired`, `rejected` | |
 
-Return values: could return an array of user's recent orders.
+Return values: returns an array of user's recent orders.
 
 The following fields are used in `order` object:
 
