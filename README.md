@@ -1,9 +1,32 @@
 ## Summary
 
-This document provides the complete reference for [hitbtc](https://hitbtc.com) API.
+This document provides the complete reference for [HitBTC](https://hitbtc.com) API.
+
+HitBTC API provides following operating functions:
+* Market data:
+  - get the timestamp (RESTful - [/api/1/public/time](#time))
+  - get the list of symbols (RESTful - [/api/1/public/symbols](#symbols))
+  - get the ticker for specified symbol (RESTful - [/api/1/public/:symbol/ticker](#ticker))
+  - get the order book for specified symbol (RESTful - [/api/1/public/:symbol/orderbook](#orderbook); WebSocket - [MarketDataSnapshotFullRefresh](#MarketDataSnapshotFullRefresh))
+  - get the individual trades data for specified symbol (RESTful - [/api/1/public/:symbol/trades](#trades); socket.io - [trades namespace](#tradesnamespace)trades namespace; WebSocket - [MarketDataIncrementalRefresh](#MarketDataIncrementalRefresh)MarketDataIncrementalRefresh)
+* Trading:
+  - get the trading balance (RESTful - [/api/1/trading/time](#tradingbalance))
+  - get all active orders (RESTful - [/api/1/trading/active](#active))
+  - place a new order (RESTful - [/api/1/trading/new_order](#neworder); WebSocket - [NewOrder](#NewOrder))
+  - cancel an order (RESTful - [/api/1/trading/cancel_order](#cancelorder); WebSocket - [OrderCancel](#OrderCancel))
+  - get user's trading history (RESTful - [/api/1/trading/trades](#usertrades))
+  - get user's recent orders (RESTful - [/api/1/trading/recent](#recentorders); WebSocket - [ExecutionReport](#ExecutionReport), [CancelReject](#CancelReject))
+* Payment:
+  - get multi-currency balance of the main account (RESTful - [/api/1/payment/balance](#paymentbalance))
+  - transfer funds between main and trading accounts (RESTful - [/api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main](#transfer))
+  - get the last created incoming cryptocurrency address or create a new one (RESTful - [/api/1/payment/address/:currency](#address))
+  - create an outgoing crypotocurrency transaction (RESTful - [/api/1/payment/payout](#payout))
+  - get a list of payment transactions (RESTful - [/api/1/payment/transactions](#transactions))
 
 
-The following symbols are traded on hitbtc exchange.
+### Currency symbols
+
+The following currency symbols are traded on HitBTC exchange.
 
 | Symbol	| Lot size | Price step
 | --- | --- | --- |
@@ -18,7 +41,7 @@ The following symbols are traded on hitbtc exchange.
 | BCNBTC | 100 BCN | 0.000000001 |
 | XDNBTC | 100 XDN | 0.000000001 |
 
-(/api/1/public/symbols returns an actual list of symbols)
+The actual list of symbols can by obtained by [/api/1/public/symbols](#symbols) method.
 
 Size representation:
 * Size values in streaming messages are represented in lots.
@@ -27,7 +50,7 @@ Size representation:
 
 ### Demo trading
 
-Hitbtc provides a demo trading option.  You can enable demo mode and acquire demo API keys on the Settings page.
+HitBTC provides a demo trading option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.
 
 ## Market data RESTful API
 
@@ -35,7 +58,10 @@ Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com)
 
 Demo endoint: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
+<a name="time"/>
 ### /api/1/public/time
+
+Summary: returns the server time in UNIX timestamp format
 
 Request: `GET /api/1/public/time`
 
@@ -46,7 +72,10 @@ Example: `/api/1/public/time`
 }
 ```
 
+<a name="symbols"/>
 ### /api/1/public/symbols
+
+Summary: returns actual list of symbols
 
 Request: `GET /api/1/public/symbols`
 
@@ -69,6 +98,7 @@ Example: `/api/1/public/symbols`
 }
 ```
 
+<a name="ticker"/>
 ### /api/1/public/:symbol/ticker
 
 Request: `GET /api/1/public/:symbol/ticker`
@@ -92,6 +122,7 @@ Example: `/api/1/public/BTCUSD/ticker`
 * low - lowest trade price / 24 h
 * volume - volume / 24h
 
+<a name="orderbook"/>
 ### /api/1/public/:symbol/orderbook
 
 Request: `GET /api/1/public/:symbol/orderbook`
@@ -144,6 +175,7 @@ Example: `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=numbe
 }
 ```
 
+<a name="trades"/>
 ### /api/1/public/:symbol/trades
 
 Request: `GET /api/1/public/:symbol/trades`
@@ -203,15 +235,15 @@ Demo endoint: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
 RESTful Trading API requires a HMAC-SHA512 signatures for each request.
 
-You should get your API key and Secret key from the Settings page on [https://hitbtc.com](https://hitbtc.com) in order to use this API endpoint. 
+To use this API endpoint you should get your API key and Secret key from the [Settings](https://hitbtc.com/settings) page. 
 
 Each request should include three parameters: `apikey`, `signature` and `nonce`.
 
 * `nonce` - unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp for `nonce`. This parameter should be added as a query string parameter `nonce`. `nonce` should be < (2^53-1).
-* `apikey` - API key from Settings page. This parameter should be added as a query string parameter `apikey`.
+* `apikey` - API key from [Settings](https://hitbtc.com/settings) page. This parameter should be added as a query string parameter `apikey`.
 * `signature` - _lower-case_ hex representation of hmac-sha512 of concatenated `uri` and `postData`. This parameter should be added as a HTTP header `X-Signature`.
 
-Signture generation pseudo-code:
+Signature generation pseudo-code:
 
 ```
 uri = path + '?' + query (example: /api/1/trading/orders/active?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d&symbols=EURUSD)
@@ -228,13 +260,13 @@ Javascript code (example):
    var signature = crypto.createHmac('sha512', secretKey).update(message).digest('hex');
 ```
 
-Check out examples that are provided by the community:
+Check out examples provided by the community:
 * C# example code: https://gist.github.com/hitbtc-com/9808530
 * PHP example code: https://gist.github.com/hitbtc-com/10885873 
 
 ### Error codes
 
-RESTful Trading API can return the following errors:
+Trading RESTful API can return the following errors:
 
 | HTTP code | Text | Description |
 | --- | --- | --- |
@@ -294,11 +326,12 @@ Example:
 ```
 
 
+<a name="tradingbalance"/>
 ### /api/1/trading/balance
 
-Request: `GET /api/1/trading/balance`
-
 Summary: returns trading balance.
+
+Request: `GET /api/1/trading/balance`
 
 Parameters: no parameters
 
@@ -328,11 +361,12 @@ Example:
 ]}
 ```
 
+<a name="active"/>
 ### /api/1/trading/orders/active
 
-Request: `GET /api/1/trading/orders/active`
-
 Summary: returns all active orders (`new` or `partiallyFilled`).
+
+Request: `GET /api/1/trading/orders/active`
 
 Parameters: 
 
@@ -363,11 +397,12 @@ Example:
 ]}
 ```
 
+<a name="neworder"/>
 ### /api/1/trading/new_order
 
-Request: `POST /api/1/trading/new_order`
+Summary: place a new order. Returns a JSON object `ExecutionReport` that respresent a status of the order.
 
-Summary: place a new order.
+Request: `POST /api/1/trading/new_order`
 
 Parameters: 
 
@@ -380,8 +415,6 @@ Parameters:
 | quantity | int | order quantity in lots |
 | type | `limit` or `market` | order type |
 | timeInForce | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | use `GTC` by default |
-
-Return value: returns a JSON object `ExecutionReport` that respresent a status of the order.
 
 Example:
 
@@ -411,11 +444,12 @@ Example response:
      "averagePrice": 0 } }
 ```
 
+<a name="cancelorder"/>
 ### /api/1/trading/cancel_order
 
-Request: `POST /api/1/trading/cancel_order`
+Summary: cancels an order. Returns `ExecutionReport` JSON object or `CancelReject` JSON object.
 
-Summary: cancels an order.
+Request: `POST /api/1/trading/cancel_order`
 
 Parameters: 
 
@@ -425,8 +459,6 @@ Parameters:
 | cancelRequestClientOrderId | string, >=8 characters, <= 32 characters, required | unqiue id generated by client |
 | symbol | string, required | the same an in your order |
 | side | `buy` or `sell`, required | the same an in your order |
-
-Return values: could return `ExecutionReport` JSON object or `CancelReject` JSON object.
 
 Example:
 
@@ -466,11 +498,12 @@ Example response:
 } }
 ```
 
+<a name="usertrades"/>
 ### /api/1/trading/trades
 
-Request: `GET /api/1/trading/trades`
+Summary: returns the trading history - an array of user's trades (`trade` objects).
 
-Summary: returns an user's trading history.
+Request: `GET /api/1/trading/trades`
 
 Parameters: 
 
@@ -483,8 +516,6 @@ Parameters:
 | `sort` | `asc` (default) or `desc` | |
 | `from` | optional | start `trade_id` or `ts`, see `by` |
 | `till` | optional | end `trade_id` or `ts`, see `by` |
-
-Return values: could return an array of user's trades.
 
 The following fields are used in `trade` object:
 
@@ -551,11 +582,12 @@ Example response:
 ]}
 ```
 
+<a name="recentorders"/>
 ### /api/1/trading/orders/recent
 
-Request: `GET /api/1/trading/orders/recent`
+Summary: returns an array of user's recent orders (`order` objects) for last 24 hours, sorted by order update time.
 
-Summary: returns an user's recent orders (for last 24 hours) sorted by order update time.
+Request: `GET /api/1/trading/orders/recent`
 
 Parameters: 
 
@@ -566,8 +598,6 @@ Parameters:
 | `sort` | `asc` or `desc` (`asc` by default) | |
 | `symbols` | string, comma-delimited | |
 | `statuses` | string, comma-delimited, `new`, `partiallyFilled`, `filled`, `canceled`, `expired`, `rejected` | |
-
-Return values: returns an array of user's recent orders.
 
 The following fields are used in `order` object:
 
@@ -645,15 +675,14 @@ Base URL: [https://api.hitbtc.com](https://api.hitbtc.com)
 
 Demo endoint: the Payment API is not available in demo mode.
 
+<a name="paymentbalance"/>
 ### /api/1/payment/balance
+
+Summary: returns multi-currency balance of the main account.
 
 Request: `GET /api/1/payment/balance`
 
-Summary: returns a balance of the main account.
-
 Parameters: no parameters
-
-Return values: returns multi-currency balance of the main account.
 
 Example response:
 
@@ -661,11 +690,12 @@ Example response:
 {"balance": [{"currency_code": "USD", "balance": 13.12}, {"currency_code": "EUR", "balance": 0}, {"currency_code": "LTC", "balance": 1.07}, {"currency_code": "BTC", "balance": 11.9}]}
 ```
 
-### /api/1/payment/transfer_*
+<a name="transfer"/>
+### /api/1/payment/transfer_to_trading and /api/1/payment/transfer_to_main
 
 Request: `POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main`
 
-Summary: transfer funds between main and trading accounts.
+Summary: transfers funds between main and trading accounts; returns a transaction ID or an error
 
 Parameters:
 
@@ -673,8 +703,6 @@ Parameters:
 | --- | --- | --- |
 | `amount` | decimal, required | amount |
 | `currency_code` | string, required, e.g. `BTC` | |
-
-Return values: returns a transaction id or an error.
 
 Example responses:
 
@@ -686,17 +714,16 @@ Example responses:
 {"transaction": "52976-103925-18443984"}
 ```
 
-### /api/1/payment/address/
+<a name="getaddress"/>
+### /api/1/payment/address/ (GET)
+
+Summary: returns the last created incoming cryptocurrency address that can be used to deposit cryptocurrency. 
 
 Request: `GET /api/1/payment/address/:currency`
 
-Example request: `GET /api/1/payment/address/BTC`
-
-Summary: returns the last created incoming cryptocurrency address
-
 Parameters: no parameters
 
-Return values: returns an address that can be used to deposit cryptocurrency.
+Example request: `GET /api/1/payment/address/BTC`
 
 Example response:
 
@@ -704,17 +731,16 @@ Example response:
 {"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
 ```
 
-### /api/1/payment/address/
+<a name="postaddress"/>
+### /api/1/payment/address/ (POST)
+
+Summary: creates an address that can be used to deposit cryptocurrency; returns a new cryptocurrency address.
 
 Request: `POST /api/1/payment/address/:currency`
 
-Example request: `POST /api/1/payment/address/BTC`
-
-Summary: creates a incoming new cryptocurrency address.
-
 Parameters: no parameters
 
-Return values: returns an address that can be used to deposit cryptocurrency.
+Example request: `POST /api/1/payment/address/BTC`
 
 Example response:
 
@@ -722,11 +748,12 @@ Example response:
 {"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
 ```
 
+<a name="payout"/>
 ### /api/1/payment/payout
 
-Request: `POST /api/1/payment/payout`
+Summary: withdraws money and creates an outgoing crypotocurrency transaction; returns a transaction ID on the exchange or an error.
 
-Summary: withdraws money and creates an outgoing crypotocurrency transaction.
+Request: `POST /api/1/payment/payout`
 
 Parameters:
 
@@ -738,18 +765,17 @@ Parameters:
 
 Example: ```amount=0.001&currency_code=BTC&address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5```
 
-Return values: returns a transaction id on the exchange or an error.
-
 Example response:
 ```json
 {"transaction": "51545-103004-18442681"}
 ```
 
+<a name="transactions"/>
 ### /api/1/payment/transactions
 
-Request: `GET /api/1/payment/transactions`
+Summary: return a list of payment transactions and their statuses (array of transactions).
 
-Summary: return a list of payment transactions and their statuses.
+Request: `GET /api/1/payment/transactions`
 
 Parameters:
 
@@ -758,8 +784,6 @@ Parameters:
 | `offset` | int, optional, default = 0 | start index for the query |
 | `limit` | int, required | max results for the query |
 | `dir` | string, optional, `ask` or `desc` default = `desc` | sort direction |
-
-Response: array of transactions.
 
 Example response:
 ```json
@@ -782,6 +806,7 @@ Example response:
 ]}
 ```
 
+
 ## socket.io Market Data
 
 The socket.io market data based on socket.io protocol and supports WebSocket, xhr-polling and jsonp-polling transports.
@@ -794,6 +819,7 @@ Socket.io URL: `http://api.hitbtc.com:8081`
 
 Socket.io demo URL: `http://demo-api.hitbtc.com:8081`
 
+<a name="tradesnamespace"/>
 ### `trades` namespace
 
 Namespace: `trades`
@@ -807,7 +833,7 @@ Event example:
 {"price":478.33,"amount":0.15}
 ```
 
-Live example (both demo and primary api): http://jsfiddle.net/He6AU/13/
+Live example (both demo and primary api): [http://jsfiddle.net/He6AU/13/](http://jsfiddle.net/He6AU/13/)
 
 ## Market data streaming end-point
 
@@ -815,7 +841,7 @@ Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebS
 
 URL: [ws://api.hitbtc.com](ws://api.hitbtc.com)
 
-Demo URL: [ws://demo-api.hitbtc.com]ws://demo-api.hitbtc.com)
+Demo URL: [ws://demo-api.hitbtc.com] (ws://demo-api.hitbtc.com)
 
 Once client connects to this URL the session is started. 
 
@@ -831,9 +857,9 @@ Some recommendations to consider:
 * It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.
 
 <a name="MarketDataSnapshotFullRefresh"/>
-### MarketDataSnapshotFullRefresh
+### MarketDataSnapshotFullRefresh message
 
-MarketDataSnapshotFullRefresh message contains a full snapshot of the order book.
+Summary: contains a full snapshot of the order book.
 
 Example message:
 ```json
@@ -911,9 +937,9 @@ Fields:
 | ask, bid | sorted arrays of price levels in the order book; full snapshot (all price levels) is provided |
 
 <a name="MarketDataIncrementalRefresh"/>
-### MarketDataIncrementalRefresh
+### MarketDataIncrementalRefresh message
 
-MarketDataIncrementalRefresh contains incremental changes of the order book and individual trades.
+Summary: contains incremental changes of the order book and individual trades.
 
 Example message:
 ```json
@@ -948,6 +974,7 @@ Fields:
 | symbol	| |
 | exchangeStatus |  `on` or `off`, `off` means the trading is suspended |
 | ask, bid, trade | an array of changes in the order book; <br> `size` means new size, `size`=0 means price level has been removed |
+
 
 ## Trading streaming end-point
 
