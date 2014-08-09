@@ -8,7 +8,7 @@ HitBTC API provides following operating functions:
   - get the list of symbols (RESTful - [/api/1/public/symbols](#symbols))
   - get the ticker for specified symbol (RESTful - [/api/1/public/:symbol/ticker](#ticker))
   - get the order book for specified symbol (RESTful - [/api/1/public/:symbol/orderbook](#orderbook); WebSocket - [MarketDataSnapshotFullRefresh](#MarketDataSnapshotFullRefresh))
-  - get the individual trades data for specified symbol (RESTful - [/api/1/public/:symbol/trades](#trades); socket.io - [trades namespace](#tradesnamespace)trades namespace; WebSocket - [MarketDataIncrementalRefresh](#MarketDataIncrementalRefresh)MarketDataIncrementalRefresh)
+  - get the individual trades data for specified symbol (RESTful - [/api/1/public/:symbol/trades](#trades); socket.io - [trades namespace](#tradesnamespace); WebSocket - [MarketDataIncrementalRefresh](#MarketDataIncrementalRefresh))
 * Trading:
   - get the trading balance (RESTful - [/api/1/trading/time](#tradingbalance))
   - get all active orders (RESTful - [/api/1/trading/active](#active))
@@ -101,6 +101,8 @@ Example: `/api/1/public/symbols`
 <a name="ticker"/>
 ### /api/1/public/:symbol/ticker
 
+Summary: returns actual data on cryptocurrency exchange rates
+
 Request: `GET /api/1/public/:symbol/ticker`
 
 Example: `/api/1/public/BTCUSD/ticker`
@@ -117,21 +119,26 @@ Example: `/api/1/public/BTCUSD/ticker`
 }
 ```
 
-* 24h means last 24h + last incomplete minute
-* high - highest trade price / 24 h
-* low - lowest trade price / 24 h
-* volume - volume / 24h
+* last - last price
+* bid - highest buy order
+* ask - lowest sell order
+* high - highest trade price per last 24h + last incomplete minute
+* low - lowest trade price per last 24h + last incomplete minute
+* volume - volume per last 24h + last incomplete minute
+* timestamp - the server time in UNIX timestamp format
 
 <a name="orderbook"/>
 ### /api/1/public/:symbol/orderbook
 
+Summary: returns a list of open orders: price and amount
+
 Request: `GET /api/1/public/:symbol/orderbook`
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| format_price | optional, "string" (default) or "number" | |
-| format_amount | optional, "string" (default) or "number" | |
-| format_amount_unit | optional, "currency" (default) or "lot" | |
+| Parameter | Description |
+| --- | --- |
+| format_price | optional, "string" (default) or "number" |
+| format_amount | optional, "string" (default) or "number" |
+| format_amount_unit | optional, "currency" (default) or "lot" |
 
 Alias: `/api/1/request/:symbol/orderbook.json` -> `/api/1/public/:symbol/orderbook?format_price=number&format_amount=number`
 
@@ -177,6 +184,8 @@ Example: `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=numbe
 
 <a name="trades"/>
 ### /api/1/public/:symbol/trades
+
+Summary: returns data on trades in specified ID or timestamp interval
 
 Request: `GET /api/1/public/:symbol/trades`
 
@@ -773,7 +782,7 @@ Example response:
 <a name="transactions"/>
 ### /api/1/payment/transactions
 
-Summary: return a list of payment transactions and their statuses (array of transactions).
+Summary: returns a list of payment transactions and their statuses (array of transactions).
 
 Request: `GET /api/1/payment/transactions`
 
