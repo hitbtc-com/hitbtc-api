@@ -5,8 +5,8 @@ This document provides the complete reference for [HitBTC](https://hitbtc.com) A
 HitBTC API has several interfaces to use it in a custom software:
 * <b>RESTful API</b> that allows: 
   - access to the market data: view ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
-  - performing trading operations: place or cancel orders, view history, etc. See [Trading RESTful API](#tradingrestful)
-  - managing funds: transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
+  - performing trading operations: view trading balance, place or cancel orders, view history, etc. See [Trading RESTful API](#tradingrestful)
+  - managing funds: view balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
 * <b>socket.io</b> protocol for receiving the market data. socket.io protocol supports WebSocket, xhr-polling and jsonp-polling transports. See [socket.io Market Data](#socketio)
 * <b>Streaming API</b> based on WebSocket protocol to get an access to: 
   - market data. See [Market data streaming end-point](#marketstreaming)  
@@ -188,25 +188,32 @@ Request: `GET /api/1/public/:symbol/trades`
 
 Parameters:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| from | required, int, trade_id or timestamp | returns trades with trade_id > specified trade_id <br> returns trades with timestamp >= specified timestamp |
-| till | optional, int, trade_id or timestamp | returns trades with trade_id < specified trade_id <br> returns trades with timestamp < specified timestamp |
-| by | required, filter and sort by `trade_id` or `ts` (timestamp) | |
-| sort | optional, `asc` (default) or `desc` | |
-| start_index | required, int | zero-based |
-| max_results | required, int, max value = 1000 | |
-| format_item | optional, "array" (default) or "object" |  |
-| format_price | optional, "string" (default) or "number" | |
-| format_amount | optional, "string" (default) or "number" | |
-| format_amount_unit | optional, "currency" (default) or "lot" | |
-| format_tid | optional, "string" or "number" (default) | |
-| format_timestamp | optional, "millisecond" (default) or "second" | |
-| format_wrap | optional, "true" (default) or "false" | |
+| Parameter | Description | Reqired	| Type |
+| --- | --- | --- | --- |
+| from | returns trades with trade_id > specified trade_id <br> returns trades with timestamp >= specified timestamp | required| int, trade_id or timestamp |
+| till | returns trades with trade_id < specified trade_id <br> returns trades with timestamp < specified timestamp | | int, trade_id or timestamp |
+| by | | required | filter and sort by `trade_id` or `ts` (timestamp) |
+| sort | | | `asc` (default) or `desc` |
+| start_index | zero-based | required | int |
+| max_results | | required | int, max value = 1000 |
+| format_item | | | "array" (default) or "object" |
+| format_price | | | "string" (default) or "number" |
+| format_amount | | | "string" (default) or "number" |
+| format_amount_unit | |  |"currency" (default) or "lot" |
+| format_tid | |  | "string" or "number" (default) |
+| format_timestamp | |  | "millisecond" (default) or "second" |
+| format_wrap | |  | "true" (default) or "false" |
 
-Alias: `/api/1/request/:symbol/trades.json?since=<trade_id>` -> `/api/1/public/:symbol/trades?from=<trade_id>&by=trade_id&start_index=0&format_numbers=number&format_tradeid=string&format_objects=object&format_timestamp=second`
+Alias:
+```
+`/api/1/request/:symbol/trades.json?since=<trade_id>` -> `/api/1/public/:symbol/trades?from=<trade_id>&by=trade_id&start_index=0&format_numbers=number&format_tradeid=string&format_objects=object&format_timestamp=second`
+```
 
-Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100`
+Example:
+```
+`/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100`
+```
+
 ``` json
 {
     "trades": [
@@ -220,7 +227,10 @@ Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0
 ```
 
 
-Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false`
+Example: 
+````/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false`
+```
+
 ``` json
 [
     {"date": 1393492619, "price": 575.64, "amount": 0.02, "tid": "3814483"},
@@ -293,7 +303,7 @@ Trading RESTful API can return the following errors:
 
 | HTTP code | Text | Description |
 | --- | --- | --- |
-| 403 | Invalid apikey | API key doesn't exist or API key is currently used on another endpoint (max last 15 min) |
+| 403 | Invalid API key | API key doesn't exist or API key is currently used on another endpoint (max last 15 min) |
 | 403 | Nonce has been used | nonce is not monotonous |
 | 403 | Nonce is not valid | too big number or not a number |
 | 403 | Wrong signature | |
