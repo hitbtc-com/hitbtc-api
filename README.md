@@ -2,26 +2,18 @@
 
 This document provides the complete reference for [HitBTC](https://hitbtc.com) API.
 
-HitBTC API provides following operating functions:
-* Market data:
-  - get the timestamp (RESTful - [/api/1/public/time](#time))
-  - get the list of symbols (RESTful - [/api/1/public/symbols](#symbols))
-  - get the ticker for specified symbol (RESTful - [/api/1/public/:symbol/ticker](#ticker))
-  - get the order book for specified symbol (RESTful - [/api/1/public/:symbol/orderbook](#orderbook); WebSocket - [MarketDataSnapshotFullRefresh](#MarketDataSnapshotFullRefresh))
-  - get the individual trades data for specified symbol (RESTful - [/api/1/public/:symbol/trades](#trades); socket.io - [trades namespace](#tradesnamespace); WebSocket - [MarketDataIncrementalRefresh](#MarketDataIncrementalRefresh))
-* Trading:
-  - get the trading balance (RESTful - [/api/1/trading/time](#tradingbalance))
-  - get all active orders (RESTful - [/api/1/trading/active](#active))
-  - place a new order (RESTful - [/api/1/trading/new_order](#neworder); WebSocket - [NewOrder](#NewOrder))
-  - cancel an order (RESTful - [/api/1/trading/cancel_order](#cancelorder); WebSocket - [OrderCancel](#OrderCancel))
-  - get user's trading history (RESTful - [/api/1/trading/trades](#usertrades))
-  - get user's recent orders (RESTful - [/api/1/trading/recent](#recentorders); WebSocket - [ExecutionReport](#ExecutionReport), [CancelReject](#CancelReject))
-* Payment:
-  - get multi-currency balance of the main account (RESTful - [/api/1/payment/balance](#paymentbalance))
-  - transfer funds between main and trading accounts (RESTful - [/api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main](#transfer))
-  - get the last created incoming cryptocurrency address or create a new one (RESTful - [/api/1/payment/address/:currency](#address))
-  - create an outgoing crypotocurrency transaction (RESTful - [/api/1/payment/payout](#payout))
-  - get a list of payment transactions (RESTful - [/api/1/payment/transactions](#transactions))
+HitBTC API has several interfaces to use it in a custom software:
+* <b>RESTful API</b> that allows: 
+  - access to the market data: view ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
+  - performing trading operations: place or cancel orders, view history, etc. See [Trading RESTful API](#tradingrestful)
+  - managing funds: transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
+* <b>socket.io</b> protocol for receiving the market data. socket.io protocol supports WebSocket, xhr-polling and jsonp-polling transports. See [socket.io Market Data](#socketio)
+* <b>Streaming API</b> based on WebSocket protocol to get an access to: 
+  - market data. See [Market data streaming end-point](#marketstreaming)  
+  - trading operations. See [Trading streaming end-point](#tradingstreaming)
+
+Trading and payment operations require user's authentification: each request or message should have a signature. 
+You should get your API key and Secret key on the [Settings](https://hitbtc.com/settings) page. See details in [RESTful API authentification](#authenticationrestful) and [WebSocket API authentification](#authenticationwebsocket).
 
 
 ### Currency symbols
@@ -48,11 +40,16 @@ Size representation:
 * Size values in RESTful market data are represented in money (e.g. in coins or in USD). 
 * Size values in RESTful trade are represented in lots (e.g. 1 means 0.01 BTC for BTCUSD)
 
-### Demo trading
 
-HitBTC provides a demo trading option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.
-
+<a name="marketrestful"/>
 ## Market data RESTful API
+
+RESTful API provides access to the market data with following methods:
+  - get the timestamp- [/api/1/public/time](#time)
+  - get the list of symbols - [/api/1/public/symbols](#symbols)
+  - get the ticker for specified symbol - [/api/1/public/:symbol/ticker](#ticker)
+  - get the order book for specified symbol - [/api/1/public/:symbol/orderbook](#orderbook)
+  - get the individual trades data for specified symbol - [/api/1/public/:symbol/trades](#trades)
 
 Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com)
 
@@ -234,15 +231,31 @@ Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0
 ]
 ```
 
+<a name="tradingrestful"/>
 ## Trading RESTful API
+
+RESTful API allows to perform trading operations with the following methods:
+  - get the trading balance - [/api/1/trading/time](#tradingbalance)
+  - get all active orders  - [/api/1/trading/active](#active)
+  - place a new order - [/api/1/trading/new_order](#neworder); WebSocket - [NewOrder](#NewOrder)
+  - cancel an order - [/api/1/trading/cancel_order](#cancelorder); WebSocket - [OrderCancel](#OrderCancel)
+  - get user's trading history - [/api/1/trading/trades](#usertrades)
+  - get user's recent orders (RESTful - [/api/1/trading/recent](#recentorders)
 
 Base URL: [https://api.hitbtc.com](https://api.hitbtc.com)
 
-Demo endoint: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
+HitBTC provides a demo trading option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.
+Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
+Real trading operations require [authentication](#authentication).
+
+[Error codes](#errors) and [reports representing order status changes](#reports) are described below.
+
+
+<a name="authenticationrestful"/>
 ### Authentication
 
-RESTful Trading API requires a HMAC-SHA512 signatures for each request.
+RESTful Trading API requires HMAC-SHA512 signatures for each request.
 
 To use this API endpoint you should get your API key and Secret key from the [Settings](https://hitbtc.com/settings) page. 
 
@@ -273,6 +286,7 @@ Check out examples provided by the community:
 * C# example code: https://gist.github.com/hitbtc-com/9808530
 * PHP example code: https://gist.github.com/hitbtc-com/10885873 
 
+<a name="errors"/>
 ### Error codes
 
 Trading RESTful API can return the following errors:
@@ -284,6 +298,7 @@ Trading RESTful API can return the following errors:
 | 403 | Nonce is not valid | too big number or not a number |
 | 403 | Wrong signature | |
 
+<a name="reports"/>
 ### Execution reports
 
 The API uses `ExecutionReport` as an object that represents change of order status.
@@ -678,11 +693,21 @@ Example response:
 ]}
 ```
 
+<a name="paymentsrestful"/>
 ## Payment RESTful API
 
+RESTful API allows to manage funds with the following methods:
+  - get multi-currency balance of the main account - [/api/1/payment/balance](#paymentbalance)
+  - transfer funds between main and trading accounts - [/api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main](#transfer)
+  - get the last created incoming cryptocurrency address or create a new one -  [/api/1/payment/address/:currency](#address)
+  - create an outgoing crypotocurrency transaction - [/api/1/payment/payout](#payout)
+  - get a list of payment transactions - [/api/1/payment/transactions](#transactions)
+ 
 Base URL: [https://api.hitbtc.com](https://api.hitbtc.com)
 
 Demo endoint: the Payment API is not available in demo mode.
+
+Payment operations require [authentication](#authentication)
 
 <a name="paymentbalance"/>
 ### /api/1/payment/balance
@@ -815,7 +840,7 @@ Example response:
 ]}
 ```
 
-
+<a name="socketio"/>
 ## socket.io Market Data
 
 The socket.io market data based on socket.io protocol and supports WebSocket, xhr-polling and jsonp-polling transports.
@@ -827,6 +852,10 @@ Please refer to official socket.io documentation on http://socket.io/.
 Socket.io URL: `http://api.hitbtc.com:8081`
 
 Socket.io demo URL: `http://demo-api.hitbtc.com:8081`
+
+[MarketDataSnapshotFullRefresh](#MarketDataSnapshotFullRefresh))
+
+
 
 <a name="tradesnamespace"/>
 ### `trades` namespace
@@ -844,6 +873,7 @@ Event example:
 
 Live example (both demo and primary api): [http://jsfiddle.net/He6AU/13/](http://jsfiddle.net/He6AU/13/)
 
+<a name="marketstreaming"/>
 ## Market data streaming end-point
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
@@ -984,7 +1014,7 @@ Fields:
 | exchangeStatus |  `on` or `off`, `off` means the trading is suspended |
 | ask, bid, trade | an array of changes in the order book; <br> `size` means new size, `size`=0 means price level has been removed |
 
-
+<a name="tradingstreaming"/>
 ## Trading streaming end-point
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
@@ -994,6 +1024,7 @@ URL: <wss://api.hitbtc.com:8080>
 Demo URL: <ws://demo-api.hitbtc.com:8080>
 
 Trading endpoint requires sending login message after connection esteblished. All client messages should be signed and should contain valid and active API key
+
 
 The following message types are supported:
 
@@ -1006,6 +1037,7 @@ The following message types are supported:
 | [CancelReject](#CancelReject) | Server -> Client |
 
 
+<a name="authenticationwebsocket"/>
 ### API keys and message signatures
 
 All client messages should be signed in the following manner:
