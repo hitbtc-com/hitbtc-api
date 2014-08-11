@@ -850,22 +850,23 @@ Example response:
 ]}
 ```
 
+
+
 <a name="socketio"/>
 ## socket.io Market Data
 
-The socket.io market data based on socket.io protocol and supports WebSocket, xhr-polling and jsonp-polling transports.
+The API provides socket.io protocol for receiving market data. It supports:
+* WebSocket, xhr-polling and jsonp-polling transports
+* multiplexing a single connection with socket.io namespaces (see [`trades` namespace](#tradesnamespace))
 
-The API support multiplexing a single connection with socket.io namespaces. 
+Useful links:
+* official socket.io documentation - `http://socket.io/`
+* chrome extension Simple WebSocket Client - `https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo`
 
-Please refer to official socket.io documentation on http://socket.io/.
-
-Socket.io URL: `http://api.hitbtc.com:8081`
-
-Socket.io demo URL: `http://demo-api.hitbtc.com:8081`
-
-[MarketDataSnapshotFullRefresh](#MarketDataSnapshotFullRefresh))
-
-
+API links:
+* socket.io URL: `http://api.hitbtc.com:8081`
+* socket.io demo URL: `http://demo-api.hitbtc.com:8081`
+* live example (both demo and primary API): `http://jsfiddle.net/He6AU/13/`
 
 <a name="tradesnamespace"/>
 ### `trades` namespace
@@ -881,7 +882,7 @@ Event example:
 {"price":478.33,"amount":0.15}
 ```
 
-Live example (both demo and primary api): [http://jsfiddle.net/He6AU/13/](http://jsfiddle.net/He6AU/13/)
+
 
 <a name="marketstreaming"/>
 ## Market data streaming end-point
@@ -889,18 +890,14 @@ Live example (both demo and primary api): [http://jsfiddle.net/He6AU/13/](http:/
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
 URL: [ws://api.hitbtc.com](ws://api.hitbtc.com)
-
-Demo URL: [ws://demo-api.hitbtc.com] (ws://demo-api.hitbtc.com)
-
+Demo URL: [ws://demo-api.hitbtc.com](ws://demo-api.hitbtc.com)
 Once client connects to this URL the session is started. 
 
 The server broadcasts the following types of messages:
-
 * [MarketDataSnapshotFullRefresh](#MarketDataSnapshotFullRefresh) message contains a full snapshot of the order book.
 * [MarketDataIncrementalRefresh](#MarketDataIncrementalRefresh) message contains incremental changes
 
 Some recommendations to consider:
-
 * The application could receive the first snapshot and maintain the order book by applying incremental updates.
 * It's recommended to invalidate a state of the application periodically using snapshots.
 * It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.
@@ -1024,16 +1021,16 @@ Fields:
 | exchangeStatus |  `on` or `off`, `off` means the trading is suspended |
 | ask, bid, trade | an array of changes in the order book; <br> `size` means new size, `size`=0 means price level has been removed |
 
+
 <a name="tradingstreaming"/>
 ## Trading streaming end-point
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
 URL: <wss://api.hitbtc.com:8080>
-
 Demo URL: <ws://demo-api.hitbtc.com:8080>
 
-Trading endpoint requires sending login message after connection esteblished. All client messages should be signed and should contain valid and active API key
+Trading endpoint requires sending login message after connection established. All client messages should be signed and should contain valid and active API key (see [API keys and message signatures](#authenticationwebsocket)).
 
 
 The following message types are supported:
@@ -1231,9 +1228,6 @@ Fields:
 | rejectReasonCode | | `orderNotFound` <br> `unknownSymbol` <br> `unknownUser` <br> `other` | required |
 | rejectReasonText | Optional reject reason text | string | |
 
-## Useful tools
-
-Chrome extension Simple WebSocket Client (https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo)
 
 ## Sample code
 
