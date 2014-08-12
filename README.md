@@ -2,7 +2,7 @@
 
 This document provides the complete reference for [HitBTC](https://hitbtc.com) API.
 
-HitBTC API has several interfaces to use it in a custom software:
+HitBTC API has several interfaces to implement them in a custom software:
 * <b>RESTful API</b> that allows: 
   - access to the market data: view ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
   - performing trading operations: view trading balance, place or cancel orders, view history, etc. See [Trading RESTful API](#tradingrestful)
@@ -33,7 +33,7 @@ The following currency symbols are traded on HitBTC exchange.
 | BCNBTC | 100 BCN | 0.000000001 |
 | XDNBTC | 100 XDN | 0.000000001 |
 
-The actual list of symbols can by obtained by [/api/1/public/symbols](#symbols) method.
+The actual list of symbols can be obtained by [/api/1/public/symbols](#symbols) method.
 
 Size representation:
 * Size values in streaming messages are represented in lots.
@@ -861,7 +861,7 @@ The API provides socket.io protocol for receiving market data. It supports:
 
 Useful links:
 * official socket.io documentation - `http://socket.io/`
-* chrome extension Simple WebSocket Client - `https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo`
+* chrome extension Simple WebSocket Client - `https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo`. See also the [Sample code](#sample)
 
 API links:
 * socket.io URL: `http://api.hitbtc.com:8081`
@@ -1229,6 +1229,7 @@ Fields:
 | rejectReasonText | Optional reject reason text | string | |
 
 
+<a name="sample"/>
 ## Sample code
 
 ### Node.js snippet: message signature
@@ -1259,5 +1260,3 @@ Fields:
     msg.signature = crypto.createHmac('sha512', secretkey).update(JSON.stringify(msg.message)).digest('base64');
     return JSON.stringify(msg);
 ```
-
-
