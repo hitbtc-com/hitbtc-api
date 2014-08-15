@@ -1,3 +1,4 @@
+<a name="summary"/>
 ## Summary
 
 This document provides the complete reference for [HitBTC](https://hitbtc.com) API.
@@ -15,7 +16,7 @@ HitBTC API has several interfaces to implement them in a custom software:
 Trading and payment operations require user's authentification: each request or message should have a signature. 
 You should get your API key and Secret key on the [Settings](https://hitbtc.com/settings) page. See details in [RESTful API authentification](#authenticationrestful) and [WebSocket API authentification](#authenticationwebsocket).
 
-
+<a name="cursymbols"/>
 ### Currency symbols
 
 The following currency symbols are traded on HitBTC exchange.
@@ -40,7 +41,7 @@ Size representation:
 * Size values in RESTful market data are represented in money (e.g. in coins or in USD). 
 * Size values in RESTful trade are represented in lots (e.g. 1 means 0.01 BTC for BTCUSD)
 
-
+<a name="restful"/>
 <a name="marketrestful"/>
 ## Market data RESTful API
 
@@ -883,7 +884,7 @@ Event example:
 ```
 
 
-
+<a name="streaming"/>
 <a name="marketstreaming"/>
 ## Market data streaming end-point
 
