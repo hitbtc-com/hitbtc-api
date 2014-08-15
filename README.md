@@ -42,6 +42,20 @@ Size representation:
 * Size values in RESTful trade are represented in lots (e.g. 1 means 0.01 BTC for BTCUSD)
 
 <a name="restful"/>
+# RESTful API
+
+RESTful API provides the most functional access to HitBTC facilities.
+RESTful API allows: 
+  - access to the market data: view ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
+  - performing trading operations: view trading balance, place or cancel orders, view history, etc. See [Trading RESTful API](#tradingrestful)
+  - managing funds: view balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
+
+Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com)
+HitBTC provides a demo trading option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.
+Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
+
+Trading and payment operations require [authentication](#authentication). See also [error codes](#errors) and [reports representing order status changes](#reports).
+
 <a name="marketrestful"/>
 ## Market data RESTful API
 
@@ -52,9 +66,6 @@ RESTful API provides access to the market data with following methods:
   - get the order book for specified symbol - [/api/1/public/:symbol/orderbook](#orderbook)
   - get the individual trades data for specified symbol - [/api/1/public/:symbol/trades](#trades)
 
-Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com)
-
-Demo endoint: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
 <a name="time"/>
 ### /api/1/public/time
@@ -242,6 +253,7 @@ Example:
 ]
 ```
 
+
 <a name="tradingrestful"/>
 ## Trading RESTful API
 
@@ -253,12 +265,7 @@ RESTful API allows to perform trading operations with the following methods:
   - get user's trading history - [/api/1/trading/trades](#usertrades)
   - get user's recent orders (RESTful - [/api/1/trading/recent](#recentorders)
 
-Base URL: [https://api.hitbtc.com](https://api.hitbtc.com)
-
-HitBTC provides a demo trading option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.
-Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
-
-Real trading operations require [authentication](#authentication).
+Trading operations require [authentication](#authentication).
 
 [Error codes](#errors) and [reports representing order status changes](#reports) are described below.
 
@@ -714,10 +721,6 @@ RESTful API allows to manage funds with the following methods:
   - create an outgoing crypotocurrency transaction - [/api/1/payment/payout](#payout)
   - get a list of payment transactions - [/api/1/payment/transactions](#transactions)
  
-Base URL: [https://api.hitbtc.com](https://api.hitbtc.com)
-
-Demo endoint: the Payment API is not available in demo mode.
-
 Payment operations require [authentication](#authentication)
 
 <a name="paymentbalance"/>
@@ -885,14 +888,21 @@ Event example:
 
 
 <a name="streaming"/>
-<a name="marketstreaming"/>
-## Market data streaming end-point
+# Streaming API
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
-URL: [ws://api.hitbtc.com](ws://api.hitbtc.com)
-Demo URL: [ws://demo-api.hitbtc.com](ws://demo-api.hitbtc.com)
+URL: <wss://api.hitbtc.com:8080>
+Demo URL: <ws://demo-api.hitbtc.com:8080>
 Once client connects to this URL the session is started. 
+
+Streaming API provides an access to: 
+  - market data. See [Market data streaming end-point](#marketstreaming)  
+  - trading operations. See [Trading streaming end-point](#tradingstreaming)
+
+
+<a name="marketstreaming"/>
+## Market data streaming end-point
 
 The server broadcasts the following types of messages:
 * [MarketDataSnapshotFullRefresh](#MarketDataSnapshotFullRefresh) message contains a full snapshot of the order book.
