@@ -784,11 +784,11 @@ Example response:
 
 ## socket.io Market Data
 
-The socket.io market data based on socket.io protocol and supports WebSocket, xhr-polling and jsonp-polling transports.
+The socket.io market data based on socket.io protocol and supports WebSocket, xhr-polling and jsonp-polling transports. API works on socket.io version 1.0.x
 
 The API support multiplexing a single connection with socket.io namespaces. 
 
-Please refer to official socket.io documentation on http://socket.io/.
+Please refer to official socket.io documentation on http://socket.io/.  
 
 Socket.io URL: `http://api.hitbtc.com:8081`
 
@@ -807,7 +807,7 @@ Event example:
 {"price":478.33,"amount":0.15}
 ```
 
-Live example (both demo and primary api): http://jsfiddle.net/He6AU/13/
+Live example (both demo and primary api): http://jsfiddle.net/rn7zy75n/1/
 
 ## Market data streaming end-point
 
