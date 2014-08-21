@@ -5,9 +5,9 @@ This document provides the complete reference for [HitBTC](https://hitbtc.com) A
 
 HitBTC API has several interfaces to implement them in a custom software:
 * <b>RESTful API</b> that allows: 
-  - access to the market data: view ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
-  - performing trading operations: view trading balance, place or cancel orders, view history, etc. See [Trading RESTful API](#tradingrestful)
-  - managing funds: view balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
+  - access to the market data: get ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
+  - performing trading operations: get trading balance, place or cancel orders, get history, etc. See [Trading RESTful API](#tradingrestful)
+  - managing funds: get balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
 * <b>socket.io</b> protocol for receiving the market data. socket.io protocol supports WebSocket, xhr-polling and jsonp-polling transports. See [socket.io Market Data](#socketio)
 * <b>Streaming API</b> based on WebSocket protocol to get an access to: 
   - market data. See [Market data streaming end-point](#marketstreaming)  
@@ -46,9 +46,9 @@ Size representation:
 
 RESTful API provides the most functional access to HitBTC facilities.
 RESTful API allows: 
-  - access to the market data: view ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
-  - performing trading operations: view trading balance, place or cancel orders, view history, etc. See [Trading RESTful API](#tradingrestful)
-  - managing funds: view balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
+  - access to the market data: get ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
+  - performing trading operations: get trading balance, place or cancel orders, get history, etc. See [Trading RESTful API](#tradingrestful)
+  - managing funds: get balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
 
 Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com)
 HitBTC provides a demo trading option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.
@@ -113,6 +113,7 @@ Example: `/api/1/public/symbols`
 Summary: returns actual data on cryptocurrency exchange rates
 
 Request: `GET /api/1/public/:symbol/ticker`
+  where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
 
 Example: `/api/1/public/BTCUSD/ticker`
 
@@ -142,12 +143,14 @@ Example: `/api/1/public/BTCUSD/ticker`
 Summary: returns a list of open orders: price and amount
 
 Request: `GET /api/1/public/:symbol/orderbook`
+  where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
 
-| Parameter | Description |
-| --- | --- |
-| format_price | optional, "string" (default) or "number" |
-| format_amount | optional, "string" (default) or "number" |
-| format_amount_unit | optional, "currency" (default) or "lot" |
+
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `format_price` | No | `string` or `number` | Format of prices returned: as a string (default) or as a number| 
+| `format_amount` | No | `string` or `number` | Format of amount returned: as a string (default) or as a number|
+| `format_amount_unit` | No | `currency` or `lot` | Units of amount returned: in currency units (default) or in lots|
 
 Alias: `/api/1/request/:symbol/orderbook.json` -> `/api/1/public/:symbol/orderbook?format_price=number&format_amount=number`
 
@@ -197,24 +200,25 @@ Example: `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=numbe
 Summary: returns data on trades in specified ID or timestamp interval
 
 Request: `GET /api/1/public/:symbol/trades`
+  where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
 
 Parameters:
 
-| Parameter | Description | Reqired	| Type |
+| Parameter | Reqired | Type | Description | 
 | --- | --- | --- | --- |
-| from | returns trades with trade_id > specified trade_id <br> returns trades with timestamp >= specified timestamp | required| int, trade_id or timestamp |
-| till | returns trades with trade_id < specified trade_id <br> returns trades with timestamp < specified timestamp | | int, trade_id or timestamp |
-| by | | required | filter and sort by `trade_id` or `ts` (timestamp) |
-| sort | | | `asc` (default) or `desc` |
-| start_index | zero-based | required | int |
-| max_results | | required | int, max value = 1000 |
-| format_item | | | "array" (default) or "object" |
-| format_price | | | "string" (default) or "number" |
-| format_amount | | | "string" (default) or "number" |
-| format_amount_unit | |  |"currency" (default) or "lot" |
-| format_tid | |  | "string" or "number" (default) |
-| format_timestamp | |  | "millisecond" (default) or "second" |
-| format_wrap | |  | "true" (default) or "false" |
+| `from` | Yes | integer | Returns trades with `trade_id` > specified `trade_id` (if `by=trade_id`) or <br>returns trades with `timestamp` >= specified `timestamp` (if `by=ts`)|
+| `till` | No | integer | Returns trades with `trade_id` < specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` < specified `timestamp` (if `by=ts`)| 
+| `by` | Yes | `trade_id` or `ts`| Selects if filtering and sorting is performed by trade_id or by timestamp
+| `sort` | No| `asc` or `desc`| Trades are sorted ascending (default) or descending|
+| `start_index` | Yes| integer | Start index for the query, zero-based |
+| `max_results` | Yes| integer | Maximum quantity of returned items, at most 1000|
+| `format_item` | No | `array` or `object` | Format of items returned: as an array (default) or as a list of objects |
+| `format_price` | No | `string` or `number`| Format of prices returned: as a string (default) or as a number |
+| `format_amount` | No | `string` or "number" | Format of amount returned: as a string (default) or as a number  |
+| `format_amount_unit` | No | `currency` or `lot` | Units of amount returned: in currency units (default) or in lots|
+| `format_tid` | No | `string` or `number`| Format of trade ID returned: as a string or as a number (default)|
+| `format_timestamp` | No | `millisecond` or "second" | Format of trade timestamp returned: in milliseconds (default) or in seconds|
+| `format_wrap `| No | `true` or `false` | Select if the line wrappnig is used in item returned. Default value - `true`|
 
 Alias:
 ```
@@ -240,7 +244,8 @@ Example:
 
 
 Example: 
-````/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false`
+````
+`/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false`
 ```
 
 ``` json
@@ -260,8 +265,8 @@ Example:
 RESTful API allows to perform trading operations with the following methods:
   - get the trading balance - [/api/1/trading/time](#tradingbalance)
   - get all active orders  - [/api/1/trading/active](#active)
-  - place a new order - [/api/1/trading/new_order](#neworder); WebSocket - [NewOrder](#NewOrder)
-  - cancel an order - [/api/1/trading/cancel_order](#cancelorder); WebSocket - [OrderCancel](#OrderCancel)
+  - place a new order - [/api/1/trading/new_order](#neworder)
+  - cancel an order - [/api/1/trading/cancel_order](#cancelorder)
   - get user's trading history - [/api/1/trading/trades](#usertrades)
   - get user's recent orders (RESTful - [/api/1/trading/recent](#recentorders)
 
@@ -300,7 +305,7 @@ Javascript code (example):
    var signature = crypto.createHmac('sha512', secretKey).update(message).digest('hex');
 ```
 
-Check out examples provided by the community:
+Useful examples provided by the community:
 * C# example code: https://gist.github.com/hitbtc-com/9808530
 * PHP example code: https://gist.github.com/hitbtc-com/10885873 
 
@@ -312,9 +317,9 @@ Trading RESTful API can return the following errors:
 | HTTP code | Text | Description |
 | --- | --- | --- |
 | 403 | Invalid API key | API key doesn't exist or API key is currently used on another endpoint (max last 15 min) |
-| 403 | Nonce has been used | nonce is not monotonous |
-| 403 | Nonce is not valid | too big number or not a number |
-| 403 | Wrong signature | |
+| 403 | Nonce has been used | Nonce is not monotonous |
+| 403 | Nonce is not valid | Too big number or not a number |
+| 403 | Wrong signature | Specified signature is not correct|
 
 <a name="reports"/>
 ### Execution reports
@@ -323,26 +328,26 @@ The API uses `ExecutionReport` as an object that represents change of order stat
 
 The following fields are used in this object:
 
-| Field	| Description | Type / Enum | Required |
+| Field	| Required | Type / Enum | Description |
 | --- | --- | --- | --- |
-| orderId | Order ID on the Exchange | string | required |
-| clientOrderId | clientOrderId sent in NewOrder message | string | required |
-| execReportType | execution report type | `new` <br> `canceled` <br> `rejected` <br> `expired` <br> `trade` <br> `status` | required |
-| orderStatus | order status | `new` <br> `partiallyFilled` <br> `filled` <br> `canceled` <br> `rejected` <br> `expired` | required |
-| orderRejectReason | Relevant only for the orders in rejected state | `unknownSymbol` <br> `exchangeClosed` <br>`orderExceedsLimit` <br> `unknownOrder` <br> `duplicateOrder` <br> `unsupportedOrder` <br> `unknownAccount` <br> `other`| for rejects |
-| symbol | | string, e.g. `BTCUSD` | required |
-| side | | `buy` or `sell` | required |
-| timestamp | UTC timestamp in milliseconds | | |
-| price | | decimal | |
-| quantity | | integer | required |
-| type | | only `limit` orders are currently supported | required |
-| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day orders< | required |
-| tradeId | Trade ID on the exchange | | for trades |
-| lastQuantity | | integer | for trades |
-| lastPrice | | decimal | for trades |
-| leavesQuantity | | integer |  |
-| cumQuantity | | integer | |
-| averagePrice | | decimal, will be 0 if 'cumQuantity'=0 | |
+| `orderId` | Yes | string | Order ID on the Exchange|
+| `clientOrderId` | Yes | string | `clientOrderId` sent in `NewOrder` message (see [/api/1/trading/new_order](#neworder)) |
+| `execReportType` | Yes | `new` <br> `canceled` <br> `rejected` <br> `expired` <br> `trade` <br> `status` | Execution report type |
+| `orderStatus` | Yes | `new` <br> `partiallyFilled` <br> `filled` <br> `canceled` <br> `rejected` <br> `expired` | Order status |
+| `orderRejectReason` | Yes - for orders in `rejected` state| `unknownSymbol` <br> `exchangeClosed` <br>`orderExceedsLimit` <br> `unknownOrder` <br> `duplicateOrder` <br> `unsupportedOrder` <br> `unknownAccount` <br> `other`|Reason of rejection. Relevant only for orders in rejected state |
+| `symbol` | Yes | string, e.g. `BTCUSD` | Currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))|
+| `side` | Yes| `buy` or `sell` | Side of a trade |
+| `timestamp` | No | integer | UTC timestamp in milliseconds |
+| `price` | No | decimal | Price of an order|
+| `quantity` | Yes | integer | Order quantity in lots |
+| `type` | Yes| `limit` | Type of an order. Only `limit` orders are currently supported |
+| `timeInForce` | Yes | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day orders< | Time in force |
+| `tradeId` | Yes - for trades| integer | Trade ID on the exchange |
+| `lastQuantity` | Yes - for trades | integer | Last quantity |
+| `lastPrice` | Yes - for trades | decimal | Last price  |
+| `leavesQuantity` | No | integer |  Leaves quantity|
+| `cumQuantity` | No | integer | Cumulative quantity |
+| `averagePrice` | No | decimal | Average price. Equals 0 if `cumQuantity`=0|
 
 Example:
 
@@ -406,15 +411,15 @@ Example:
 <a name="active"/>
 ### /api/1/trading/orders/active
 
-Summary: returns all active orders (`new` or `partiallyFilled`).
+Summary: returns all active orders in status `new` or `partiallyFilled`.
 
 Request: `GET /api/1/trading/orders/active`
 
 Parameters: 
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| symbols | string, comma-delimeted list of symbols, optional, default - all symbols | |
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `symbols` | No | string | Comma-separated list of symbols. Default - all symbols|
 
 Example:
 
@@ -448,15 +453,15 @@ Request: `POST /api/1/trading/new_order`
 
 Parameters: 
 
-| Parameter | Type | Description |
+| Parameter | Required| Type | Description |
 | --- | --- | --- |
-| clientOrderId | string, >=8 characters, <= 32 characters, required | unique order id generated by client |
-| symbol | string, required | e.g. `BTCUSD` |
-| side | `buy` or `sell`, required | |
-| price | decimal, required | order price, required for limit orders |
-| quantity | int | order quantity in lots |
-| type | `limit` or `market` | order type |
-| timeInForce | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | use `GTC` by default |
+| `clientOrderId` | Yes | string | Unique order ID generated by client. From 8 to 32 characters |
+| `symbol` | Yes| string | Currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols)), e.g. `BTCUSD` |
+| `side` | Yes | `buy` or `sell`| Side of a trade |
+| `price` | Yes - for limit orders | decimal | Order price |
+| `quantity` | No | integer | Order quantity in lots |
+| `type` | No | `limit` or `market` | Order type |
+| `timeInForce` | No | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | Time in force. Default value - `GTC` |
 
 Example:
 
@@ -495,12 +500,12 @@ Request: `POST /api/1/trading/cancel_order`
 
 Parameters: 
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| clientOrderId | string, >=8 characters, <= 32 characters, required | the same an in your order |
-| cancelRequestClientOrderId | string, >=8 characters, <= 32 characters, required | unqiue id generated by client |
-| symbol | string, required | the same an in your order |
-| side | `buy` or `sell`, required | the same an in your order |
+| Parameter | Required| Type | Description |
+| --- | --- | --- | ---| 
+| `clientOrderId` | Yes | string | Order ID, the same as in cancelling order, from 8 to 32 characters|
+| `cancelRequestClientOrderId` | Yes | string | Unqiue ID generated by client, from 8 to 32 characters|
+| `symbol` | Yes | string | Currency symbol, the same as in cancelling order |
+| `side` | Yes | `buy` or `sell`| Side of a trade, the same as in cancelling order |
 
 Example:
 
@@ -549,29 +554,29 @@ Request: `GET /api/1/trading/trades`
 
 Parameters: 
 
-| Parameter | Type | Description |
+| Parameter | Required | Type | Description |
 | --- | --- | --- |
-| `by` | `trade_id` or `ts` (timestamp) | |
-| `start_index` | int, optional, default(0) | zero-based index |
-| `max_results` | int, required, <=1000 | |
-| `symbols` | string, comma-delimited | |
-| `sort` | `asc` (default) or `desc` | |
-| `from` | optional | start `trade_id` or `ts`, see `by` |
-| `till` | optional | end `trade_id` or `ts`, see `by` |
+| `by` | No |  `trade_id` or `ts` | Selects if filtering and sorting is performed by `trade_id` or by `timestamp` |
+| `start_index` | No | integer | Zero-based index. Default value is 0 |
+| `max_results` | Yes | integer | Maximum quantity of returned results, at most 1000 |
+| `symbols` | No | string, comma-delimited | List of currency symbols |
+| `sort` | No | `asc` or `desc` | Trades are sorted ascending (default) or descending |
+| `from` | No | `trade_id` or `ts`| Returns trades with `trade_id` > specified `trade_id` (if `by=trade_id`) or <br>returns trades with `timestamp` >= specified timestamp` (if `by=ts`) |
+| `till` | No | Returns trades with `trade_id` < specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` < specified `timestamp` (if `by=ts`)|
 
 The following fields are used in `trade` object:
 
-| Field	| Description | Type / Enum |
-| --- | --- | --- |
-| `tradeId` | Trade ID on the exchange  | int, required | 
-| `execPrice` | Trade price  | decimal, required | 
-| `timestamp` |   | millisecond timestamp, required |
-| `originalOrderId` | Order ID on the exchange | |
-| `fee` | Fee for the trade | decimal, negative means rebate |
-| `clientOrderId` | Unique client-generated ID | string |
-| `symbol` | | string |
-| `side` | | `buy` or `sell` |
-| `execQuantity` | trade size, in lots | int |
+| Field	|Required | Type | Description |
+| --- | --- | --- | --- |
+| `tradeId` | Yes | integer | Trade ID on the exchange |
+| `execPrice` | Yes | decimal | Trade price | 
+| `timestamp` |  Yes | integer | Timestamp in milliseconds |
+| `originalOrderId` | No | integer | Order ID on the exchange |
+| `fee` | No | decimal | Fee for the trade, negative value means rebate |
+| `clientOrderId` | No | string | Unique order ID generated by client. From 8 to 32 characters |
+| `symbol` | No | string | Currency symbol |
+| `side` | No | `buy` or `sell` | Side of a trade |
+| `execQuantity` | No | integer | Trade size, in lots |
 
 Example response:
 
@@ -633,8 +638,8 @@ Request: `GET /api/1/trading/orders/recent`
 
 Parameters: 
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter | Required | Type | Description |
+| --- | --- | --- | ---|
 | `start_index` | int, optional, default(0) | zero-based index |
 | `max_results` | int, required, <=1000 | |
 | `sort` | `asc` or `desc` (`asc` by default) | |
@@ -656,7 +661,7 @@ The following fields are used in `order` object:
 | `timeInForce` | | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day |
 | `clientOrderId` | Unique client-generated ID | string |
 | `symbol` | | string |
-| `side` | | `buy` or `sell` |
+| `side` | No | `buy` or `sell` | Side of a trade |
 | `execQuantity` | last executed quantity in lots | int |
 
 Example response:
