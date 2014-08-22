@@ -648,21 +648,21 @@ Parameters:
 
 The following fields are used in `order` object:
 
-| Field	| Description | Type / Enum |
-| --- | --- | --- |
-| `orderId` | Order ID on the exchange | |
-| `orderStatus` |  | `new`, `partiallyFilled`, `filled`, `canceled`, `expired`, `rejected` |
-| `lastTimestamp` | last change  | millisecond timestamp, required |
-| `orderPrice` | Order price  | decimal, required for limit orders | 
-| `orderQuantity` | Order quantity in lots | int, required | 
-| `avgPrice` | Avg. price  | decimal | 
-| `quantityLeaves` | Remaining quantity in lots | int, required | 
-| `type` |  | `limit` or `market` |
-| `timeInForce` | | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day |
-| `clientOrderId` | Unique client-generated ID | string |
-| `symbol` | | string |
+| Field	| Required | Type | Description |
+| --- | --- | --- | ---|
+| `orderId` | No | integer | Order ID on the exchange |
+| `orderStatus` | No | `new`, `partiallyFilled`, `filled`, `canceled`, `expired`, `rejected` | Order status |
+| `lastTimestamp` | Yes | integer | UTC timestamp of the last change, in milliseconds |
+| `orderPrice` | Yes - for limit orders | decimal | Order price | 
+| `orderQuantity` | Yes | integer | Order quantity, in lots |
+| `avgPrice` | Yes | decimal | Average price | 
+| `quantityLeaves` | Yes | integer | Remaining quantity, in lots | 
+| `type` | No | `limit` or `market` | Type of an order |
+| `timeInForce` | No | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | Time in force |
+| `clientOrderId` | No | string | Unique client-generated ID |
+| `symbol` | No | string | Currency symbol |
 | `side` | No | `buy` or `sell` | Side of a trade |
-| `execQuantity` | last executed quantity in lots | int |
+| `execQuantity` | No | integer | Last executed quantity, in lots |
 
 Example response:
 
@@ -752,10 +752,10 @@ Summary: transfers funds between main and trading accounts; returns a transactio
 
 Parameters:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `amount` | decimal, required | amount |
-| `currency_code` | string, required, e.g. `BTC` | |
+| Parameter |Required | Type | Description |
+| --- | --- | --- | --- |
+| `amount` | Yes | decimal | Funds amount to transfer |
+| `currency_code` | Yes | string | Currency symbol, e.g. `BTC` |
 
 Example responses:
 
@@ -810,11 +810,11 @@ Request: `POST /api/1/payment/payout`
 
 Parameters:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `amount` | decimal, required | amount |
-| `currency_code` | string, required, e.g. `BTC` | |
-| `address` | string, required | BTC/LTC address |
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `amount` | Yes | decimal | Funds amount to withdraw |
+| `currency_code` | Yes | string | Currency symbol, e.g. `BTC`|
+| `address` | Yes | string | BTC/LTC address to withdraw to |
 
 Example: ```amount=0.001&currency_code=BTC&address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5```
 
@@ -832,11 +832,11 @@ Request: `GET /api/1/payment/transactions`
 
 Parameters:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `offset` | int, optional, default = 0 | start index for the query |
-| `limit` | int, required | max results for the query |
-| `dir` | string, optional, `ask` or `desc` default = `desc` | sort direction |
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `offset` | No | integer | Start index for the query, default = 0 |
+| `limit` | Yes | integer | Maximum results for the query |
+| `dir` | No | `ask` or `desc` | Transactions are sorted ascending or descending (default) |
 
 Example response:
 ```json
@@ -992,11 +992,11 @@ Fields:
 
 | Field | Description |
 | --- | --- |
-| seqNo | monotone increasing number, each symbol has an own sequence |
-| timestamp | millisecond timestamp UTC |
-| symbol | |
-| exchangeStatus | `on` or `off`, `off` means the trading is suspended |
-| ask, bid | sorted arrays of price levels in the order book; full snapshot (all price levels) is provided |
+| `seqNo` | Monotone increasing number of the snapshot, each symbol has its own sequence |
+| `timestamp` | UTC timestamp, in milliseconds |
+| `symbol` | Currency symbol traded on HitBTC exchange |
+| `exchangeStatus` | Exchange status: `on` - trading is open; `off` - trading is suspended |
+| `ask`, `bid` | Sorted arrays of price levels in the order book; full snapshot (all price levels) is provided |
 
 <a name="MarketDataIncrementalRefresh"/>
 ### MarketDataIncrementalRefresh message
@@ -1031,11 +1031,11 @@ Fields:
 
 | Field | Description |
 | --- | --- |
-| seqNo	| monotone increasing number, each symbol has an own sequence
-| timestamp |	millisecond timestamp UTC |
-| symbol	| |
-| exchangeStatus |  `on` or `off`, `off` means the trading is suspended |
-| ask, bid, trade | an array of changes in the order book; <br> `size` means new size, `size`=0 means price level has been removed |
+| `seqNo`	| Monotone increasing number of the snapshot, each symbol has its own sequence |
+| `timestamp` |	UTC timestamp, in milliseconds |
+| `symbol`	| Currency symbol traded on HitBTC exchange |
+| `exchangeStatus` |  Exchange status: `on` - trading is open; `off` - trading is suspended |
+| `ask`, `bid`, `trade` | An array of changes in the order book where `price` is a price, `size` is new size. `size`=0 means that the price level has been removed |
 
 
 <a name="tradingstreaming"/>
@@ -1080,8 +1080,8 @@ All client messages should be signed in the following manner:
 
 | Field | Description |
 | --- | --- |
-| nonce | should be monotonous within the same connection |
-| signature | base64 [hmac-sha512](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code)(binary representation of the message) |
+|`nonce` | Unique monotonous number that should be generated on the client. Should be monotonous within the same connection |
+| `signature` | Signature - hash-based message authentication code: base64 [hmac-sha512](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code) (binary representation of the message) |
 
 <a name="Login"/>
 ### Login 
@@ -1132,15 +1132,15 @@ Example:
 
 Parameters:
 
-| Parameter	| Description | Type / Enum |
-| --- | --- | --- |
-| clientOrderId | should be unique, <= 32 characters | |
-| symbol | | |
-| side | order side | `buy`, `sell` |
-| quantity | quantity in lots | integer |
-| type | order type	| only `limit` orders are currently supported |
-| price	| price (in currency) | decimal, consider price steps |
-| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill |
+| Parameter	| Type | Description |
+| --- | --- | --- | 
+| `clientOrderId` | string  | Unique order ID generated by client. From 8 to 32 characters |
+| `symbol` | string | Currency symbol traded on HitBTC exchange |
+| `side` | `buy`, `sell`| Order side  |
+| `quantity` | integer | Quantity, in lots | 
+| `type` | `limit` or `market` | Order type. Only `limit` orders are currently supported |
+| `price`	| decimal | Price, in currency units, consider price steps |
+| `timeInForce` | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill | Time in force |  |
 
 <a name="OrderCancel"/>
 ### OrderCancel
@@ -1167,13 +1167,14 @@ Example:
 
 Parameters:
 
-| Parameter	| Description | Type / Enum |
+| Parameter	| Type | Description |
 | --- | --- | --- |
-| clientOrderId | clientOrderId sent in NewOrder message | |
-| cancelRequestClientOrderId | <= 32 characters | |
-| symbol | | |
-| side | order side | `buy`, `sell` |
-| type | order type	| only `limit` orders are currently supported |
+| `clientOrderId` | string  | `clientOrderId` parameter sent in `NewOrder` message |
+| `cancelRequestClientOrderId` | string | Unqiue ID generated by client, from 8 to 32 characters |
+| `symbol` | string | Currency symbol traded on HitBTC exchange |
+| `side` |  `buy`, `sell`| Order side |
+| `type` | `limit` or `market` | Order type. Only `limit` orders are currently supported |
+
 
 <a name="ExecutionReport"/>
 ### ExecutionReport
