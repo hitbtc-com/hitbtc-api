@@ -1044,6 +1044,7 @@ Fields:
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
 URL: <wss://api.hitbtc.com:8080>
+
 Demo URL: <ws://demo-api.hitbtc.com:8080>
 
 Trading endpoint requires sending login message after connection established. All client messages should be signed and should contain valid and active API key (see [API keys and message signatures](#authenticationwebsocket)).
