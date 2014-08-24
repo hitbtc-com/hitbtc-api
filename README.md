@@ -722,7 +722,7 @@ Example response:
 RESTful API allows to manage funds with the following methods:
   - get multi-currency balance of the main account - [/api/1/payment/balance](#paymentbalance)
   - transfer funds between main and trading accounts - [/api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main](#transfer)
-  - get the last created incoming cryptocurrency address or create a new one -  [/api/1/payment/address/:currency](#address)
+  - get the last created incoming cryptocurrency address or create a new one -  [/api/1/payment/address/ (GET)](#getaddress), [/api/1/payment/address/ (POST)](#postaddress),
   - create an outgoing crypotocurrency transaction - [/api/1/payment/payout](#payout)
   - get a list of payment transactions - [/api/1/payment/transactions](#transactions)
  
