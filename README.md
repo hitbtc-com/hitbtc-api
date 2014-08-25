@@ -84,7 +84,7 @@ Example: `/api/1/public/time`
 <a name="symbols"/>
 ### /api/1/public/symbols
 
-Summary: returns actual list of symbols
+Summary: returns the actual list of currency symbols traded on HitBTC exchange, their lot sizes (`lot` parameter) and price step (`step` parameter).
 
 Request: `GET /api/1/public/symbols`
 
@@ -110,7 +110,9 @@ Example: `/api/1/public/symbols`
 <a name="ticker"/>
 ### /api/1/public/:symbol/ticker
 
-Summary: returns actual data on cryptocurrency exchange rates
+Summary: returns the actual data on cryptocurrency exchange rates.
+
+Sample usage at HitBTC site: see [https://hitbtc.com/market-overview](https://hitbtc.com/market-overview) for each line.
 
 Request: `GET /api/1/public/:symbol/ticker`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
@@ -140,7 +142,9 @@ Example: `/api/1/public/BTCUSD/ticker`
 <a name="orderbook"/>
 ### /api/1/public/:symbol/orderbook
 
-Summary: returns a list of open orders: price and amount
+Summary: returns a list of open orders for specified currency symbol: their prices and sizes.
+
+Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Order book</b> tab.
 
 Request: `GET /api/1/public/:symbol/orderbook`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
@@ -197,7 +201,9 @@ Example: `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=numbe
 <a name="trades"/>
 ### /api/1/public/:symbol/trades
 
-Summary: returns data on trades in specified ID or timestamp interval
+Summary: returns data on trades for specified currency symbol in specified ID or timestamp interval.
+
+Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Market trades</b> tab.
 
 Request: `GET /api/1/public/:symbol/trades`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
@@ -378,6 +384,8 @@ Example:
 
 Summary: returns trading balance.
 
+Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), the upper panel, <i>Trading</i> line. The black number displays total trade balance of the currency (`cash` parameter), the gray number is amount reserved against unexecuted orders and unfinished transactions (`reserved` parameter).
+
 Request: `GET /api/1/trading/balance`
 
 Parameters: no parameters
@@ -411,7 +419,9 @@ Example:
 <a name="active"/>
 ### /api/1/trading/orders/active
 
-Summary: returns all active orders in status `new` or `partiallyFilled`.
+Summary: returns all orders in status `new` or `partiallyFilled`.
+
+Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My orders</b> tab.
 
 Request: `GET /api/1/trading/orders/active`
 
@@ -448,6 +458,8 @@ Example:
 ### /api/1/trading/new_order
 
 Summary: place a new order. Returns a JSON object `ExecutionReport` that respresent a status of the order.
+
+Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Sell Order</b> and <b>Buy Order</b> panels.
 
 Request: `POST /api/1/trading/new_order`
 
@@ -495,6 +507,8 @@ Example response:
 ### /api/1/trading/cancel_order
 
 Summary: cancels an order. Returns `ExecutionReport` JSON object or `CancelReject` JSON object.
+
+Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My Orders</b> tab. Click <b>Cancel</b> button in required order line.
 
 Request: `POST /api/1/trading/cancel_order`
 
