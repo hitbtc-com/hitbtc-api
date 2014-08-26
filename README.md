@@ -421,7 +421,7 @@ Example:
 
 Summary: returns all orders in status `new` or `partiallyFilled`.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My orders</b> tab.
+Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My orders</b> tab, <b>Active</b> group.
 
 Request: `GET /api/1/trading/orders/active`
 
@@ -564,6 +564,8 @@ Example response:
 
 Summary: returns the trading history - an array of user's trades (`trade` objects).
 
+Sample usage at HitBTC site: [https://hitbtc.com/trading-history](https://hitbtc.com/trading-history). Trades for preceding 24 hours see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My trades</b> tab. 
+
 Request: `GET /api/1/trading/trades`
 
 Parameters: 
@@ -647,6 +649,8 @@ Example response:
 ### /api/1/trading/orders/recent
 
 Summary: returns an array of user's recent orders (`order` objects) for last 24 hours, sorted by order update time.
+
+Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My orders</b> tab.
 
 Request: `GET /api/1/trading/orders/recent`
 
@@ -747,6 +751,8 @@ Payment operations require [authentication](#authentication)
 
 Summary: returns multi-currency balance of the main account.
 
+Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account).
+
 Request: `GET /api/1/payment/balance`
 
 Parameters: no parameters
@@ -762,7 +768,9 @@ Example response:
 
 Request: `POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main`
 
-Summary: transfers funds between main and trading accounts; returns a transaction ID or an error
+Summary: transfers funds between main and trading accounts; returns a transaction ID or an error.
+
+Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account). Click the appropriate arrow in the currency line then specify required amount and click <b>Transfer</b> button.
 
 Parameters:
 
@@ -784,7 +792,9 @@ Example responses:
 <a name="getaddress"/>
 ### /api/1/payment/address/ (GET)
 
-Summary: returns the last created incoming cryptocurrency address that can be used to deposit cryptocurrency. 
+Summary: returns the last created incoming cryptocurrency address that can be used to deposit cryptocurrency to your account. 
+
+Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>copy address</b> link.
 
 Request: `GET /api/1/payment/address/:currency`
 
@@ -801,7 +811,9 @@ Example response:
 <a name="postaddress"/>
 ### /api/1/payment/address/ (POST)
 
-Summary: creates an address that can be used to deposit cryptocurrency; returns a new cryptocurrency address.
+Summary: creates an address that can be used to deposit cryptocurrency to your account; returns a new cryptocurrency address.
+
+Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>create new address</b> link.
 
 Request: `POST /api/1/payment/address/:currency`
 
@@ -819,6 +831,8 @@ Example response:
 ### /api/1/payment/payout
 
 Summary: withdraws money and creates an outgoing crypotocurrency transaction; returns a transaction ID on the exchange or an error.
+
+Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>copy address</b> link.
 
 Request: `POST /api/1/payment/payout`
 
@@ -841,6 +855,8 @@ Example response:
 ### /api/1/payment/transactions
 
 Summary: returns a list of payment transactions and their statuses (array of transactions).
+
+Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account), <b>History</b> panel.
 
 Request: `GET /api/1/payment/transactions`
 
