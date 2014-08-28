@@ -182,7 +182,12 @@ Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0
 ```
 
 
-Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false`
+Example: 
+
+```
+/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false
+```
+
 ``` json
 [
     {"date": 1393492619, "price": 575.64, "amount": 0.02, "tid": "3814483"},
