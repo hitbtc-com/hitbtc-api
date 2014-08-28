@@ -830,8 +830,7 @@ Some recommendations to consider:
 * It's recommended to invalidate a state of the application periodically using snapshots.
 * It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.
 
-<a name="MarketDataSnapshotFullRefresh"/>
-### MarketDataSnapshotFullRefresh
+### <a name="MarketDataSnapshotFullRefresh"></a> MarketDataSnapshotFullRefresh
 
 MarketDataSnapshotFullRefresh message contains a full snapshot of the order book.
 
@@ -910,8 +909,7 @@ Fields:
 | exchangeStatus | `on` or `off`, `off` means the trading is suspended |
 | ask, bid | sorted arrays of price levels in the order book; full snapshot (all price levels) is provided |
 
-<a name="MarketDataIncrementalRefresh"/>
-### MarketDataIncrementalRefresh
+### <a name="MarketDataIncrementalRefresh"></a> MarketDataIncrementalRefresh
 
 MarketDataIncrementalRefresh contains incremental changes of the order book and individual trades.
 
@@ -992,8 +990,7 @@ All client messages should be signed in the following manner:
 | nonce | should be monotonous within the same connection |
 | signature | base64 [hmac-sha512](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code)(binary representation of the message) |
 
-<a name="Login"/>
-### Login 
+### <a name="Login"></a> Login 
 
 Example:
 ```json
@@ -1013,8 +1010,7 @@ Parameters: no parameters
 
 If client doesn't send valid logon message in 10 second the connection will be dropped.
 
-<a name="NewOrder"/>
-### NewOrder
+### <a name="NewOrder"></a> NewOrder
 
 Example:
 
@@ -1051,8 +1047,7 @@ Parameters:
 | price	| price (in currency) | decimal, consider price steps |
 | timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill |
 
-<a name="OrderCancel"/>
-### OrderCancel
+### <a name="OrderCancel"></a>OrderCancel
 
 Example:
 
@@ -1084,8 +1079,7 @@ Parameters:
 | side | order side | `buy`, `sell` |
 | type | order type	| only `limit` orders are currently supported |
 
-<a name="ExecutionReport"/>
-### ExecutionReport
+### <a name="ExecutionReport"></a>ExecutionReport
 
 Example:
 
@@ -1130,8 +1124,7 @@ Fields:
 | cumQuantity | | integer | |
 | averagePrice | | decimal, will be 0 if 'cumQuantity'=0 | |
 
-<a name="CancelReject"/>
-### CancelReject
+### <a name="CancelReject"></a>CancelReject
 
 Example:
 ```json
