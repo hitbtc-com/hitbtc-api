@@ -841,7 +841,7 @@ Example message:
     "symbol": "BTCUSD",
     "exchangeStatus": "working",
     "ask": [
-        {http://jsfiddle.net/He6AU/13/
+        {
             "price": 101.42,
             "size": 7
         },
