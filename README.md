@@ -1,5 +1,4 @@
-<a name="summary"/>
-## Summary
+# <a name="summary"/>Summary
 
 This document provides the complete reference for [HitBTC](https://hitbtc.com) API.
 
@@ -16,8 +15,7 @@ HitBTC API has several interfaces to implement them in a custom software:
 Trading and payment operations require user's authentification: each request or message should have a signature. 
 You should get your API key and Secret key on the [Settings](https://hitbtc.com/settings) page. See details in [RESTful API authentification](#authenticationrestful) and [WebSocket API authentification](#authenticationwebsocket).
 
-<a name="cursymbols"/>
-### Currency symbols
+### <a name="cursymbols"/>Currency symbols
 
 The following currency symbols are traded on HitBTC exchange.
 
@@ -41,8 +39,7 @@ Size representation:
 * Size values in RESTful market data are represented in money (e.g. in coins or in USD). 
 * Size values in RESTful trade are represented in lots (e.g. 1 means 0.01 BTC for BTCUSD)
 
-<a name="restful"/>
-# RESTful API
+# <a name="restful"/>RESTful API
 
 RESTful API provides the most functional access to HitBTC facilities.
 RESTful API allows: 
@@ -56,8 +53,7 @@ Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
 Trading and payment operations require [authentication](#authentication). See also [error codes](#errors) and [reports representing order status changes](#reports).
 
-<a name="marketrestful"/>
-## Market data RESTful API
+## <a name="marketrestful"/>Market data RESTful API
 
 RESTful API provides access to the market data with following methods:
   - get the timestamp- [/api/1/public/time](#time)
@@ -67,8 +63,7 @@ RESTful API provides access to the market data with following methods:
   - get the individual trades data for specified symbol - [/api/1/public/:symbol/trades](#trades)
 
 
-<a name="time"/>
-### /api/1/public/time
+### <a name="time"/>/api/1/public/time
 
 Summary: returns the server time in UNIX timestamp format
 
@@ -81,8 +76,7 @@ Example: `/api/1/public/time`
 }
 ```
 
-<a name="symbols"/>
-### /api/1/public/symbols
+### <a name="symbols"/>/api/1/public/symbols
 
 Summary: returns the actual list of currency symbols traded on HitBTC exchange, their lot sizes (`lot` parameter) and price step (`step` parameter).
 
@@ -107,8 +101,7 @@ Example: `/api/1/public/symbols`
 }
 ```
 
-<a name="ticker"/>
-### /api/1/public/:symbol/ticker
+### <a name="ticker"/>/api/1/public/:symbol/ticker
 
 Summary: returns the actual data on cryptocurrency exchange rates.
 
@@ -139,8 +132,7 @@ Example: `/api/1/public/BTCUSD/ticker`
 * volume - volume per last 24h + last incomplete minute
 * timestamp - the server time in UNIX timestamp format
 
-<a name="orderbook"/>
-### /api/1/public/:symbol/orderbook
+### <a name="orderbook"/>/api/1/public/:symbol/orderbook
 
 Summary: returns a list of open orders for specified currency symbol: their prices and sizes.
 
@@ -198,8 +190,7 @@ Example: `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=numbe
 }
 ```
 
-<a name="trades"/>
-### /api/1/public/:symbol/trades
+### <a name="trades"/>/api/1/public/:symbol/trades
 
 Summary: returns data on trades for specified currency symbol in specified ID or timestamp interval.
 
@@ -249,9 +240,10 @@ Example:
 ```
 
 
-Example: 
-````
-`/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false`
+Example:
+
+```
+/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false
 ```
 
 ``` json
@@ -265,8 +257,7 @@ Example:
 ```
 
 
-<a name="tradingrestful"/>
-## Trading RESTful API
+## <a name="tradingrestful"/>Trading RESTful API
 
 RESTful API allows to perform trading operations with the following methods:
   - get the trading balance - [/api/1/trading/time](#tradingbalance)
@@ -281,8 +272,7 @@ Trading operations require [authentication](#authentication).
 [Error codes](#errors) and [reports representing order status changes](#reports) are described below.
 
 
-<a name="authenticationrestful"/>
-### Authentication
+### <a name="authenticationrestful"/>Authentication
 
 RESTful Trading API requires HMAC-SHA512 signatures for each request.
 
@@ -315,8 +305,7 @@ Useful examples provided by the community:
 * C# example code: https://gist.github.com/hitbtc-com/9808530
 * PHP example code: https://gist.github.com/hitbtc-com/10885873 
 
-<a name="errors"/>
-### Error codes
+### <a name="errors"/>Error codes
 
 Trading RESTful API can return the following errors:
 
@@ -327,8 +316,7 @@ Trading RESTful API can return the following errors:
 | 403 | Nonce is not valid | Too big number or not a number |
 | 403 | Wrong signature | Specified signature is not correct|
 
-<a name="reports"/>
-### Execution reports
+### <a name="reports"/>Execution reports
 
 The API uses `ExecutionReport` as an object that represents change of order status.
 
@@ -379,8 +367,7 @@ Example:
 ```
 
 
-<a name="tradingbalance"/>
-### /api/1/trading/balance
+### <a name="tradingbalance"/>/api/1/trading/balance
 
 Summary: returns trading balance.
 
@@ -416,8 +403,7 @@ Example:
 ]}
 ```
 
-<a name="active"/>
-### /api/1/trading/orders/active
+### <a name="active"/>/api/1/trading/orders/active
 
 Summary: returns all orders in status `new` or `partiallyFilled`.
 
@@ -454,8 +440,7 @@ Example:
 ]}
 ```
 
-<a name="neworder"/>
-### /api/1/trading/new_order
+### <a name="neworder"/>/api/1/trading/new_order
 
 Summary: place a new order. Returns a JSON object `ExecutionReport` that respresent a status of the order.
 
@@ -503,8 +488,7 @@ Example response:
      "averagePrice": 0 } }
 ```
 
-<a name="cancelorder"/>
-### /api/1/trading/cancel_order
+### <a name="cancelorder"/>/api/1/trading/cancel_order
 
 Summary: cancels an order. Returns `ExecutionReport` JSON object or `CancelReject` JSON object.
 
@@ -559,8 +543,7 @@ Example response:
 } }
 ```
 
-<a name="usertrades"/>
-### /api/1/trading/trades
+### <a name="usertrades"/>/api/1/trading/trades
 
 Summary: returns the trading history - an array of user's trades (`trade` objects).
 
@@ -645,8 +628,7 @@ Example response:
 ]}
 ```
 
-<a name="recentorders"/>
-### /api/1/trading/orders/recent
+### <a name="recentorders"/>/api/1/trading/orders/recent
 
 Summary: returns an array of user's recent orders (`order` objects) for last 24 hours, sorted by order update time.
 
@@ -734,8 +716,7 @@ Example response:
 ]}
 ```
 
-<a name="paymentsrestful"/>
-## Payment RESTful API
+## <a name="paymentsrestful"/>Payment RESTful API
 
 RESTful API allows to manage funds with the following methods:
   - get multi-currency balance of the main account - [/api/1/payment/balance](#paymentbalance)
@@ -746,8 +727,7 @@ RESTful API allows to manage funds with the following methods:
  
 Payment operations require [authentication](#authentication)
 
-<a name="paymentbalance"/>
-### /api/1/payment/balance
+### <a name="paymentbalance"/>/api/1/payment/balance
 
 Summary: returns multi-currency balance of the main account.
 
@@ -763,8 +743,7 @@ Example response:
 {"balance": [{"currency_code": "USD", "balance": 13.12}, {"currency_code": "EUR", "balance": 0}, {"currency_code": "LTC", "balance": 1.07}, {"currency_code": "BTC", "balance": 11.9}]}
 ```
 
-<a name="transfer"/>
-### /api/1/payment/transfer_to_trading and /api/1/payment/transfer_to_main
+### <a name="transfer"/>/api/1/payment/transfer_to_trading and /api/1/payment/transfer_to_main
 
 Request: `POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main`
 
@@ -789,8 +768,7 @@ Example responses:
 {"transaction": "52976-103925-18443984"}
 ```
 
-<a name="getaddress"/>
-### /api/1/payment/address/ (GET)
+### <a name="getaddress"/>/api/1/payment/address/ (GET)
 
 Summary: returns the last created incoming cryptocurrency address that can be used to deposit cryptocurrency to your account. 
 
@@ -808,8 +786,7 @@ Example response:
 {"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
 ```
 
-<a name="postaddress"/>
-### /api/1/payment/address/ (POST)
+### <a name="postaddress"/>/api/1/payment/address/ (POST)
 
 Summary: creates an address that can be used to deposit cryptocurrency to your account; returns a new cryptocurrency address.
 
@@ -827,8 +804,7 @@ Example response:
 {"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
 ```
 
-<a name="payout"/>
-### /api/1/payment/payout
+### <a name="payout"/>/api/1/payment/payout
 
 Summary: withdraws money and creates an outgoing crypotocurrency transaction; returns a transaction ID on the exchange or an error.
 
@@ -851,8 +827,7 @@ Example response:
 {"transaction": "51545-103004-18442681"}
 ```
 
-<a name="transactions"/>
-### /api/1/payment/transactions
+### <a name="transactions"/>/api/1/payment/transactions
 
 Summary: returns a list of payment transactions and their statuses (array of transactions).
 
@@ -891,10 +866,9 @@ Example response:
 
 
 
-<a name="socketio"/>
-## socket.io Market Data
+## <a name="socketio"/>socket.io Market Data
 
-The API provides socket.io protocol for receiving market data. It supports:
+The API provides socket.io version 1.0.x protocol for receiving market data. It supports:
 * WebSocket, xhr-polling and jsonp-polling transports
 * multiplexing a single connection with socket.io namespaces (see [`trades` namespace](#tradesnamespace))
 
@@ -905,10 +879,9 @@ Useful links:
 API links:
 * socket.io URL: `http://api.hitbtc.com:8081`
 * socket.io demo URL: `http://demo-api.hitbtc.com:8081`
-* live example (both demo and primary API): `http://jsfiddle.net/He6AU/13/`
+* live example (both demo and primary API): `http://jsfiddle.net/rn7zy75n/1/`
 
-<a name="tradesnamespace"/>
-### `trades` namespace
+### <a name="tradesnamespace"/>`trades` namespace
 
 Namespace: `trades`
 
@@ -922,8 +895,7 @@ Event example:
 ```
 
 
-<a name="streaming"/>
-# Streaming API
+# <a name="streaming"/>Streaming API
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
@@ -936,8 +908,7 @@ Streaming API provides an access to:
   - trading operations. See [Trading streaming end-point](#tradingstreaming)
 
 
-<a name="marketstreaming"/>
-## Market data streaming end-point
+## <a name="marketstreaming"/>Market data streaming end-point
 
 The server broadcasts the following types of messages:
 * [MarketDataSnapshotFullRefresh](#MarketDataSnapshotFullRefresh) message contains a full snapshot of the order book.
@@ -948,8 +919,7 @@ Some recommendations to consider:
 * It's recommended to invalidate a state of the application periodically using snapshots.
 * It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.
 
-<a name="MarketDataSnapshotFullRefresh"/>
-### MarketDataSnapshotFullRefresh message
+### <a name="MarketDataSnapshotFullRefresh"/>MarketDataSnapshotFullRefresh message
 
 Summary: contains a full snapshot of the order book.
 
@@ -960,7 +930,7 @@ Example message:
     "symbol": "BTCUSD",
     "exchangeStatus": "working",
     "ask": [
-        {http://jsfiddle.net/He6AU/13/
+        {
             "price": 101.42,
             "size": 7
         },
@@ -1028,8 +998,7 @@ Fields:
 | `exchangeStatus` | Exchange status: `on` - trading is open; `off` - trading is suspended |
 | `ask`, `bid` | Sorted arrays of price levels in the order book; full snapshot (all price levels) is provided |
 
-<a name="MarketDataIncrementalRefresh"/>
-### MarketDataIncrementalRefresh message
+### <a name="MarketDataIncrementalRefresh"/>MarketDataIncrementalRefresh message
 
 Summary: contains incremental changes of the order book and individual trades.
 
@@ -1068,8 +1037,7 @@ Fields:
 | `ask`, `bid`, `trade` | An array of changes in the order book where `price` is a price, `size` is new size. `size`=0 means that the price level has been removed |
 
 
-<a name="tradingstreaming"/>
-## Trading streaming end-point
+## <a name="tradingstreaming"/>Trading streaming end-point
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
@@ -1091,8 +1059,7 @@ The following message types are supported:
 | [CancelReject](#CancelReject) | Server -> Client |
 
 
-<a name="authenticationwebsocket"/>
-### API keys and message signatures
+### <a name="authenticationwebsocket"/>API keys and message signatures
 
 All client messages should be signed in the following manner:
 
@@ -1114,8 +1081,7 @@ All client messages should be signed in the following manner:
 |`nonce` | Unique monotonous number that should be generated on the client. Should be monotonous within the same connection |
 | `signature` | Signature - hash-based message authentication code: base64 [hmac-sha512](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code) (binary representation of the message) |
 
-<a name="Login"/>
-### Login 
+### <a name="Login"/>Login 
 
 Example:
 ```json
@@ -1135,8 +1101,7 @@ Parameters: no parameters
 
 If client doesn't send valid logon message in 10 second the connection will be dropped.
 
-<a name="NewOrder"/>
-### NewOrder
+### <a name="NewOrder"/>NewOrder
 
 Example:
 
@@ -1173,8 +1138,7 @@ Parameters:
 | `price`	| decimal | Price, in currency units, consider price steps |
 | `timeInForce` | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill | Time in force |  |
 
-<a name="OrderCancel"/>
-### OrderCancel
+### <a name="OrderCancel"/>OrderCancel
 
 Example:
 
@@ -1207,8 +1171,7 @@ Parameters:
 | `type` | `limit` or `market` | Order type. Only `limit` orders are currently supported |
 
 
-<a name="ExecutionReport"/>
-### ExecutionReport
+### <a name="ExecutionReport"/>ExecutionReport
 
 Example:
 
@@ -1254,8 +1217,7 @@ Fields:
 | `averagePrice` | No | decimal | Average price. Equals 0 if `cumQuantity`=0|
 
 
-<a name="CancelReject"/>
-### CancelReject
+### <a name="CancelReject"/>CancelReject
 
 Example:
 ```json
@@ -1278,8 +1240,7 @@ Fields:
 | `rejectReasonText` | No | string | Optional text explaining reject reason |
 
 
-<a name="sample"/>
-## Sample code
+## <a name="sample"/>Sample code
 
 ### Node.js snippet: message signature
 
