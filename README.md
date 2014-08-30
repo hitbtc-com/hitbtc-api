@@ -65,11 +65,13 @@ RESTful API provides access to the market data with following methods:
 
 ### <a name="time"/>/api/1/public/time
 
-Summary: returns the server time in UNIX timestamp format
+<i>Summary:</i> returns the server time in UNIX timestamp format
 
-Request: `GET /api/1/public/time`
+<i>Request:</i> `GET /api/1/public/time`
 
-Example: `/api/1/public/time`
+<i>Example:</i> `/api/1/public/time`
+
+<i>Example response:</i>
 ``` json
 {
     "timestamp": 1393492619000
@@ -78,11 +80,13 @@ Example: `/api/1/public/time`
 
 ### <a name="symbols"/>/api/1/public/symbols
 
-Summary: returns the actual list of currency symbols traded on HitBTC exchange, their lot sizes (`lot` parameter) and price step (`step` parameter).
+<i>Summary:</i> returns the actual list of currency symbols traded on HitBTC exchange, their lot sizes (`lot` parameter) and price step (`step` parameter).
 
-Request: `GET /api/1/public/symbols`
+<i>Request:</i> `GET /api/1/public/symbols`
 
-Example: `/api/1/public/symbols`
+<i>Example:</i> `/api/1/public/symbols`
+
+<i>Example response:</i>
 ``` json
 {
     "symbols": [
@@ -103,15 +107,16 @@ Example: `/api/1/public/symbols`
 
 ### <a name="ticker"/>/api/1/public/:symbol/ticker
 
-Summary: returns the actual data on cryptocurrency exchange rates.
+<i>Summary:</i> returns the actual data on cryptocurrency exchange rates.
 
 Sample usage at HitBTC site: see [https://hitbtc.com/market-overview](https://hitbtc.com/market-overview) for each line.
 
-Request: `GET /api/1/public/:symbol/ticker`
+<i>Request:</i> `GET /api/1/public/:symbol/ticker`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
 
-Example: `/api/1/public/BTCUSD/ticker`
+<i>Example:</i> `/api/1/public/BTCUSD/ticker`
 
+<i>Example response:</i>
 ``` json
 {
     "last": "550.73",
@@ -134,13 +139,14 @@ Example: `/api/1/public/BTCUSD/ticker`
 
 ### <a name="orderbook"/>/api/1/public/:symbol/orderbook
 
-Summary: returns a list of open orders for specified currency symbol: their prices and sizes.
+<i>Summary:</i> returns a list of open orders for specified currency symbol: their prices and sizes.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Order book</b> tab.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Order book</b> tab.
 
-Request: `GET /api/1/public/:symbol/orderbook`
+<i>Request:</i> `GET /api/1/public/:symbol/orderbook`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
 
+<i>Parameters:</i>
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
@@ -148,9 +154,11 @@ Request: `GET /api/1/public/:symbol/orderbook`
 | `format_amount` | No | `string` or `number` | Format of amount returned: as a string (default) or as a number|
 | `format_amount_unit` | No | `currency` or `lot` | Units of amount returned: in currency units (default) or in lots|
 
-Alias: `/api/1/request/:symbol/orderbook.json` -> `/api/1/public/:symbol/orderbook?format_price=number&format_amount=number`
+<i>Alias:</i> `/api/1/request/:symbol/orderbook.json` -> `/api/1/public/:symbol/orderbook?format_price=number&format_amount=number`
 
-Example: `/api/1/public/BTCUSD/orderbook`
+<i>Example:</i> `/api/1/public/BTCUSD/orderbook`
+
+<i>Example response:</i>
 ``` json
 {
     "asks": [
@@ -170,7 +178,9 @@ Example: `/api/1/public/BTCUSD/orderbook`
 }
 ```
 
-Example: `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=number`
+<i>Example:</i> `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=number`
+
+<i>Example response:</i>
 ``` json
 {
     "asks": [
@@ -192,14 +202,14 @@ Example: `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=numbe
 
 ### <a name="trades"/>/api/1/public/:symbol/trades
 
-Summary: returns data on trades for specified currency symbol in specified ID or timestamp interval.
+<i>Summary:</i> returns data on trades for specified currency symbol in specified ID or timestamp interval.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Market trades</b> tab.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Market trades</b> tab.
 
-Request: `GET /api/1/public/:symbol/trades`
+<i>Request:</i> `GET /api/1/public/:symbol/trades`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
 
-Parameters:
+<i>Parameters:</i>
 
 | Parameter | Reqired | Type | Description | 
 | --- | --- | --- | --- |
@@ -217,15 +227,16 @@ Parameters:
 | `format_timestamp` | No | `millisecond` or `second` | Format of trade timestamp returned: in milliseconds (default) or in seconds|
 | `format_wrap `| No | `true` or `false` | Select if the line wrappnig is used in item returned. Default value - `true`|
 
-Alias:
+<i>Alias:</i>
 ```
 `/api/1/request/:symbol/trades.json?since=<trade_id>` -> `/api/1/public/:symbol/trades?from=<trade_id>&by=trade_id&start_index=0&format_numbers=number&format_tradeid=string&format_objects=object&format_timestamp=second`
 ```
 
-Example:
+<i>Example:</i>
 ```
 `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100`
 ```
+<i>Example response:</i>
 
 ``` json
 {
@@ -240,11 +251,12 @@ Example:
 ```
 
 
-Example:
+<i>Example:</i>
 
 ```
 /api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false
 ```
+<i>Example response:</i>
 
 ``` json
 [
@@ -343,7 +355,7 @@ The following fields are used in this object:
 | `cumQuantity` | No | integer | Cumulative quantity |
 | `averagePrice` | No | decimal | Average price. Equals 0 if `cumQuantity`=0|
 
-Example:
+<i>Example response:</i>
 
 ``` json
 { "ExecutionReport": { 
@@ -369,15 +381,15 @@ Example:
 
 ### <a name="tradingbalance"/>/api/1/trading/balance
 
-Summary: returns trading balance.
+<i>Summary:</i> returns trading balance.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), the upper panel, <i>Trading</i> line. The black number displays total trade balance of the currency (`cash` parameter), the gray number is amount reserved against unexecuted orders and unfinished transactions (`reserved` parameter).
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), the upper panel, <i>Trading</i> line. The black number displays total trade balance of the currency (`cash` parameter), the gray number is amount reserved against unexecuted orders and unfinished transactions (`reserved` parameter).
 
-Request: `GET /api/1/trading/balance`
+<i>Request:</i> `GET /api/1/trading/balance`
 
-Parameters: no parameters
+<i><i>Parameters:</i></i> no parameters
 
-Example: 
+<i>Example response:</i>
 ``` json
 {"balance": [
   {
@@ -405,19 +417,19 @@ Example:
 
 ### <a name="active"/>/api/1/trading/orders/active
 
-Summary: returns all orders in status `new` or `partiallyFilled`.
+<i>Summary:</i> returns all orders in status `new` or `partiallyFilled`.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My orders</b> tab, <b>Active</b> group.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My orders</b> tab, <b>Active</b> group.
 
-Request: `GET /api/1/trading/orders/active`
+<i>Request:</i> `GET /api/1/trading/orders/active`
 
-Parameters: 
+<i>Parameters:</i> 
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
 | `symbols` | No | string | Comma-separated list of symbols. Default - all symbols|
 
-Example:
+<i>Example response:</i>
 
 ``` json
 {"orders": [
@@ -442,13 +454,13 @@ Example:
 
 ### <a name="neworder"/>/api/1/trading/new_order
 
-Summary: place a new order. Returns a JSON object `ExecutionReport` that respresent a status of the order.
+<i>Summary:</i> place a new order. Returns a JSON object `ExecutionReport` that respresent a status of the order.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Sell Order</b> and <b>Buy Order</b> panels.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Sell Order</b> and <b>Buy Order</b> panels.
 
-Request: `POST /api/1/trading/new_order`
+<i>Request:</i> `POST /api/1/trading/new_order`
 
-Parameters: 
+<i><i>Parameters:</i></i> 
 
 | Parameter | Required| Type | Description |
 | --- | --- | --- | --- |
@@ -460,14 +472,14 @@ Parameters:
 | `type` | No | `limit` or `market` | Order type |
 | `timeInForce` | No | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | Time in force. Default value - `GTC` |
 
-Example:
+<i>Example:</i>
 
 ```
 post url: /api/1/trading/new_order?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d
 post data: clientOrderId=11111112&symbol=BTCUSD&side=buy&price=0.1&quantity=100&type=limit&timeInForce=GTC
 ```
 
-Example response:
+<i>Example response:</i>
 ``` json
 { "ExecutionReport": 
    { "orderId": "58521038",
@@ -490,13 +502,13 @@ Example response:
 
 ### <a name="cancelorder"/>/api/1/trading/cancel_order
 
-Summary: cancels an order. Returns `ExecutionReport` JSON object or `CancelReject` JSON object.
+<i>Summary:</i> cancels an order. Returns `ExecutionReport` JSON object or `CancelReject` JSON object.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My Orders</b> tab. Click <b>Cancel</b> button in required order line.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My Orders</b> tab. Click <b>Cancel</b> button in required order line.
 
-Request: `POST /api/1/trading/cancel_order`
+<i>Request:</i> `POST /api/1/trading/cancel_order`
 
-Parameters: 
+<i><i>Parameters:</i></i> 
 
 | Parameter | Required| Type | Description |
 | --- | --- | --- | ---| 
@@ -505,14 +517,14 @@ Parameters:
 | `symbol` | Yes | string | Currency symbol, the same as in cancelling order |
 | `side` | Yes | `buy` or `sell`| Side of a trade, the same as in cancelling order |
 
-Example:
+<i>Example:</i>
 
 ```
 post url: /api/1/trading/cancel_order?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d
 post data: clientOrderId=11111112&cancelRequestClientOrderId=38257825798349578945&symbol=BTCUSD&side=buy
 ```
 
-Example response:
+<i>Example response:</i>
 ``` json
 { "ExecutionReport": 
    { "orderId": "58521038",
@@ -545,13 +557,13 @@ Example response:
 
 ### <a name="usertrades"/>/api/1/trading/trades
 
-Summary: returns the trading history - an array of user's trades (`trade` objects).
+<i>Summary:</i> returns the trading history - an array of user's trades (`trade` objects).
 
-Sample usage at HitBTC site: [https://hitbtc.com/trading-history](https://hitbtc.com/trading-history). Trades for preceding 24 hours see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My trades</b> tab. 
+<i>Sample usage at HitBTC site:</i> [https://hitbtc.com/trading-history](https://hitbtc.com/trading-history). Trades for preceding 24 hours see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My trades</b> tab. 
 
-Request: `GET /api/1/trading/trades`
+<i>Request:</i> `GET /api/1/trading/trades`
 
-Parameters: 
+<i><i>Parameters:</i></i> 
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
@@ -577,7 +589,7 @@ The following fields are used in `trade` object:
 | `side` | No | `buy` or `sell` | Side of a trade |
 | `execQuantity` | No | integer | Trade size, in lots |
 
-Example response:
+<i>Example response:</i>
 
 ``` json
 {"trades": [
@@ -630,13 +642,13 @@ Example response:
 
 ### <a name="recentorders"/>/api/1/trading/orders/recent
 
-Summary: returns an array of user's recent orders (`order` objects) for last 24 hours, sorted by order update time.
+<i>Summary:</i> returns an array of user's recent orders (`order` objects) for last 24 hours, sorted by order update time.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My orders</b> tab.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My orders</b> tab.
 
-Request: `GET /api/1/trading/orders/recent`
+<i>Request:</i> `GET /api/1/trading/orders/recent`
 
-Parameters: 
+<i><i>Parameters:</i></i> 
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | ---|
@@ -664,7 +676,7 @@ The following fields are used in `order` object:
 | `side` | No | `buy` or `sell` | Side of a trade |
 | `execQuantity` | No | integer | Last executed quantity, in lots |
 
-Example response:
+<i>Example response:</i>
 
 ``` json
 {"orders": [
@@ -729,15 +741,15 @@ Payment operations require [authentication](#authentication)
 
 ### <a name="paymentbalance"/>/api/1/payment/balance
 
-Summary: returns multi-currency balance of the main account.
+<i>Summary:</i> returns multi-currency balance of the main account.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account).
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account).
 
-Request: `GET /api/1/payment/balance`
+<i>Request:</i> `GET /api/1/payment/balance`
 
-Parameters: no parameters
+<i><i>Parameters:</i></i> no parameters
 
-Example response:
+<i>Example response:</i>
 
 ``` json
 {"balance": [{"currency_code": "USD", "balance": 13.12}, {"currency_code": "EUR", "balance": 0}, {"currency_code": "LTC", "balance": 1.07}, {"currency_code": "BTC", "balance": 11.9}]}
@@ -745,20 +757,20 @@ Example response:
 
 ### <a name="transfer"/>/api/1/payment/transfer_to_trading and /api/1/payment/transfer_to_main
 
-Request: `POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main`
+<i>Request:</i> `POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main`
 
-Summary: transfers funds between main and trading accounts; returns a transaction ID or an error.
+<i>Summary:</i> transfers funds between main and trading accounts; returns a transaction ID or an error.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account). Click the appropriate arrow in the currency line then specify required amount and click <b>Transfer</b> button.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account). Click the appropriate arrow in the currency line then specify required amount and click <b>Transfer</b> button.
 
-Parameters:
+<i><i>Parameters:</i></i>
 
 | Parameter |Required | Type | Description |
 | --- | --- | --- | --- |
 | `amount` | Yes | decimal | Funds amount to transfer |
 | `currency_code` | Yes | string | Currency symbol, e.g. `BTC` |
 
-Example responses:
+<i>Example responses:</i>
 
 ```json
 {"message": "Balance not enough", "statusCode": 409, "body": "Balance not enough"}
@@ -770,17 +782,17 @@ Example responses:
 
 ### <a name="getaddress"/>/api/1/payment/address/ (GET)
 
-Summary: returns the last created incoming cryptocurrency address that can be used to deposit cryptocurrency to your account. 
+<i>Summary:</i> returns the last created incoming cryptocurrency address that can be used to deposit cryptocurrency to your account. 
 
-Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>copy address</b> link.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>copy address</b> link.
 
-Request: `GET /api/1/payment/address/:currency`
+<i>Request:</i> `GET /api/1/payment/address/:currency`
 
-Parameters: no parameters
+<i><i>Parameters:</i></i> no parameters
 
-Example request: `GET /api/1/payment/address/BTC`
+<i>Example:</i> `GET /api/1/payment/address/BTC`
 
-Example response:
+<i>Example response:</i>
 
 ```json
 {"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
@@ -788,17 +800,17 @@ Example response:
 
 ### <a name="postaddress"/>/api/1/payment/address/ (POST)
 
-Summary: creates an address that can be used to deposit cryptocurrency to your account; returns a new cryptocurrency address.
+<i>Summary:</i> creates an address that can be used to deposit cryptocurrency to your account; returns a new cryptocurrency address.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>create new address</b> link.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>create new address</b> link.
 
-Request: `POST /api/1/payment/address/:currency`
+<i>Request:</i> `POST /api/1/payment/address/:currency`
 
-Parameters: no parameters
+<i><i>Parameters:</i></i> no parameters
 
-Example request: `POST /api/1/payment/address/BTC`
+<i>Example:</i> `POST /api/1/payment/address/BTC`
 
-Example response:
+<i>Example response:</i>
 
 ```json
 {"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
@@ -806,13 +818,13 @@ Example response:
 
 ### <a name="payout"/>/api/1/payment/payout
 
-Summary: withdraws money and creates an outgoing crypotocurrency transaction; returns a transaction ID on the exchange or an error.
+<i>Summary:</i> withdraws money and creates an outgoing crypotocurrency transaction; returns a transaction ID on the exchange or an error.
 
-Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>copy address</b> link.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>copy address</b> link.
 
-Request: `POST /api/1/payment/payout`
+<i>Request:</i> `POST /api/1/payment/payout`
 
-Parameters:
+<i><i>Parameters:</i></i>
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
@@ -820,22 +832,22 @@ Parameters:
 | `currency_code` | Yes | string | Currency symbol, e.g. `BTC`|
 | `address` | Yes | string | BTC/LTC address to withdraw to |
 
-Example: ```amount=0.001&currency_code=BTC&address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5```
+<i>Example:</i> ```amount=0.001&currency_code=BTC&address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5```
 
-Example response:
+<i>Example response:</i>
 ```json
 {"transaction": "51545-103004-18442681"}
 ```
 
 ### <a name="transactions"/>/api/1/payment/transactions
 
-Summary: returns a list of payment transactions and their statuses (array of transactions).
+<i>Summary:</i> returns a list of payment transactions and their statuses (array of transactions).
 
-Sample usage at HitBTC site: see [https://hitbtc.com/account](https://hitbtc.com/account), <b>History</b> panel.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account), <b>History</b> panel.
 
-Request: `GET /api/1/payment/transactions`
+<i>Request:</i> `GET /api/1/payment/transactions`
 
-Parameters:
+<i><i>Parameters:</i></i>
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
@@ -843,7 +855,7 @@ Parameters:
 | `limit` | Yes | integer | Maximum results for the query |
 | `dir` | No | `ask` or `desc` | Transactions are sorted ascending or descending (default) |
 
-Example response:
+<i>Example response:</i>
 ```json
 {"transactions": [
   {
@@ -883,13 +895,13 @@ API links:
 
 ### <a name="tradesnamespace"/>`trades` namespace
 
-Namespace: `trades`
+<i>Namespace:</i> `trades`
 
-URLs: `/trades/:symbol` e.g. `/trades/BTCUSD`
+<i>URLs:</i> `/trades/:symbol` e.g. `/trades/BTCUSD`
 
-Event: `trade`
+<i>Event:</i> `trade`
 
-Event example:
+<i>Event example:</i>
 ```json
 {"price":478.33,"amount":0.15}
 ```
@@ -921,9 +933,9 @@ Some recommendations to consider:
 
 ### <a name="MarketDataSnapshotFullRefresh"/>MarketDataSnapshotFullRefresh message
 
-Summary: contains a full snapshot of the order book.
+<i>Summary:</i> contains a full snapshot of the order book.
 
-Example message:
+<i>Example message:</i>
 ```json
 {"MarketDataSnapshotFullRefresh": {
     "snapshotSeqNo": 899009,
@@ -988,7 +1000,7 @@ Example message:
 }}
 ```
 
-Fields:
+<i>Fields:</i>
 
 | Field | Description |
 | --- | --- |
@@ -1000,9 +1012,9 @@ Fields:
 
 ### <a name="MarketDataIncrementalRefresh"/>MarketDataIncrementalRefresh message
 
-Summary: contains incremental changes of the order book and individual trades.
+<i>Summary:</i> contains incremental changes of the order book and individual trades.
 
-Example message:
+<i>Example message:</i>
 ```json
 {"MarketDataIncrementalRefresh": {
     "seqNo": 546693,
@@ -1026,7 +1038,7 @@ Example message:
 }}
 ```
 
-Fields:
+<i>Fields:</i>
 
 | Field | Description |
 | --- | --- |
@@ -1075,6 +1087,7 @@ All client messages should be signed in the following manner:
     }
 }
 ```
+<i>Fields:</i>
 
 | Field | Description |
 | --- | --- |
@@ -1083,7 +1096,7 @@ All client messages should be signed in the following manner:
 
 ### <a name="Login"/>Login 
 
-Example:
+<i>Example:</i>
 ```json
 {
 	"apikey": "e418f5b4a15608b78185540ef583b9fc",
@@ -1097,13 +1110,13 @@ Example:
 }
 ```
 
-Parameters: no parameters
+<i><i>Parameters:</i></i> no parameters
 
 If client doesn't send valid logon message in 10 second the connection will be dropped.
 
 ### <a name="NewOrder"/>NewOrder
 
-Example:
+<i>Example:</i>
 
 ```json
 {
@@ -1126,7 +1139,7 @@ Example:
 }
 ```
 
-Parameters:
+<i><i>Parameters:</i></i>
 
 | Parameter	| Type | Description |
 | --- | --- | --- | 
@@ -1140,7 +1153,7 @@ Parameters:
 
 ### <a name="OrderCancel"/>OrderCancel
 
-Example:
+<i>Example:</i>
 
 ```json
 {
@@ -1160,7 +1173,7 @@ Example:
 }
 ```
 
-Parameters:
+<i><i>Parameters:</i></i>
 
 | Parameter	| Type | Description |
 | --- | --- | --- |
@@ -1173,7 +1186,7 @@ Parameters:
 
 ### <a name="ExecutionReport"/>ExecutionReport
 
-Example:
+<i>Example:</i>
 
 ```json
 {
@@ -1193,7 +1206,7 @@ Example:
 }
 ```
 
-Fields:
+<i>Fields:</i>
 
 | Field	| Required | Type | Description |
 | --- | --- | --- | --- |
@@ -1219,7 +1232,7 @@ Fields:
 
 ### <a name="CancelReject"/>CancelReject
 
-Example:
+<i>Example:</i>
 ```json
 {"CancelReject": {
     "clientOrderId": "68f82819-723a-4b60-ad6b",
@@ -1230,7 +1243,7 @@ Example:
 }}
 ```
 
-Fields:
+<i>Fields:</i>
 
 | Field	| Required | Type | Description |
 | --- | --- | --- | --- |
