@@ -47,9 +47,9 @@ RESTful API allows:
   - performing trading operations: get trading balance, place or cancel orders, get history, etc. See [Trading RESTful API](#tradingrestful)
   - managing funds: get balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
 
-Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com)
-HitBTC provides a demo trading option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.
-Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
+Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com).
+
+HitBTC provides a demo trading option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.<br>Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
 Trading and payment operations require [authentication](#authentication). See also [error codes](#errors) and [reports representing order status changes](#reports).
 
@@ -129,13 +129,17 @@ Sample usage at HitBTC site: see [https://hitbtc.com/market-overview](https://hi
 }
 ```
 
-* last - last price
-* bid - highest buy order
-* ask - lowest sell order
-* high - highest trade price per last 24h + last incomplete minute
-* low - lowest trade price per last 24h + last incomplete minute
-* volume - volume per last 24h + last incomplete minute
-* timestamp - the server time in UNIX timestamp format
+The following fields are used in the `ticker` object:
+
+| Field | Description |
+| --- | --- |
+| last  | Last price |
+| bid | Highest buy order |
+| ask | Lowest sell order |
+| high | Highest trade price per last 24h + last incomplete minute | 
+| low | Lowest trade price per last 24h + last incomplete minute |
+| volume | Volume per last 24h + last incomplete minute |
+| timestamp | Server time in UNIX timestamp format |
 
 ### <a name="orderbook"/>/api/1/public/:symbol/orderbook
 
@@ -332,7 +336,7 @@ Trading RESTful API can return the following errors:
 
 The API uses `ExecutionReport` as an object that represents change of order status.
 
-The following fields are used in this object:
+The following fields are used in `ExecutionReport` object:
 
 | Field	| Required | Type | Description |
 | --- | --- | --- | --- |
@@ -460,7 +464,7 @@ The following fields are used in this object:
 
 <i>Request:</i> `POST /api/1/trading/new_order`
 
-<i><i>Parameters:</i></i> 
+<i>Parameters:</i>
 
 | Parameter | Required| Type | Description |
 | --- | --- | --- | --- |
@@ -508,7 +512,7 @@ post data: clientOrderId=11111112&symbol=BTCUSD&side=buy&price=0.1&quantity=100&
 
 <i>Request:</i> `POST /api/1/trading/cancel_order`
 
-<i><i>Parameters:</i></i> 
+<i>Parameters:</i>
 
 | Parameter | Required| Type | Description |
 | --- | --- | --- | ---| 
@@ -563,7 +567,7 @@ post data: clientOrderId=11111112&cancelRequestClientOrderId=3825782579834957894
 
 <i>Request:</i> `GET /api/1/trading/trades`
 
-<i><i>Parameters:</i></i> 
+<i>Parameters:</i>
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
@@ -824,7 +828,7 @@ Payment operations require [authentication](#authentication)
 
 <i>Request:</i> `POST /api/1/payment/payout`
 
-<i><i>Parameters:</i></i>
+<i>Parameters:</i>
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
@@ -847,7 +851,7 @@ Payment operations require [authentication](#authentication)
 
 <i>Request:</i> `GET /api/1/payment/transactions`
 
-<i><i>Parameters:</i></i>
+<i>Parameters:</i>
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
@@ -877,8 +881,7 @@ Payment operations require [authentication](#authentication)
 ```
 
 
-
-## <a name="socketio"/>socket.io Market Data
+# <a name="socketio"/>socket.io Market Data
 
 The API provides socket.io version 1.0.x protocol for receiving market data. It supports:
 * WebSocket, xhr-polling and jsonp-polling transports
@@ -1000,7 +1003,7 @@ Some recommendations to consider:
 }}
 ```
 
-<i>Fields:</i>
+The following fields are used in `MarketDataSnapshotFullRefresh` object:
 
 | Field | Description |
 | --- | --- |
@@ -1038,7 +1041,7 @@ Some recommendations to consider:
 }}
 ```
 
-<i>Fields:</i>
+The following fields are used in `MarketDataIncrementalRefresh` object:
 
 | Field | Description |
 | --- | --- |
@@ -1206,7 +1209,7 @@ If client doesn't send valid logon message in 10 second the connection will be d
 }
 ```
 
-<i>Fields:</i>
+The following fields are used in `ExecutionReport` object:
 
 | Field	| Required | Type | Description |
 | --- | --- | --- | --- |
@@ -1243,7 +1246,7 @@ If client doesn't send valid logon message in 10 second the connection will be d
 }}
 ```
 
-<i>Fields:</i>
+The following fields are used in `CancelReject` object:
 
 | Field	| Required | Type | Description |
 | --- | --- | --- | --- |
