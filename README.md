@@ -229,12 +229,12 @@ Sample usage at HitBTC site: see [https://hitbtc.com/market-overview](https://hi
 
 <i>Alias:</i>
 ```
-/api/1/request/:symbol/trades.json?since=<trade_id>` -> `/api/1/public/:symbol/trades?from=<trade_id>&by=trade_id&start_index=0&format_numbers=number&format_tradeid=string&format_objects=object&format_timestamp=second
+/api/1/request/:symbol/trades.json?since=<trade_id> -> /api/1/public/:symbol/trades?from=<trade_id>&by=trade_id&start_index=0&format_numbers=number&format_tradeid=string&format_objects=object&format_timestamp=second
 ```
 
 <i>Example:</i>
 ```
-`/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100`
+/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100
 ```
 <i>Example response:</i>
 
