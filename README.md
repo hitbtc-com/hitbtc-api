@@ -49,7 +49,7 @@ RESTful API allows:
 
 Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com).
 
-HitBTC provides a demo trading option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.<br>Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
+HitBTC provides a <b>demo trading</b> option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.<br>Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
 Trading and payment operations require [authentication](#authentication). See also [error codes](#errors) and [reports representing order status changes](#reports).
 
@@ -294,11 +294,13 @@ RESTful Trading API requires HMAC-SHA512 signatures for each request.
 
 To use this API endpoint you should get your API key and Secret key from the [Settings](https://hitbtc.com/settings) page. 
 
-Each request should include three parameters: `apikey`, `signature` and `nonce`.
+Each request should include the following parameters:
 
-* `nonce` - unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp for `nonce`. This parameter should be added as a query string parameter `nonce`. `nonce` should be < (2^53-1).
-* `apikey` - API key from [Settings](https://hitbtc.com/settings) page. This parameter should be added as a query string parameter `apikey`.
-* `signature` - _lower-case_ hex representation of hmac-sha512 of concatenated `uri` and `postData`. This parameter should be added as a HTTP header `X-Signature`.
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `nonce` | Yes | query string parameter, less than (2^53-1) | Unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp | 
+| `apikey` | Yes | query string parameter | API key from [Settings](https://hitbtc.com/settings) page|
+| `signature` | Yes | _lower-case_ hex representation of hmac-sha512 of concatenated `uri` and `postData` | This parameter should be added as a HTTP header `X-Signature`| 
 
 Signature generation pseudo-code:
 
