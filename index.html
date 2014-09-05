@@ -173,6 +173,50 @@
 <li>low - lowest trade price / 24 h</li>
 <li>volume - volume / 24h</li>
 </ul><h3>
+<a name="api1publicticker" class="anchor" href="#api1publicticker"><span class="octicon octicon-link"></span></a>/api/1/public/ticker</h3>
+
+<p>Summary: returns all tickers</p>
+
+<p>Example: <code>/api/1/public/ticker</code></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"BCNBTC"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"ask"</span><span class="p">:</span> <span class="s2">"0.000000039"</span><span class="p">,</span>
+        <span class="nt">"bid"</span><span class="p">:</span> <span class="s2">"0.000000036"</span><span class="p">,</span>
+        <span class="nt">"last"</span><span class="p">:</span> <span class="s2">"0.000000037"</span><span class="p">,</span>
+        <span class="nt">"low"</span><span class="p">:</span> <span class="s2">"0.000000035"</span><span class="p">,</span>
+        <span class="nt">"high"</span><span class="p">:</span> <span class="s2">"0.000000048"</span><span class="p">,</span>
+        <span class="nt">"volume"</span><span class="p">:</span> <span class="s2">"580790000"</span><span class="p">,</span>
+        <span class="nt">"volume_quote"</span><span class="p">:</span> <span class="s2">"26.000000000"</span><span class="p">,</span>
+        <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1409907025743</span>
+    <span class="p">},</span>
+    <span class="nt">"BTCEUR"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"ask"</span><span class="p">:</span> <span class="s2">"378.23"</span><span class="p">,</span>
+        <span class="nt">"bid"</span><span class="p">:</span> <span class="s2">"376.28"</span><span class="p">,</span>
+        <span class="nt">"last"</span><span class="p">:</span> <span class="s2">"376.29"</span><span class="p">,</span>
+        <span class="nt">"low"</span><span class="p">:</span> <span class="s2">"362.48"</span><span class="p">,</span>
+        <span class="nt">"high"</span><span class="p">:</span> <span class="s2">"382.13"</span><span class="p">,</span>
+        <span class="nt">"volume"</span><span class="p">:</span> <span class="s2">"961.71"</span><span class="p">,</span>
+        <span class="nt">"volume_quote"</span><span class="p">:</span> <span class="s2">"361328.13"</span><span class="p">,</span>
+        <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1409907025743</span>
+    <span class="p">},</span>
+    <span class="nt">"BTCUSD"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"ask"</span><span class="p">:</span> <span class="s2">"489.26"</span><span class="p">,</span>
+        <span class="nt">"bid"</span><span class="p">:</span> <span class="s2">"488.08"</span><span class="p">,</span>
+        <span class="nt">"last"</span><span class="p">:</span> <span class="s2">"489.31"</span><span class="p">,</span>
+        <span class="nt">"low"</span><span class="p">:</span> <span class="s2">"478.01"</span><span class="p">,</span>
+        <span class="nt">"high"</span><span class="p">:</span> <span class="s2">"496.23"</span><span class="p">,</span>
+        <span class="nt">"volume"</span><span class="p">:</span> <span class="s2">"404.20"</span><span class="p">,</span>
+        <span class="nt">"volume_quote"</span><span class="p">:</span> <span class="s2">"197735.83"</span><span class="p">,</span>
+        <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1409907025743</span>
+    <span class="p">}</span>
+    <span class="err">....</span>
+<span class="p">}</span>
+
+
+</pre></div>
+
+<h3>
 <a name="api1publicsymbolorderbook" class="anchor" href="#api1publicsymbolorderbook"><span class="octicon octicon-link"></span></a>/api/1/public/:symbol/orderbook</h3>
 
 <p>Request: <code>GET /api/1/public/:symbol/orderbook</code></p>
@@ -338,7 +382,10 @@
 <span class="p">}</span>
 </pre></div>
 
-<p>Example: <code>/api/1/public/BTCUSD/trades?from=0&amp;by=trade_id&amp;sort=desc&amp;start_index=0&amp;max_results=100&amp;format_item=object&amp;format_price=number&amp;format_amount=number&amp;format_tid=string&amp;format_timestamp=second&amp;format_wrap=false</code></p>
+<p>Example: </p>
+
+<pre><code>/api/1/public/BTCUSD/trades?from=0&amp;by=trade_id&amp;sort=desc&amp;start_index=0&amp;max_results=100&amp;format_item=object&amp;format_price=number&amp;format_amount=number&amp;format_tid=string&amp;format_timestamp=second&amp;format_wrap=false
+</code></pre>
 
 <div class="highlight highlight-json"><pre><span class="p">[</span>
     <span class="p">{</span><span class="nt">"date"</span><span class="p">:</span> <span class="mi">1393492619</span><span class="p">,</span> <span class="nt">"price"</span><span class="p">:</span> <span class="mf">575.64</span><span class="p">,</span> <span class="nt">"amount"</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span> <span class="nt">"tid"</span><span class="p">:</span> <span class="s2">"3814483"</span><span class="p">},</span>
@@ -1416,10 +1463,9 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <li>The application could receive the first snapshot and maintain the order book by applying incremental updates.</li>
 <li>It's recommended to invalidate a state of the application periodically using snapshots.</li>
 <li>It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.</li>
-</ul><p><a name="MarketDataSnapshotFullRefresh"></a></p>
-
-<h3>
-<a name="marketdatasnapshotfullrefresh" class="anchor" href="#marketdatasnapshotfullrefresh"><span class="octicon octicon-link"></span></a>MarketDataSnapshotFullRefresh</h3>
+</ul><h3>
+<a name="-marketdatasnapshotfullrefresh" class="anchor" href="#-marketdatasnapshotfullrefresh"><span class="octicon octicon-link"></span></a>
+<a name="MarketDataSnapshotFullRefresh"></a> MarketDataSnapshotFullRefresh</h3>
 
 <p>MarketDataSnapshotFullRefresh message contains a full snapshot of the order book.</p>
 
@@ -1430,7 +1476,7 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
     <span class="nt">"symbol"</span><span class="p">:</span> <span class="s2">"BTCUSD"</span><span class="p">,</span>
     <span class="nt">"exchangeStatus"</span><span class="p">:</span> <span class="s2">"working"</span><span class="p">,</span>
     <span class="nt">"ask"</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="err">http://jsfiddle.net/He6AU/13/</span>
+        <span class="p">{</span>
             <span class="nt">"price"</span><span class="p">:</span> <span class="mf">101.42</span><span class="p">,</span>
             <span class="nt">"size"</span><span class="p">:</span> <span class="mi">7</span>
         <span class="p">},</span>
@@ -1518,10 +1564,9 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <td>sorted arrays of price levels in the order book; full snapshot (all price levels) is provided</td>
 </tr>
 </tbody>
-</table><p><a name="MarketDataIncrementalRefresh"></a></p>
-
-<h3>
-<a name="marketdataincrementalrefresh" class="anchor" href="#marketdataincrementalrefresh"><span class="octicon octicon-link"></span></a>MarketDataIncrementalRefresh</h3>
+</table><h3>
+<a name="-marketdataincrementalrefresh" class="anchor" href="#-marketdataincrementalrefresh"><span class="octicon octicon-link"></span></a>
+<a name="MarketDataIncrementalRefresh"></a> MarketDataIncrementalRefresh</h3>
 
 <p>MarketDataIncrementalRefresh contains incremental changes of the order book and individual trades.</p>
 
@@ -1651,10 +1696,9 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <td>base64 <a href="http://en.wikipedia.org/wiki/Hash-based_message_authentication_code">hmac-sha512</a>(binary representation of the message)</td>
 </tr>
 </tbody>
-</table><p><a name="Login"></a></p>
-
-<h3>
-<a name="login" class="anchor" href="#login"><span class="octicon octicon-link"></span></a>Login</h3>
+</table><h3>
+<a name="-login" class="anchor" href="#-login"><span class="octicon octicon-link"></span></a>
+<a name="Login"></a> Login</h3>
 
 <p>Example:</p>
 
@@ -1674,10 +1718,9 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 
 <p>If client doesn't send valid logon message in 10 second the connection will be dropped.</p>
 
-<p><a name="NewOrder"></a></p>
-
 <h3>
-<a name="neworder" class="anchor" href="#neworder"><span class="octicon octicon-link"></span></a>NewOrder</h3>
+<a name="-neworder" class="anchor" href="#-neworder"><span class="octicon octicon-link"></span></a>
+<a name="NewOrder"></a> NewOrder</h3>
 
 <p>Example:</p>
 
@@ -1749,10 +1792,9 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <code>GTC</code> - Good-Til-Canceled <br><code>IOC</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill</td>
 </tr>
 </tbody>
-</table><p><a name="OrderCancel"></a></p>
-
-<h3>
-<a name="ordercancel" class="anchor" href="#ordercancel"><span class="octicon octicon-link"></span></a>OrderCancel</h3>
+</table><h3>
+<a name="ordercancel" class="anchor" href="#ordercancel"><span class="octicon octicon-link"></span></a>
+<a name="OrderCancel"></a>OrderCancel</h3>
 
 <p>Example:</p>
 
@@ -1810,10 +1852,9 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <td>only <code>limit</code> orders are currently supported</td>
 </tr>
 </tbody>
-</table><p><a name="ExecutionReport"></a></p>
-
-<h3>
-<a name="executionreport" class="anchor" href="#executionreport"><span class="octicon octicon-link"></span></a>ExecutionReport</h3>
+</table><h3>
+<a name="executionreport" class="anchor" href="#executionreport"><span class="octicon octicon-link"></span></a>
+<a name="ExecutionReport"></a>ExecutionReport</h3>
 
 <p>Example:</p>
 
@@ -1962,10 +2003,9 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <td></td>
 </tr>
 </tbody>
-</table><p><a name="CancelReject"></a></p>
-
-<h3>
-<a name="cancelreject" class="anchor" href="#cancelreject"><span class="octicon octicon-link"></span></a>CancelReject</h3>
+</table><h3>
+<a name="cancelreject" class="anchor" href="#cancelreject"><span class="octicon octicon-link"></span></a>
+<a name="CancelReject"></a>CancelReject</h3>
 
 <p>Example:</p>
 
