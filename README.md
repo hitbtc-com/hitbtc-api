@@ -92,6 +92,50 @@ Example: `/api/1/public/BTCUSD/ticker`
 * low - lowest trade price / 24 h
 * volume - volume / 24h
 
+### /api/1/public/ticker
+
+Summary: returns all tickers
+
+Example: `/api/1/public/ticker`
+
+``` json
+{
+    "BCNBTC": {
+        "ask": "0.000000039",
+        "bid": "0.000000036",
+        "last": "0.000000037",
+        "low": "0.000000035",
+        "high": "0.000000048",
+        "volume": "580790000",
+        "volume_quote": "26.000000000",
+        "timestamp": 1409907025743
+    },
+    "BTCEUR": {
+        "ask": "378.23",
+        "bid": "376.28",
+        "last": "376.29",
+        "low": "362.48",
+        "high": "382.13",
+        "volume": "961.71",
+        "volume_quote": "361328.13",
+        "timestamp": 1409907025743
+    },
+    "BTCUSD": {
+        "ask": "489.26",
+        "bid": "488.08",
+        "last": "489.31",
+        "low": "478.01",
+        "high": "496.23",
+        "volume": "404.20",
+        "volume_quote": "197735.83",
+        "timestamp": 1409907025743
+    }
+    ....
+}
+
+
+```
+
 ### /api/1/public/:symbol/orderbook
 
 Request: `GET /api/1/public/:symbol/orderbook`
