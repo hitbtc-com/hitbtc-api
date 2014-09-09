@@ -1,3 +1,19 @@
+# HitBTC API Guide
+
+## Table of contents
+* [SUMMARY](#summary)
+  — [Currency symbols](#cursymbols)
+* [RESTFUL API](#restful)
+  — [Market data](#marketrestful)
+  — [Trading](#tradingrestful)
+  — [Payment](#paymentsrestful)
+* [SOCKET.IO API](#socketio)
+  — [Market Data](#socketio)
+* [STREAMING API](#streaming)
+  — [Market data](#marketstreaming) 
+  — [Trading](#tradingstreaming)
+  — [Sample code](#sample)
+
 # <a name="summary"/>Summary
 
 This document provides the complete reference for [HitBTC](https://hitbtc.com) API.
@@ -59,6 +75,7 @@ RESTful API provides access to the market data with following methods:
   - get the timestamp- [/api/1/public/time](#time)
   - get the list of symbols - [/api/1/public/symbols](#symbols)
   - get the ticker for specified symbol - [/api/1/public/:symbol/ticker](#ticker)
+  - get all tickers - [/api/1/public/ticker](#alltickers)
   - get the order book for specified symbol - [/api/1/public/:symbol/orderbook](#orderbook)
   - get the individual trades data for specified symbol - [/api/1/public/:symbol/trades](#trades)
 
@@ -107,7 +124,7 @@ RESTful API provides access to the market data with following methods:
 
 ### <a name="ticker"/>/api/1/public/:symbol/ticker
 
-<i>Summary:</i> returns the actual data on cryptocurrency exchange rates.
+<i>Summary:</i> returns the actual data on exchange rates of the specified cryptocurrency.
 
 Sample usage at HitBTC site: see [https://hitbtc.com/market-overview](https://hitbtc.com/market-overview) for each line.
 
@@ -140,6 +157,52 @@ The following fields are used in the `ticker` object:
 | low | Lowest trade price per last 24h + last incomplete minute |
 | volume | Volume per last 24h + last incomplete minute |
 | timestamp | Server time in UNIX timestamp format |
+
+
+### <a name="alltickers"/>/api/1/public/ticker
+
+<i>Summary:</i> returns the actual data on exchange rates for all traded cryptocurrencies - all tickers.
+
+<i>Example:</i> `/api/1/public/ticker`
+
+<i>Example response:</i>
+``` json
+{
+    "BCNBTC": {
+        "ask": "0.000000039",
+        "bid": "0.000000036",
+        "last": "0.000000037",
+        "low": "0.000000035",
+        "high": "0.000000048",
+        "volume": "580790000",
+        "volume_quote": "26.000000000",
+        "timestamp": 1409907025743
+    },
+    "BTCEUR": {
+        "ask": "378.23",
+        "bid": "376.28",
+        "last": "376.29",
+        "low": "362.48",
+        "high": "382.13",
+        "volume": "961.71",
+        "volume_quote": "361328.13",
+        "timestamp": 1409907025743
+    },
+    "BTCUSD": {
+        "ask": "489.26",
+        "bid": "488.08",
+        "last": "489.31",
+        "low": "478.01",
+        "high": "496.23",
+        "volume": "404.20",
+        "volume_quote": "197735.83",
+        "timestamp": 1409907025743
+    }
+    ....
+}
+
+
+```
 
 ### <a name="orderbook"/>/api/1/public/:symbol/orderbook
 
