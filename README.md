@@ -23,7 +23,7 @@ HitBTC API has several interfaces to implement them in a custom software:
   - access to the market data: get ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
   - performing trading operations: get trading balance, place or cancel orders, get history, etc. See [Trading RESTful API](#tradingrestful)
   - managing funds: get balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
-* <b>socket.io</b> protocol for receiving the market data. socket.io protocol supports WebSocket, xhr-polling and jsonp-polling transports. See [socket.io Market Data](#socketio)
+* <b>socket.io</b> protocol for receiving the market data. socket.io protocol supports WebSocket and xhr-polling  transport. See [socket.io Market Data](#socketio)
 * <b>Streaming API</b> based on WebSocket protocol to get an access to: 
   - market data. See [Market data streaming end-point](#marketstreaming)  
   - trading operations. See [Trading streaming end-point](#tradingstreaming)
@@ -200,8 +200,6 @@ The following fields are used in the `ticker` object:
     }
     ....
 }
-
-
 ```
 
 ### <a name="orderbook"/>/api/1/public/:symbol/orderbook
@@ -949,7 +947,7 @@ Payment operations require [authentication](#authentication)
 # <a name="socketio"/>socket.io Market Data
 
 The API provides socket.io version 1.0.x protocol for receiving market data. It supports:
-* WebSocket, xhr-polling and jsonp-polling transports
+* WebSocket and xhr-polling transport
 * multiplexing a single connection with socket.io namespaces (see [`trades` namespace](#tradesnamespace))
 
 Useful links:
