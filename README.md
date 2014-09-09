@@ -1,17 +1,17 @@
 # HitBTC API Guide
 
 ## Table of contents
-* [SUMMARY](#summary)
+* [SUMMARY](#summary)<br>
   — [Currency symbols](#cursymbols)
-* [RESTFUL API](#restful)
-  — [Market data](#marketrestful)
-  — [Trading](#tradingrestful)
+* [RESTFUL API](#restful)<br>
+  — [Market data](#marketrestful)<br>
+  — [Trading](#tradingrestful)<br>
   — [Payment](#paymentsrestful)
-* [SOCKET.IO API](#socketio)
+* [SOCKET.IO API](#socketio)<br>
   — [Market Data](#socketio)
-* [STREAMING API](#streaming)
-  — [Market data](#marketstreaming) 
-  — [Trading](#tradingstreaming)
+* [STREAMING API](#streaming)<br>
+  — [Market data](#marketstreaming) <br>
+  — [Trading](#tradingstreaming)<br>
   — [Sample code](#sample)
 
 # <a name="summary"/>Summary
