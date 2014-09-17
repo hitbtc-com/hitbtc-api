@@ -28,8 +28,8 @@ HitBTC API has several interfaces to implement them in a custom software:
   - market data. See [Market data streaming end-point](#marketstreaming)  
   - trading operations. See [Trading streaming end-point](#tradingstreaming)
 
-Trading and payment operations require user's authentification: each request or message should have a signature. 
-You should get your API key and Secret key on the [Settings](https://hitbtc.com/settings) page. See details in [RESTful API authentification](#authenticationrestful) and [WebSocket API authentification](#authenticationwebsocket).
+Trading and payment operations require user's authentication: each request or message should have a signature. 
+You should get your API key and Secret key on the [Settings](https://hitbtc.com/settings) page. See details in [RESTful API authentication](#authenticationrestful) and [WebSocket API authentication](#authenticationwebsocket).
 
 ### <a name="cursymbols"/>Currency symbols
 
@@ -65,7 +65,7 @@ RESTful API allows:
 
 Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com).
 
-HitBTC provides a <b>demo trading</b> option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.<br>Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
+HitBTC provides a <b>demo trading</b> option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.<br>Demo endpoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
 Trading and payment operations require [authentication](#authentication). See also [error codes](#errors) and [reports representing order status changes](#reports).
 
