@@ -28,12 +28,75 @@
         </ul>
       </header>
       <section>
-        <h2>
-<a name="summary" class="anchor" href="#summary"><span class="octicon octicon-link"></span></a>Summary</h2>
+        <h1>
+<a name="hitbtc-api-guide" class="anchor" href="#hitbtc-api-guide"><span class="octicon octicon-link"></span></a>HitBTC API Guide</h1>
 
-<p>This document provides the complete reference for <a href="https://hitbtc.com">hitbtc</a> API.</p>
+<h2>
+<a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="octicon octicon-link"></span></a>Table of contents</h2>
 
-<p>The following symbols are traded on hitbtc exchange.</p>
+<ul>
+<li>
+<a href="#summary">SUMMARY</a><br>
+— <a href="#cursymbols">Currency symbols</a>
+</li>
+<li>
+<a href="#restful">RESTFUL API</a><br>
+— <a href="#marketrestful">Market data</a><br>
+— <a href="#tradingrestful">Trading</a><br>
+— <a href="#paymentsrestful">Payment</a>
+</li>
+<li>
+<a href="#socketio">SOCKET.IO API</a><br>
+— <a href="#socketio">Market Data</a>
+</li>
+<li>
+<a href="#streaming">STREAMING API</a><br>
+— <a href="#marketstreaming">Market data</a> <br>
+— <a href="#tradingstreaming">Trading</a><br>
+— <a href="#sample">Sample code</a>
+</li>
+</ul><h1>
+<a name="summary" class="anchor" href="#summary"><span class="octicon octicon-link"></span></a>
+<a name="summary"></a>Summary</h1>
+
+<p>This document provides the complete reference for <a href="https://hitbtc.com">HitBTC</a> API.</p>
+
+<p>HitBTC API has several interfaces to implement them in a custom software:</p>
+
+<ul>
+<li>
+<b>RESTful API</b> that allows: 
+
+<ul>
+<li>access to the market data: get ticker, order book, trades, etc. See <a href="#marketrestful">Market data RESTful API</a>
+</li>
+<li>performing trading operations: get trading balance, place or cancel orders, get history, etc. See <a href="#tradingrestful">Trading RESTful API</a>
+</li>
+<li>managing funds: get balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See <a href="#paymentsrestful">Payment RESTful API</a>
+</li>
+</ul>
+</li>
+<li>
+<b>socket.io</b> protocol for receiving the market data. socket.io protocol supports WebSocket and xhr-polling  transport. See <a href="#socketio">socket.io Market Data</a>
+</li>
+<li>
+<b>Streaming API</b> based on WebSocket protocol to get an access to: 
+
+<ul>
+<li>market data. See <a href="#marketstreaming">Market data streaming end-point</a><br>
+</li>
+<li>trading operations. See <a href="#tradingstreaming">Trading streaming end-point</a>
+</li>
+</ul>
+</li>
+</ul><p>Trading and payment operations require user's authentification: each request or message should have a signature. 
+You should get your API key and Secret key on the <a href="https://hitbtc.com/settings">Settings</a> page. See details in <a href="#authenticationrestful">RESTful API authentification</a> and <a href="#authenticationwebsocket">WebSocket API authentification</a>.</p>
+
+<h3>
+<a name="currency-symbols" class="anchor" href="#currency-symbols"><span class="octicon octicon-link"></span></a>
+<a name="cursymbols"></a>Currency symbols</h3>
+
+<p>The following currency symbols are traded on HitBTC exchange.</p>
 
 <table>
 <thead><tr>
@@ -93,7 +156,7 @@
 <td>0.000000001</td>
 </tr>
 </tbody>
-</table><p>(/api/1/public/symbols returns an actual list of symbols)</p>
+</table><p>The actual list of symbols can be obtained by <a href="#symbols">/api/1/public/symbols</a> method.</p>
 
 <p>Size representation:</p>
 
@@ -101,24 +164,56 @@
 <li>Size values in streaming messages are represented in lots.</li>
 <li>Size values in RESTful market data are represented in money (e.g. in coins or in USD). </li>
 <li>Size values in RESTful trade are represented in lots (e.g. 1 means 0.01 BTC for BTCUSD)</li>
-</ul><h3>
-<a name="demo-trading" class="anchor" href="#demo-trading"><span class="octicon octicon-link"></span></a>Demo trading</h3>
+</ul><h1>
+<a name="restful-api" class="anchor" href="#restful-api"><span class="octicon octicon-link"></span></a>
+<a name="restful"></a>RESTful API</h1>
 
-<p>Hitbtc provides a demo trading option.  You can enable demo mode and acquire demo API keys on the Settings page.</p>
+<p>RESTful API provides the most functional access to HitBTC facilities.
+RESTful API allows: </p>
+
+<ul>
+<li>access to the market data: get ticker, order book, trades, etc. See <a href="#marketrestful">Market data RESTful API</a>
+</li>
+<li>performing trading operations: get trading balance, place or cancel orders, get history, etc. See <a href="#tradingrestful">Trading RESTful API</a>
+</li>
+<li>managing funds: get balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See <a href="#paymentsrestful">Payment RESTful API</a>
+</li>
+</ul><p>Endpoint URL: <a href="http://api.hitbtc.com">http://api.hitbtc.com</a>.</p>
+
+<p>HitBTC provides a <b>demo trading</b> option.  You can enable demo mode and acquire demo API keys on the <a href="https://hitbtc.com/settings">Settings</a> page.<br>Demo endoint address: <a href="http://demo-api.hitbtc.com">http://demo-api.hitbtc.com</a></p>
+
+<p>Trading and payment operations require <a href="#authentication">authentication</a>. See also <a href="#errors">error codes</a> and <a href="#reports">reports representing order status changes</a>.</p>
 
 <h2>
-<a name="market-data-restful-api" class="anchor" href="#market-data-restful-api"><span class="octicon octicon-link"></span></a>Market data RESTful API</h2>
+<a name="market-data-restful-api" class="anchor" href="#market-data-restful-api"><span class="octicon octicon-link"></span></a>
+<a name="marketrestful"></a>Market data RESTful API</h2>
 
-<p>Endpoint URL: <a href="http://api.hitbtc.com">http://api.hitbtc.com</a></p>
+<p>RESTful API provides access to the market data with following methods:</p>
 
-<p>Demo endoint: <a href="http://demo-api.hitbtc.com">http://demo-api.hitbtc.com</a></p>
+<ul>
+<li>get the timestamp- <a href="#time">/api/1/public/time</a>
+</li>
+<li>get the list of symbols - <a href="#symbols">/api/1/public/symbols</a>
+</li>
+<li>get the ticker for specified symbol - <a href="#ticker">/api/1/public/:symbol/ticker</a>
+</li>
+<li>get all tickers - <a href="#alltickers">/api/1/public/ticker</a>
+</li>
+<li>get the order book for specified symbol - <a href="#orderbook">/api/1/public/:symbol/orderbook</a>
+</li>
+<li>get the individual trades data for specified symbol - <a href="#trades">/api/1/public/:symbol/trades</a>
+</li>
+</ul><h3>
+<a name="api1publictime" class="anchor" href="#api1publictime"><span class="octicon octicon-link"></span></a>
+<a name="time"></a>/api/1/public/time</h3>
 
-<h3>
-<a name="api1publictime" class="anchor" href="#api1publictime"><span class="octicon octicon-link"></span></a>/api/1/public/time</h3>
+<p><i>Summary:</i> returns the server time in UNIX timestamp format</p>
 
-<p>Request: <code>GET /api/1/public/time</code></p>
+<p><i>Request:</i> <code>GET /api/1/public/time</code></p>
 
-<p>Example: <code>/api/1/public/time</code></p>
+<p><i>Example:</i> <code>/api/1/public/time</code></p>
+
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"timestamp"</span><span class="p">:</span> <span class="mi">1393492619000</span>
@@ -126,11 +221,16 @@
 </pre></div>
 
 <h3>
-<a name="api1publicsymbols" class="anchor" href="#api1publicsymbols"><span class="octicon octicon-link"></span></a>/api/1/public/symbols</h3>
+<a name="api1publicsymbols" class="anchor" href="#api1publicsymbols"><span class="octicon octicon-link"></span></a>
+<a name="symbols"></a>/api/1/public/symbols</h3>
 
-<p>Request: <code>GET /api/1/public/symbols</code></p>
+<p><i>Summary:</i> returns the actual list of currency symbols traded on HitBTC exchange, their lot sizes (<code>lot</code> parameter) and price step (<code>step</code> parameter).</p>
 
-<p>Example: <code>/api/1/public/symbols</code></p>
+<p><i>Request:</i> <code>GET /api/1/public/symbols</code></p>
+
+<p><i>Example:</i> <code>/api/1/public/symbols</code></p>
+
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"symbols"</span><span class="p">:</span> <span class="p">[</span>
@@ -150,11 +250,19 @@
 </pre></div>
 
 <h3>
-<a name="api1publicsymbolticker" class="anchor" href="#api1publicsymbolticker"><span class="octicon octicon-link"></span></a>/api/1/public/:symbol/ticker</h3>
+<a name="api1publicsymbolticker" class="anchor" href="#api1publicsymbolticker"><span class="octicon octicon-link"></span></a>
+<a name="ticker"></a>/api/1/public/:symbol/ticker</h3>
 
-<p>Request: <code>GET /api/1/public/:symbol/ticker</code></p>
+<p><i>Summary:</i> returns the actual data on exchange rates of the specified cryptocurrency.</p>
 
-<p>Example: <code>/api/1/public/BTCUSD/ticker</code></p>
+<p>Sample usage at HitBTC site: see <a href="https://hitbtc.com/market-overview">https://hitbtc.com/market-overview</a> for each line.</p>
+
+<p><i>Request:</i> <code>GET /api/1/public/:symbol/ticker</code>
+  where <code>:symbol</code> is a currency symbol traded on HitBTC exchange (see <a href="#cursymbols">Currency symbols</a>)</p>
+
+<p><i>Example:</i> <code>/api/1/public/BTCUSD/ticker</code></p>
+
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"last"</span><span class="p">:</span> <span class="s2">"550.73"</span><span class="p">,</span>
@@ -167,17 +275,52 @@
 <span class="p">}</span>
 </pre></div>
 
-<ul>
-<li>24h means last 24h + last incomplete minute</li>
-<li>high - highest trade price / 24 h</li>
-<li>low - lowest trade price / 24 h</li>
-<li>volume - volume / 24h</li>
-</ul><h3>
-<a name="api1publicticker" class="anchor" href="#api1publicticker"><span class="octicon octicon-link"></span></a>/api/1/public/ticker</h3>
+<p>The following fields are used in the <code>ticker</code> object:</p>
 
-<p>Summary: returns all tickers</p>
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>last</td>
+<td>Last price</td>
+</tr>
+<tr>
+<td>bid</td>
+<td>Highest buy order</td>
+</tr>
+<tr>
+<td>ask</td>
+<td>Lowest sell order</td>
+</tr>
+<tr>
+<td>high</td>
+<td>Highest trade price per last 24h + last incomplete minute</td>
+</tr>
+<tr>
+<td>low</td>
+<td>Lowest trade price per last 24h + last incomplete minute</td>
+</tr>
+<tr>
+<td>volume</td>
+<td>Volume per last 24h + last incomplete minute</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>Server time in UNIX timestamp format</td>
+</tr>
+</tbody>
+</table><h3>
+<a name="api1publicticker" class="anchor" href="#api1publicticker"><span class="octicon octicon-link"></span></a>
+<a name="alltickers"></a>/api/1/public/ticker</h3>
 
-<p>Example: <code>/api/1/public/ticker</code></p>
+<p><i>Summary:</i> returns the actual data on exchange rates for all traded cryptocurrencies - all tickers.</p>
+
+<p><i>Example:</i> <code>/api/1/public/ticker</code></p>
+
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"BCNBTC"</span><span class="p">:</span> <span class="p">{</span>
@@ -212,41 +355,59 @@
     <span class="p">}</span>
     <span class="err">....</span>
 <span class="p">}</span>
-
-
 </pre></div>
 
 <h3>
-<a name="api1publicsymbolorderbook" class="anchor" href="#api1publicsymbolorderbook"><span class="octicon octicon-link"></span></a>/api/1/public/:symbol/orderbook</h3>
+<a name="api1publicsymbolorderbook" class="anchor" href="#api1publicsymbolorderbook"><span class="octicon octicon-link"></span></a>
+<a name="orderbook"></a>/api/1/public/:symbol/orderbook</h3>
 
-<p>Request: <code>GET /api/1/public/:symbol/orderbook</code></p>
+<p><i>Summary:</i> returns a list of open orders for specified currency symbol: their prices and sizes.</p>
+
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/terminal">https://hitbtc.com/terminal</a>, <b>Order book</b> tab.</p>
+
+<p><i>Request:</i> <code>GET /api/1/public/:symbol/orderbook</code>
+  where <code>:symbol</code> is a currency symbol traded on HitBTC exchange (see <a href="#cursymbols">Currency symbols</a>)</p>
+
+<p><i>Parameters:</i></p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Required</th>
 <th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>format_price</td>
-<td>optional, "string" (default) or "number"</td>
-<td></td>
+<td><code>format_price</code></td>
+<td>No</td>
+<td>
+<code>string</code> or <code>number</code>
+</td>
+<td>Format of prices returned: as a string (default) or as a number</td>
 </tr>
 <tr>
-<td>format_amount</td>
-<td>optional, "string" (default) or "number"</td>
-<td></td>
+<td><code>format_amount</code></td>
+<td>No</td>
+<td>
+<code>string</code> or <code>number</code>
+</td>
+<td>Format of amount returned: as a string (default) or as a number</td>
 </tr>
 <tr>
-<td>format_amount_unit</td>
-<td>optional, "currency" (default) or "lot"</td>
-<td></td>
+<td><code>format_amount_unit</code></td>
+<td>No</td>
+<td>
+<code>currency</code> or <code>lot</code>
+</td>
+<td>Units of amount returned: in currency units (default) or in lots</td>
 </tr>
 </tbody>
-</table><p>Alias: <code>/api/1/request/:symbol/orderbook.json</code> -&gt; <code>/api/1/public/:symbol/orderbook?format_price=number&amp;format_amount=number</code></p>
+</table><p><i>Alias:</i> <code>/api/1/request/:symbol/orderbook.json</code> -&gt; <code>/api/1/public/:symbol/orderbook?format_price=number&amp;format_amount=number</code></p>
 
-<p>Example: <code>/api/1/public/BTCUSD/orderbook</code></p>
+<p><i>Example:</i> <code>/api/1/public/BTCUSD/orderbook</code></p>
+
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"asks"</span><span class="p">:</span> <span class="p">[</span>
@@ -266,7 +427,9 @@
 <span class="p">}</span>
 </pre></div>
 
-<p>Example: <code>/api/1/public/BTCUSD/orderbook?format_price=number&amp;format_amount=number</code></p>
+<p><i>Example:</i> <code>/api/1/public/BTCUSD/orderbook?format_price=number&amp;format_amount=number</code></p>
+
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"asks"</span><span class="p">:</span> <span class="p">[</span>
@@ -287,89 +450,135 @@
 </pre></div>
 
 <h3>
-<a name="api1publicsymboltrades" class="anchor" href="#api1publicsymboltrades"><span class="octicon octicon-link"></span></a>/api/1/public/:symbol/trades</h3>
+<a name="api1publicsymboltrades" class="anchor" href="#api1publicsymboltrades"><span class="octicon octicon-link"></span></a>
+<a name="trades"></a>/api/1/public/:symbol/trades</h3>
 
-<p>Request: <code>GET /api/1/public/:symbol/trades</code></p>
+<p><i>Summary:</i> returns data on trades for specified currency symbol in specified ID or timestamp interval.</p>
 
-<p>Parameters:</p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/terminal">https://hitbtc.com/terminal</a>, <b>Market trades</b> tab.</p>
+
+<p><i>Request:</i> <code>GET /api/1/public/:symbol/trades</code>
+  where <code>:symbol</code> is a currency symbol traded on HitBTC exchange (see <a href="#cursymbols">Currency symbols</a>)</p>
+
+<p><i>Parameters:</i></p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Reqired</th>
 <th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>from</td>
-<td>required, int, trade_id or timestamp</td>
-<td>returns trades with trade_id &gt; specified trade_id <br> returns trades with timestamp &gt;= specified timestamp</td>
+<td><code>from</code></td>
+<td>Yes</td>
+<td>integer</td>
+<td>Returns trades with <code>trade_id</code> &gt; specified <code>trade_id</code> (if <code>by=trade_id</code>) or returns trades with <code>timestamp</code> &gt;= specified <code>timestamp</code> (if <code>by=ts</code>)</td>
 </tr>
 <tr>
-<td>till</td>
-<td>optional, int, trade_id or timestamp</td>
-<td>returns trades with trade_id &lt; specified trade_id <br> returns trades with timestamp &lt; specified timestamp</td>
+<td><code>till</code></td>
+<td>No</td>
+<td>integer</td>
+<td>Returns trades with <code>trade_id</code> &lt; specified <code>trade_id</code> (if <code>by=trade_id</code>) or returns trades with <code>timestamp</code> &lt; specified <code>timestamp</code> (if <code>by=ts</code>)</td>
 </tr>
 <tr>
-<td>by</td>
-<td>required, filter and sort by <code>trade_id</code> or <code>ts</code> (timestamp)</td>
-<td></td>
-</tr>
-<tr>
-<td>sort</td>
-<td>optional, <code>asc</code> (default) or <code>desc</code>
+<td><code>by</code></td>
+<td>Yes</td>
+<td>
+<code>trade_id</code> or <code>ts</code>
 </td>
-<td></td>
+<td>Selects if filtering and sorting is performed by trade_id or by timestamp</td>
 </tr>
 <tr>
-<td>start_index</td>
-<td>required, int</td>
-<td>zero-based</td>
+<td><code>sort</code></td>
+<td>No</td>
+<td>
+<code>asc</code> or <code>desc</code>
+</td>
+<td>Trades are sorted ascending (default) or descending</td>
 </tr>
 <tr>
-<td>max_results</td>
-<td>required, int, max value = 1000</td>
-<td></td>
+<td><code>start_index</code></td>
+<td>Yes</td>
+<td>integer</td>
+<td>Start index for the query, zero-based</td>
 </tr>
 <tr>
-<td>format_item</td>
-<td>optional, "array" (default) or "object"</td>
-<td></td>
+<td><code>max_results</code></td>
+<td>Yes</td>
+<td>integer</td>
+<td>Maximum quantity of returned items, at most 1000</td>
 </tr>
 <tr>
-<td>format_price</td>
-<td>optional, "string" (default) or "number"</td>
-<td></td>
+<td><code>format_item</code></td>
+<td>No</td>
+<td>
+<code>array</code> or <code>object</code>
+</td>
+<td>Format of items returned: as an array (default) or as a list of objects</td>
 </tr>
 <tr>
-<td>format_amount</td>
-<td>optional, "string" (default) or "number"</td>
-<td></td>
+<td><code>format_price</code></td>
+<td>No</td>
+<td>
+<code>string</code> or <code>number</code>
+</td>
+<td>Format of prices returned: as a string (default) or as a number</td>
 </tr>
 <tr>
-<td>format_amount_unit</td>
-<td>optional, "currency" (default) or "lot"</td>
-<td></td>
+<td><code>format_amount</code></td>
+<td>No</td>
+<td>
+<code>string</code> or <code>number</code>
+</td>
+<td>Format of amount returned: as a string (default) or as a number</td>
 </tr>
 <tr>
-<td>format_tid</td>
-<td>optional, "string" or "number" (default)</td>
-<td></td>
+<td><code>format_amount_unit</code></td>
+<td>No</td>
+<td>
+<code>currency</code> or <code>lot</code>
+</td>
+<td>Units of amount returned: in currency units (default) or in lots</td>
 </tr>
 <tr>
-<td>format_timestamp</td>
-<td>optional, "millisecond" (default) or "second"</td>
-<td></td>
+<td><code>format_tid</code></td>
+<td>No</td>
+<td>
+<code>string</code> or <code>number</code>
+</td>
+<td>Format of trade ID returned: as a string or as a number (default)</td>
 </tr>
 <tr>
-<td>format_wrap</td>
-<td>optional, "true" (default) or "false"</td>
-<td></td>
+<td><code>format_timestamp</code></td>
+<td>No</td>
+<td>
+<code>millisecond</code> or <code>second</code>
+</td>
+<td>Format of trade timestamp returned: in milliseconds (default) or in seconds</td>
+</tr>
+<tr>
+<td><code>format_wrap</code></td>
+<td>No</td>
+<td>
+<code>true</code> or <code>false</code>
+</td>
+<td>Select if the line wrappnig is used in item returned. Default value - <code>true</code>
+</td>
 </tr>
 </tbody>
-</table><p>Alias: <code>/api/1/request/:symbol/trades.json?since=&lt;trade_id&gt;</code> -&gt; <code>/api/1/public/:symbol/trades?from=&lt;trade_id&gt;&amp;by=trade_id&amp;start_index=0&amp;format_numbers=number&amp;format_tradeid=string&amp;format_objects=object&amp;format_timestamp=second</code></p>
+</table><p><i>Alias:</i></p>
 
-<p>Example: <code>/api/1/public/BTCUSD/trades?from=0&amp;by=trade_id&amp;sort=desc&amp;start_index=0&amp;max_results=100</code></p>
+<pre><code>/api/1/request/:symbol/trades.json?since=&lt;trade_id&gt; -&gt; /api/1/public/:symbol/trades?from=&lt;trade_id&gt;&amp;by=trade_id&amp;start_index=0&amp;format_numbers=number&amp;format_tradeid=string&amp;format_objects=object&amp;format_timestamp=second
+</code></pre>
+
+<p><i>Example:</i></p>
+
+<pre><code>/api/1/public/BTCUSD/trades?from=0&amp;by=trade_id&amp;sort=desc&amp;start_index=0&amp;max_results=100
+</code></pre>
+
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"trades"</span><span class="p">:</span> <span class="p">[</span>
@@ -382,10 +591,12 @@
 <span class="p">}</span>
 </pre></div>
 
-<p>Example: </p>
+<p><i>Example:</i></p>
 
 <pre><code>/api/1/public/BTCUSD/trades?from=0&amp;by=trade_id&amp;sort=desc&amp;start_index=0&amp;max_results=100&amp;format_item=object&amp;format_price=number&amp;format_amount=number&amp;format_tid=string&amp;format_timestamp=second&amp;format_wrap=false
 </code></pre>
+
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">[</span>
     <span class="p">{</span><span class="nt">"date"</span><span class="p">:</span> <span class="mi">1393492619</span><span class="p">,</span> <span class="nt">"price"</span><span class="p">:</span> <span class="mf">575.64</span><span class="p">,</span> <span class="nt">"amount"</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span> <span class="nt">"tid"</span><span class="p">:</span> <span class="s2">"3814483"</span><span class="p">},</span>
@@ -397,29 +608,69 @@
 </pre></div>
 
 <h2>
-<a name="trading-restful-api" class="anchor" href="#trading-restful-api"><span class="octicon octicon-link"></span></a>Trading RESTful API</h2>
+<a name="trading-restful-api" class="anchor" href="#trading-restful-api"><span class="octicon octicon-link"></span></a>
+<a name="tradingrestful"></a>Trading RESTful API</h2>
 
-<p>Base URL: <a href="https://api.hitbtc.com">https://api.hitbtc.com</a></p>
-
-<p>Demo endoint: <a href="http://demo-api.hitbtc.com">http://demo-api.hitbtc.com</a></p>
-
-<h3>
-<a name="authentication" class="anchor" href="#authentication"><span class="octicon octicon-link"></span></a>Authentication</h3>
-
-<p>RESTful Trading API requires a HMAC-SHA512 signatures for each request.</p>
-
-<p>You should get your API key and Secret key from the Settings page on <a href="https://hitbtc.com">https://hitbtc.com</a> in order to use this API endpoint. </p>
-
-<p>Each request should include three parameters: <code>apikey</code>, <code>signature</code> and <code>nonce</code>.</p>
+<p>RESTful API allows to perform trading operations with the following methods:</p>
 
 <ul>
-<li>
-<code>nonce</code> - unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp for <code>nonce</code>. This parameter should be added as a query string parameter <code>nonce</code>. <code>nonce</code> should be &lt; (2^53-1).</li>
-<li>
-<code>apikey</code> - API key from Settings page. This parameter should be added as a query string parameter <code>apikey</code>.</li>
-<li>
-<code>signature</code> - <em>lower-case</em> hex representation of hmac-sha512 of concatenated <code>uri</code> and <code>postData</code>. This parameter should be added as a HTTP header <code>X-Signature</code>.</li>
-</ul><p>Signture generation pseudo-code:</p>
+<li>get the trading balance - <a href="#tradingbalance">/api/1/trading/time</a>
+</li>
+<li>get all active orders  - <a href="#active">/api/1/trading/active</a>
+</li>
+<li>place a new order - <a href="#neworder">/api/1/trading/new_order</a>
+</li>
+<li>cancel an order - <a href="#cancelorder">/api/1/trading/cancel_order</a>
+</li>
+<li>get user's trading history - <a href="#usertrades">/api/1/trading/trades</a>
+</li>
+<li>get user's recent orders (RESTful - <a href="#recentorders">/api/1/trading/recent</a>
+</li>
+</ul><p>Trading operations require <a href="#authentication">authentication</a>.</p>
+
+<p><a href="#errors">Error codes</a> and <a href="#reports">reports representing order status changes</a> are described below.</p>
+
+<h3>
+<a name="authentication" class="anchor" href="#authentication"><span class="octicon octicon-link"></span></a>
+<a name="authenticationrestful"></a>Authentication</h3>
+
+<p>RESTful Trading API requires HMAC-SHA512 signatures for each request.</p>
+
+<p>To use this API endpoint you should get your API key and Secret key from the <a href="https://hitbtc.com/settings">Settings</a> page. </p>
+
+<p>Each request should include the following parameters:</p>
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>nonce</code></td>
+<td>Yes</td>
+<td>query string parameter, less than (2^53-1)</td>
+<td>Unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp</td>
+</tr>
+<tr>
+<td><code>apikey</code></td>
+<td>Yes</td>
+<td>query string parameter</td>
+<td>API key from <a href="https://hitbtc.com/settings">Settings</a> page</td>
+</tr>
+<tr>
+<td><code>signature</code></td>
+<td>Yes</td>
+<td>
+<em>lower-case</em> hex representation of hmac-sha512 of concatenated <code>uri</code> and <code>postData</code>
+</td>
+<td>This parameter should be added as a HTTP header <code>X-Signature</code>
+</td>
+</tr>
+</tbody>
+</table><p>Signature generation pseudo-code:</p>
 
 <pre><code>uri = path + '?' + query (example: /api/1/trading/orders/active?nonce=1395049771755&amp;apikey=f6ab189hd7a2007e01d95667de3c493d&amp;symbols=EURUSD)
 message = uri + postData
@@ -435,16 +686,17 @@ signature = lower_case(hex(hmac_sha512(message, secret_key)))
    <span class="kd">var</span> <span class="nx">signature</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="s1">'sha512'</span><span class="p">,</span> <span class="nx">secretKey</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">message</span><span class="p">).</span><span class="nx">digest</span><span class="p">(</span><span class="s1">'hex'</span><span class="p">);</span>
 </pre></div>
 
-<p>Check out examples that are provided by the community:</p>
+<p>Useful examples provided by the community:</p>
 
 <ul>
 <li>C# example code: <a href="https://gist.github.com/hitbtc-com/9808530">https://gist.github.com/hitbtc-com/9808530</a>
 </li>
 <li>PHP example code: <a href="https://gist.github.com/hitbtc-com/10885873">https://gist.github.com/hitbtc-com/10885873</a> </li>
 </ul><h3>
-<a name="error-codes" class="anchor" href="#error-codes"><span class="octicon octicon-link"></span></a>Error codes</h3>
+<a name="error-codes" class="anchor" href="#error-codes"><span class="octicon octicon-link"></span></a>
+<a name="errors"></a>Error codes</h3>
 
-<p>RESTful Trading API can return the following errors:</p>
+<p>Trading RESTful API can return the following errors:</p>
 
 <table>
 <thead><tr>
@@ -455,160 +707,162 @@ signature = lower_case(hex(hmac_sha512(message, secret_key)))
 <tbody>
 <tr>
 <td>403</td>
-<td>Invalid apikey</td>
+<td>Invalid API key</td>
 <td>API key doesn't exist or API key is currently used on another endpoint (max last 15 min)</td>
 </tr>
 <tr>
 <td>403</td>
 <td>Nonce has been used</td>
-<td>nonce is not monotonous</td>
+<td>Nonce is not monotonous</td>
 </tr>
 <tr>
 <td>403</td>
 <td>Nonce is not valid</td>
-<td>too big number or not a number</td>
+<td>Too big number or not a number</td>
 </tr>
 <tr>
 <td>403</td>
 <td>Wrong signature</td>
-<td></td>
+<td>Specified signature is not correct</td>
 </tr>
 </tbody>
 </table><h3>
-<a name="execution-reports" class="anchor" href="#execution-reports"><span class="octicon octicon-link"></span></a>Execution reports</h3>
+<a name="execution-reports" class="anchor" href="#execution-reports"><span class="octicon octicon-link"></span></a>
+<a name="reports"></a>Execution reports</h3>
 
 <p>The API uses <code>ExecutionReport</code> as an object that represents change of order status.</p>
 
-<p>The following fields are used in this object:</p>
+<p>The following fields are used in <code>ExecutionReport</code> object:</p>
 
 <table>
 <thead><tr>
 <th>Field</th>
-<th>Description</th>
-<th>Type / Enum</th>
 <th>Required</th>
+<th>Type</th>
+<th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>orderId</td>
+<td><code>orderId</code></td>
+<td>Yes</td>
+<td>string</td>
 <td>Order ID on the Exchange</td>
-<td>string</td>
-<td>required</td>
 </tr>
 <tr>
-<td>clientOrderId</td>
-<td>clientOrderId sent in NewOrder message</td>
+<td><code>clientOrderId</code></td>
+<td>Yes</td>
 <td>string</td>
-<td>required</td>
+<td>
+<code>clientOrderId</code> sent in <code>NewOrder</code> message (see <a href="#neworder">/api/1/trading/new_order</a>)</td>
 </tr>
 <tr>
-<td>execReportType</td>
-<td>execution report type</td>
+<td><code>execReportType</code></td>
+<td>Yes</td>
 <td>
 <code>new</code> <br><code>canceled</code> <br><code>rejected</code> <br><code>expired</code> <br><code>trade</code> <br><code>status</code>
 </td>
-<td>required</td>
+<td>Execution report type</td>
 </tr>
 <tr>
-<td>orderStatus</td>
-<td>order status</td>
+<td><code>orderStatus</code></td>
+<td>Yes</td>
 <td>
 <code>new</code> <br><code>partiallyFilled</code> <br><code>filled</code> <br><code>canceled</code> <br><code>rejected</code> <br><code>expired</code>
 </td>
-<td>required</td>
+<td>Order status</td>
 </tr>
 <tr>
-<td>orderRejectReason</td>
-<td>Relevant only for the orders in rejected state</td>
+<td><code>orderRejectReason</code></td>
+<td>Yes - for orders in <code>rejected</code> state</td>
 <td>
 <code>unknownSymbol</code> <br><code>exchangeClosed</code> <br><code>orderExceedsLimit</code> <br><code>unknownOrder</code> <br><code>duplicateOrder</code> <br><code>unsupportedOrder</code> <br><code>unknownAccount</code> <br><code>other</code>
 </td>
-<td>for rejects</td>
+<td>Reason of rejection. Relevant only for orders in rejected state</td>
 </tr>
 <tr>
-<td>symbol</td>
-<td></td>
+<td><code>symbol</code></td>
+<td>Yes</td>
 <td>string, e.g. <code>BTCUSD</code>
 </td>
-<td>required</td>
+<td>Currency symbol traded on HitBTC exchange (see <a href="#cursymbols">Currency symbols</a>)</td>
 </tr>
 <tr>
-<td>side</td>
-<td></td>
+<td><code>side</code></td>
+<td>Yes</td>
 <td>
 <code>buy</code> or <code>sell</code>
 </td>
-<td>required</td>
+<td>Side of a trade</td>
 </tr>
 <tr>
-<td>timestamp</td>
-<td>UTC timestamp in milliseconds</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>price</td>
-<td></td>
-<td>decimal</td>
-<td></td>
-</tr>
-<tr>
-<td>quantity</td>
-<td></td>
+<td><code>timestamp</code></td>
+<td>No</td>
 <td>integer</td>
-<td>required</td>
+<td>UTC timestamp in milliseconds</td>
 </tr>
 <tr>
-<td>type</td>
-<td></td>
-<td>only <code>limit</code> orders are currently supported</td>
-<td>required</td>
+<td><code>price</code></td>
+<td>No</td>
+<td>decimal</td>
+<td>Price of an order</td>
 </tr>
 <tr>
-<td>timeInForce</td>
-<td>time in force</td>
+<td><code>quantity</code></td>
+<td>Yes</td>
+<td>integer</td>
+<td>Order quantity in lots</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>Yes</td>
+<td><code>limit</code></td>
+<td>Type of an order. Only <code>limit</code> orders are currently supported</td>
+</tr>
+<tr>
+<td><code>timeInForce</code></td>
+<td>Yes</td>
 <td>
 <code>GTC</code> - Good-Til-Canceled <br><code>IOC</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill<br><code>DAY</code> - day orders&lt;</td>
-<td>required</td>
+<td>Time in force</td>
 </tr>
 <tr>
-<td>tradeId</td>
+<td><code>tradeId</code></td>
+<td>Yes - for trades</td>
+<td>integer</td>
 <td>Trade ID on the exchange</td>
-<td></td>
-<td>for trades</td>
 </tr>
 <tr>
-<td>lastQuantity</td>
-<td></td>
+<td><code>lastQuantity</code></td>
+<td>Yes - for trades</td>
 <td>integer</td>
-<td>for trades</td>
+<td>Last quantity</td>
 </tr>
 <tr>
-<td>lastPrice</td>
-<td></td>
+<td><code>lastPrice</code></td>
+<td>Yes - for trades</td>
 <td>decimal</td>
-<td>for trades</td>
+<td>Last price</td>
 </tr>
 <tr>
-<td>leavesQuantity</td>
-<td></td>
+<td><code>leavesQuantity</code></td>
+<td>No</td>
 <td>integer</td>
-<td></td>
+<td>Leaves quantity</td>
 </tr>
 <tr>
-<td>cumQuantity</td>
-<td></td>
+<td><code>cumQuantity</code></td>
+<td>No</td>
 <td>integer</td>
-<td></td>
+<td>Cumulative quantity</td>
 </tr>
 <tr>
-<td>averagePrice</td>
-<td></td>
-<td>decimal, will be 0 if 'cumQuantity'=0</td>
-<td></td>
+<td><code>averagePrice</code></td>
+<td>No</td>
+<td>decimal</td>
+<td>Average price. Equals 0 if <code>cumQuantity</code>=0</td>
 </tr>
 </tbody>
-</table><p>Example:</p>
+</table><p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span> <span class="nt">"ExecutionReport"</span><span class="p">:</span> <span class="p">{</span> 
    <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"5852103"</span><span class="p">,</span>
@@ -631,15 +885,18 @@ signature = lower_case(hex(hmac_sha512(message, secret_key)))
 </pre></div>
 
 <h3>
-<a name="api1tradingbalance" class="anchor" href="#api1tradingbalance"><span class="octicon octicon-link"></span></a>/api/1/trading/balance</h3>
+<a name="api1tradingbalance" class="anchor" href="#api1tradingbalance"><span class="octicon octicon-link"></span></a>
+<a name="tradingbalance"></a>/api/1/trading/balance</h3>
 
-<p>Request: <code>GET /api/1/trading/balance</code></p>
+<p><i>Summary:</i> returns trading balance.</p>
 
-<p>Summary: returns trading balance.</p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/terminal">https://hitbtc.com/terminal</a>, the upper panel, <i>Trading</i> line. The black number displays total trade balance of the currency (<code>cash</code> parameter), the gray number is amount reserved against unexecuted orders and unfinished transactions (<code>reserved</code> parameter).</p>
 
-<p>Parameters: no parameters</p>
+<p><i>Request:</i> <code>GET /api/1/trading/balance</code></p>
 
-<p>Example: </p>
+<p><i><i>Parameters:</i></i> no parameters</p>
+
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"balance"</span><span class="p">:</span> <span class="p">[</span>
   <span class="p">{</span>
@@ -666,26 +923,31 @@ signature = lower_case(hex(hmac_sha512(message, secret_key)))
 </pre></div>
 
 <h3>
-<a name="api1tradingordersactive" class="anchor" href="#api1tradingordersactive"><span class="octicon octicon-link"></span></a>/api/1/trading/orders/active</h3>
+<a name="api1tradingordersactive" class="anchor" href="#api1tradingordersactive"><span class="octicon octicon-link"></span></a>
+<a name="active"></a>/api/1/trading/orders/active</h3>
 
-<p>Request: <code>GET /api/1/trading/orders/active</code></p>
+<p><i>Summary:</i> returns all orders in status <code>new</code> or <code>partiallyFilled</code>.</p>
 
-<p>Summary: returns all active orders (<code>new</code> or <code>partiallyFilled</code>).</p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/terminal">https://hitbtc.com/terminal</a>, <b>My orders</b> tab, <b>Active</b> group.</p>
 
-<p>Parameters: </p>
+<p><i>Request:</i> <code>GET /api/1/trading/orders/active</code></p>
+
+<p><i>Parameters:</i> </p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Required</th>
 <th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody><tr>
-<td>symbols</td>
-<td>string, comma-delimeted list of symbols, optional, default - all symbols</td>
-<td></td>
+<td><code>symbols</code></td>
+<td>No</td>
+<td>string</td>
+<td>Comma-separated list of symbols. Default - all symbols</td>
 </tr></tbody>
-</table><p>Example:</p>
+</table><p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"orders"</span><span class="p">:</span> <span class="p">[</span>
   <span class="p">{</span>
@@ -708,71 +970,82 @@ signature = lower_case(hex(hmac_sha512(message, secret_key)))
 </pre></div>
 
 <h3>
-<a name="api1tradingnew_order" class="anchor" href="#api1tradingnew_order"><span class="octicon octicon-link"></span></a>/api/1/trading/new_order</h3>
+<a name="api1tradingnew_order" class="anchor" href="#api1tradingnew_order"><span class="octicon octicon-link"></span></a>
+<a name="neworder"></a>/api/1/trading/new_order</h3>
 
-<p>Request: <code>POST /api/1/trading/new_order</code></p>
+<p><i>Summary:</i> place a new order. Returns a JSON object <code>ExecutionReport</code> that respresent a status of the order.</p>
 
-<p>Summary: place a new order.</p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/terminal">https://hitbtc.com/terminal</a>, <b>Sell Order</b> and <b>Buy Order</b> panels.</p>
 
-<p>Parameters: </p>
+<p><i>Request:</i> <code>POST /api/1/trading/new_order</code></p>
+
+<p><i>Parameters:</i></p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Required</th>
 <th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>clientOrderId</td>
-<td>string, &gt;=8 characters, &lt;= 32 characters, required</td>
-<td>unique order id generated by client</td>
+<td><code>clientOrderId</code></td>
+<td>Yes</td>
+<td>string</td>
+<td>Unique order ID generated by client. From 8 to 32 characters</td>
 </tr>
 <tr>
-<td>symbol</td>
-<td>string, required</td>
-<td>e.g. <code>BTCUSD</code>
+<td><code>symbol</code></td>
+<td>Yes</td>
+<td>string</td>
+<td>Currency symbol traded on HitBTC exchange (see <a href="#cursymbols">Currency symbols</a>), e.g. <code>BTCUSD</code>
 </td>
 </tr>
 <tr>
-<td>side</td>
+<td><code>side</code></td>
+<td>Yes</td>
 <td>
-<code>buy</code> or <code>sell</code>, required</td>
-<td></td>
+<code>buy</code> or <code>sell</code>
+</td>
+<td>Side of a trade</td>
 </tr>
 <tr>
-<td>price</td>
-<td>decimal, required</td>
-<td>order price, required for limit orders</td>
+<td><code>price</code></td>
+<td>Yes - for limit orders</td>
+<td>decimal</td>
+<td>Order price</td>
 </tr>
 <tr>
-<td>quantity</td>
-<td>int</td>
-<td>order quantity in lots</td>
+<td><code>quantity</code></td>
+<td>No</td>
+<td>integer</td>
+<td>Order quantity in lots</td>
 </tr>
 <tr>
-<td>type</td>
+<td><code>type</code></td>
+<td>No</td>
 <td>
 <code>limit</code> or <code>market</code>
 </td>
-<td>order type</td>
+<td>Order type</td>
 </tr>
 <tr>
-<td>timeInForce</td>
+<td><code>timeInForce</code></td>
+<td>No</td>
 <td>
 <code>GTC</code> - Good-Til-Canceled <br><code>IOC</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill<br><code>DAY</code> - day</td>
-<td>use <code>GTC</code> by default</td>
+<td>Time in force. Default value - <code>GTC</code>
+</td>
 </tr>
 </tbody>
-</table><p>Return value: returns a JSON object <code>ExecutionReport</code> that respresent a status of the order.</p>
-
-<p>Example:</p>
+</table><p><i>Example:</i></p>
 
 <pre><code>post url: /api/1/trading/new_order?nonce=1395049771755&amp;apikey=f6ab189hd7a2007e01d95667de3c493d
 post data: clientOrderId=11111112&amp;symbol=BTCUSD&amp;side=buy&amp;price=0.1&amp;quantity=100&amp;type=limit&amp;timeInForce=GTC
 </code></pre>
 
-<p>Example response:</p>
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span> <span class="nt">"ExecutionReport"</span><span class="p">:</span> 
    <span class="p">{</span> <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"58521038"</span><span class="p">,</span>
@@ -794,52 +1067,59 @@ post data: clientOrderId=11111112&amp;symbol=BTCUSD&amp;side=buy&amp;price=0.1&a
 </pre></div>
 
 <h3>
-<a name="api1tradingcancel_order" class="anchor" href="#api1tradingcancel_order"><span class="octicon octicon-link"></span></a>/api/1/trading/cancel_order</h3>
+<a name="api1tradingcancel_order" class="anchor" href="#api1tradingcancel_order"><span class="octicon octicon-link"></span></a>
+<a name="cancelorder"></a>/api/1/trading/cancel_order</h3>
 
-<p>Request: <code>POST /api/1/trading/cancel_order</code></p>
+<p><i>Summary:</i> cancels an order. Returns <code>ExecutionReport</code> JSON object or <code>CancelReject</code> JSON object.</p>
 
-<p>Summary: cancels an order.</p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/terminal">https://hitbtc.com/terminal</a>, <b>My Orders</b> tab. Click <b>Cancel</b> button in required order line.</p>
 
-<p>Parameters: </p>
+<p><i>Request:</i> <code>POST /api/1/trading/cancel_order</code></p>
+
+<p><i>Parameters:</i></p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Required</th>
 <th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>clientOrderId</td>
-<td>string, &gt;=8 characters, &lt;= 32 characters, required</td>
-<td>the same an in your order</td>
+<td><code>clientOrderId</code></td>
+<td>Yes</td>
+<td>string</td>
+<td>Order ID, the same as in cancelling order, from 8 to 32 characters</td>
 </tr>
 <tr>
-<td>cancelRequestClientOrderId</td>
-<td>string, &gt;=8 characters, &lt;= 32 characters, required</td>
-<td>unqiue id generated by client</td>
+<td><code>cancelRequestClientOrderId</code></td>
+<td>Yes</td>
+<td>string</td>
+<td>Unqiue ID generated by client, from 8 to 32 characters</td>
 </tr>
 <tr>
-<td>symbol</td>
-<td>string, required</td>
-<td>the same an in your order</td>
+<td><code>symbol</code></td>
+<td>Yes</td>
+<td>string</td>
+<td>Currency symbol, the same as in cancelling order</td>
 </tr>
 <tr>
-<td>side</td>
+<td><code>side</code></td>
+<td>Yes</td>
 <td>
-<code>buy</code> or <code>sell</code>, required</td>
-<td>the same an in your order</td>
+<code>buy</code> or <code>sell</code>
+</td>
+<td>Side of a trade, the same as in cancelling order</td>
 </tr>
 </tbody>
-</table><p>Return values: could return <code>ExecutionReport</code> JSON object or <code>CancelReject</code> JSON object.</p>
-
-<p>Example:</p>
+</table><p><i>Example:</i></p>
 
 <pre><code>post url: /api/1/trading/cancel_order?nonce=1395049771755&amp;apikey=f6ab189hd7a2007e01d95667de3c493d
 post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=38257825798349578945&amp;symbol=BTCUSD&amp;side=buy
 </code></pre>
 
-<p>Example response:</p>
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span> <span class="nt">"ExecutionReport"</span><span class="p">:</span> 
    <span class="p">{</span> <span class="nt">"orderId"</span><span class="p">:</span> <span class="s2">"58521038"</span><span class="p">,</span>
@@ -870,122 +1150,141 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 </pre></div>
 
 <h3>
-<a name="api1tradingtrades" class="anchor" href="#api1tradingtrades"><span class="octicon octicon-link"></span></a>/api/1/trading/trades</h3>
+<a name="api1tradingtrades" class="anchor" href="#api1tradingtrades"><span class="octicon octicon-link"></span></a>
+<a name="usertrades"></a>/api/1/trading/trades</h3>
 
-<p>Request: <code>GET /api/1/trading/trades</code></p>
+<p><i>Summary:</i> returns the trading history - an array of user's trades (<code>trade</code> objects).</p>
 
-<p>Summary: returns an user's trading history.</p>
+<p><i>Sample usage at HitBTC site:</i> <a href="https://hitbtc.com/trading-history">https://hitbtc.com/trading-history</a>. Trades for preceding 24 hours see <a href="https://hitbtc.com/terminal">https://hitbtc.com/terminal</a>, <b>My trades</b> tab. </p>
 
-<p>Parameters: </p>
+<p><i>Request:</i> <code>GET /api/1/trading/trades</code></p>
+
+<p><i>Parameters:</i></p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Required</th>
 <th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
 <td><code>by</code></td>
+<td>No</td>
 <td>
-<code>trade_id</code> or <code>ts</code> (timestamp)</td>
-<td></td>
+<code>trade_id</code> or <code>ts</code>
+</td>
+<td>Selects if filtering and sorting is performed by <code>trade_id</code> or by <code>timestamp</code>
+</td>
 </tr>
 <tr>
 <td><code>start_index</code></td>
-<td>int, optional, default(0)</td>
-<td>zero-based index</td>
+<td>No</td>
+<td>integer</td>
+<td>Zero-based index. Default value is 0</td>
 </tr>
 <tr>
 <td><code>max_results</code></td>
-<td>int, required, &lt;=1000</td>
-<td></td>
+<td>Yes</td>
+<td>integer</td>
+<td>Maximum quantity of returned results, at most 1000</td>
 </tr>
 <tr>
 <td><code>symbols</code></td>
-<td>string, comma-delimited</td>
-<td></td>
+<td>No</td>
+<td>string</td>
+<td>Comma-separated list of currency symbols</td>
 </tr>
 <tr>
 <td><code>sort</code></td>
+<td>No</td>
 <td>
-<code>asc</code> (default) or <code>desc</code>
+<code>asc</code> or <code>desc</code>
 </td>
-<td></td>
+<td>Trades are sorted ascending (default) or descending</td>
 </tr>
 <tr>
 <td><code>from</code></td>
-<td>optional</td>
-<td>start <code>trade_id</code> or <code>ts</code>, see <code>by</code>
-</td>
+<td>No</td>
+<td>integer</td>
+<td>Returns trades with <code>trade_id</code> &gt; specified <code>trade_id</code> (if <code>by=trade_id</code>) or returns trades with <code>timestamp</code> &gt;= specified timestamp<code>(if</code>by=ts`)</td>
 </tr>
 <tr>
 <td><code>till</code></td>
-<td>optional</td>
-<td>end <code>trade_id</code> or <code>ts</code>, see <code>by</code>
-</td>
+<td>No</td>
+<td>integer</td>
+<td>Returns trades with <code>trade_id</code> &lt; specified <code>trade_id</code> (if <code>by=trade_id</code>) or returns trades with <code>timestamp</code> &lt; specified <code>timestamp</code> (if <code>by=ts</code>)</td>
 </tr>
 </tbody>
-</table><p>Return values: could return an array of user's trades.</p>
-
-<p>The following fields are used in <code>trade</code> object:</p>
+</table><p>The following fields are used in <code>trade</code> object:</p>
 
 <table>
 <thead><tr>
 <th>Field</th>
+<th>Required</th>
+<th>Type</th>
 <th>Description</th>
-<th>Type / Enum</th>
 </tr></thead>
 <tbody>
 <tr>
 <td><code>tradeId</code></td>
+<td>Yes</td>
+<td>integer</td>
 <td>Trade ID on the exchange</td>
-<td>int, required</td>
 </tr>
 <tr>
 <td><code>execPrice</code></td>
+<td>Yes</td>
+<td>decimal</td>
 <td>Trade price</td>
-<td>decimal, required</td>
 </tr>
 <tr>
 <td><code>timestamp</code></td>
-<td></td>
-<td>millisecond timestamp, required</td>
+<td>Yes</td>
+<td>integer</td>
+<td>Timestamp, in milliseconds</td>
 </tr>
 <tr>
 <td><code>originalOrderId</code></td>
+<td>No</td>
+<td>integer</td>
 <td>Order ID on the exchange</td>
-<td></td>
 </tr>
 <tr>
 <td><code>fee</code></td>
-<td>Fee for the trade</td>
-<td>decimal, negative means rebate</td>
+<td>No</td>
+<td>decimal</td>
+<td>Fee for the trade, negative value means rebate</td>
 </tr>
 <tr>
 <td><code>clientOrderId</code></td>
-<td>Unique client-generated ID</td>
+<td>No</td>
 <td>string</td>
+<td>Unique order ID generated by client. From 8 to 32 characters</td>
 </tr>
 <tr>
 <td><code>symbol</code></td>
-<td></td>
+<td>No</td>
 <td>string</td>
+<td>Currency symbol</td>
 </tr>
 <tr>
 <td><code>side</code></td>
-<td></td>
+<td>No</td>
 <td>
 <code>buy</code> or <code>sell</code>
 </td>
+<td>Side of a trade</td>
 </tr>
 <tr>
 <td><code>execQuantity</code></td>
-<td>trade size, in lots</td>
-<td>int</td>
+<td>No</td>
+<td>integer</td>
+<td>Trade size, in lots</td>
 </tr>
 </tbody>
-</table><p>Example response:</p>
+</table><p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"trades"</span><span class="p">:</span> <span class="p">[</span>
   <span class="p">{</span>
@@ -1036,134 +1335,157 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 </pre></div>
 
 <h3>
-<a name="api1tradingordersrecent" class="anchor" href="#api1tradingordersrecent"><span class="octicon octicon-link"></span></a>/api/1/trading/orders/recent</h3>
+<a name="api1tradingordersrecent" class="anchor" href="#api1tradingordersrecent"><span class="octicon octicon-link"></span></a>
+<a name="recentorders"></a>/api/1/trading/orders/recent</h3>
 
-<p>Request: <code>GET /api/1/trading/orders/recent</code></p>
+<p><i>Summary:</i> returns an array of user's recent orders (<code>order</code> objects) for last 24 hours, sorted by order update time.</p>
 
-<p>Summary: returns an user's recent orders (for last 24 hours) sorted by order update time.</p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/terminal">https://hitbtc.com/terminal</a>, <b>My orders</b> tab.</p>
 
-<p>Parameters: </p>
+<p><i>Request:</i> <code>GET /api/1/trading/orders/recent</code></p>
+
+<p><i><i>Parameters:</i></i> </p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Required</th>
 <th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
 <td><code>start_index</code></td>
-<td>int, optional, default(0)</td>
-<td>zero-based index</td>
+<td>No</td>
+<td>integer</td>
+<td>Zero-based index, 0 by default</td>
 </tr>
 <tr>
 <td><code>max_results</code></td>
-<td>int, required, &lt;=1000</td>
-<td></td>
+<td>Yes</td>
+<td>integer</td>
+<td>Maximum quantity of returned items, at most 1000</td>
 </tr>
 <tr>
 <td><code>sort</code></td>
+<td>No</td>
 <td>
-<code>asc</code> or <code>desc</code> (<code>asc</code> by default)</td>
-<td></td>
+<code>asc</code> or <code>desc</code>
+</td>
+<td>Orders are sorted ascending (default) or descending</td>
 </tr>
 <tr>
 <td><code>symbols</code></td>
-<td>string, comma-delimited</td>
-<td></td>
+<td>No</td>
+<td>string</td>
+<td>Comma-separated list of currency symbols</td>
 </tr>
 <tr>
 <td><code>statuses</code></td>
-<td>string, comma-delimited, <code>new</code>, <code>partiallyFilled</code>, <code>filled</code>, <code>canceled</code>, <code>expired</code>, <code>rejected</code>
+<td>No</td>
+<td>
+<code>new</code> <br><code>partiallyFilled</code> <br><code>filled</code> <br><code>canceled</code> <br><code>expired</code> <br><code>rejected</code>
 </td>
-<td></td>
+<td>Comma-separated list of order statuses</td>
 </tr>
 </tbody>
-</table><p>Return values: returns an array of user's recent orders.</p>
-
-<p>The following fields are used in <code>order</code> object:</p>
+</table><p>The following fields are used in <code>order</code> object:</p>
 
 <table>
 <thead><tr>
 <th>Field</th>
+<th>Required</th>
+<th>Type</th>
 <th>Description</th>
-<th>Type / Enum</th>
 </tr></thead>
 <tbody>
 <tr>
 <td><code>orderId</code></td>
+<td>No</td>
+<td>integer</td>
 <td>Order ID on the exchange</td>
-<td></td>
 </tr>
 <tr>
 <td><code>orderStatus</code></td>
-<td></td>
+<td>No</td>
 <td>
-<code>new</code>, <code>partiallyFilled</code>, <code>filled</code>, <code>canceled</code>, <code>expired</code>, <code>rejected</code>
+<code>new</code> <br><code>partiallyFilled</code> <br><code>filled</code> <br><code>canceled</code> <br><code>expired</code> <br><code>rejected</code>
 </td>
+<td>Order status</td>
 </tr>
 <tr>
 <td><code>lastTimestamp</code></td>
-<td>last change</td>
-<td>millisecond timestamp, required</td>
+<td>Yes</td>
+<td>integer</td>
+<td>UTC timestamp of the last change, in milliseconds</td>
 </tr>
 <tr>
 <td><code>orderPrice</code></td>
+<td>Yes - for limit orders</td>
+<td>decimal</td>
 <td>Order price</td>
-<td>decimal, required for limit orders</td>
 </tr>
 <tr>
 <td><code>orderQuantity</code></td>
-<td>Order quantity in lots</td>
-<td>int, required</td>
+<td>Yes</td>
+<td>integer</td>
+<td>Order quantity, in lots</td>
 </tr>
 <tr>
 <td><code>avgPrice</code></td>
-<td>Avg. price</td>
+<td>Yes</td>
 <td>decimal</td>
+<td>Average price</td>
 </tr>
 <tr>
 <td><code>quantityLeaves</code></td>
-<td>Remaining quantity in lots</td>
-<td>int, required</td>
+<td>Yes</td>
+<td>integer</td>
+<td>Remaining quantity, in lots</td>
 </tr>
 <tr>
 <td><code>type</code></td>
-<td></td>
+<td>No</td>
 <td>
 <code>limit</code> or <code>market</code>
 </td>
+<td>Type of an order</td>
 </tr>
 <tr>
 <td><code>timeInForce</code></td>
-<td></td>
+<td>No</td>
 <td>
 <code>GTC</code> - Good-Til-Canceled <br><code>IOC</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill<br><code>DAY</code> - day</td>
+<td>Time in force</td>
 </tr>
 <tr>
 <td><code>clientOrderId</code></td>
-<td>Unique client-generated ID</td>
+<td>No</td>
 <td>string</td>
+<td>Unique client-generated ID</td>
 </tr>
 <tr>
 <td><code>symbol</code></td>
-<td></td>
+<td>No</td>
 <td>string</td>
+<td>Currency symbol</td>
 </tr>
 <tr>
 <td><code>side</code></td>
-<td></td>
+<td>No</td>
 <td>
 <code>buy</code> or <code>sell</code>
 </td>
+<td>Side of a trade</td>
 </tr>
 <tr>
 <td><code>execQuantity</code></td>
-<td>last executed quantity in lots</td>
-<td>int</td>
+<td>No</td>
+<td>integer</td>
+<td>Last executed quantity, in lots</td>
 </tr>
 </tbody>
-</table><p>Example response:</p>
+</table><p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"orders"</span><span class="p">:</span> <span class="p">[</span>
   <span class="p">{</span>
@@ -1215,59 +1537,75 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 </pre></div>
 
 <h2>
-<a name="payment-restful-api" class="anchor" href="#payment-restful-api"><span class="octicon octicon-link"></span></a>Payment RESTful API</h2>
+<a name="payment-restful-api" class="anchor" href="#payment-restful-api"><span class="octicon octicon-link"></span></a>
+<a name="paymentsrestful"></a>Payment RESTful API</h2>
 
-<p>Base URL: <a href="https://api.hitbtc.com">https://api.hitbtc.com</a></p>
+<p>RESTful API allows to manage funds with the following methods:</p>
 
-<p>Demo endoint: the Payment API is not available in demo mode.</p>
+<ul>
+<li>get multi-currency balance of the main account - <a href="#paymentbalance">/api/1/payment/balance</a>
+</li>
+<li>transfer funds between main and trading accounts - <a href="#transfer">/api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main</a>
+</li>
+<li>get the last created incoming cryptocurrency address or create a new one -  <a href="#getaddress">/api/1/payment/address/ (GET)</a>, <a href="#postaddress">/api/1/payment/address/ (POST)</a>,</li>
+<li>create an outgoing crypotocurrency transaction - <a href="#payout">/api/1/payment/payout</a>
+</li>
+<li>get a list of payment transactions - <a href="#transactions">/api/1/payment/transactions</a>
+</li>
+</ul><p>Payment operations require <a href="#authentication">authentication</a></p>
 
 <h3>
-<a name="api1paymentbalance" class="anchor" href="#api1paymentbalance"><span class="octicon octicon-link"></span></a>/api/1/payment/balance</h3>
+<a name="api1paymentbalance" class="anchor" href="#api1paymentbalance"><span class="octicon octicon-link"></span></a>
+<a name="paymentbalance"></a>/api/1/payment/balance</h3>
 
-<p>Request: <code>GET /api/1/payment/balance</code></p>
+<p><i>Summary:</i> returns multi-currency balance of the main account.</p>
 
-<p>Summary: returns a balance of the main account.</p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/account">https://hitbtc.com/account</a>.</p>
 
-<p>Parameters: no parameters</p>
+<p><i>Request:</i> <code>GET /api/1/payment/balance</code></p>
 
-<p>Return values: returns multi-currency balance of the main account.</p>
+<p><i><i>Parameters:</i></i> no parameters</p>
 
-<p>Example response:</p>
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"balance"</span><span class="p">:</span> <span class="p">[{</span><span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"USD"</span><span class="p">,</span> <span class="nt">"balance"</span><span class="p">:</span> <span class="mf">13.12</span><span class="p">},</span> <span class="p">{</span><span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"EUR"</span><span class="p">,</span> <span class="nt">"balance"</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"LTC"</span><span class="p">,</span> <span class="nt">"balance"</span><span class="p">:</span> <span class="mf">1.07</span><span class="p">},</span> <span class="p">{</span><span class="nt">"currency_code"</span><span class="p">:</span> <span class="s2">"BTC"</span><span class="p">,</span> <span class="nt">"balance"</span><span class="p">:</span> <span class="mf">11.9</span><span class="p">}]}</span>
 </pre></div>
 
 <h3>
-<a name="api1paymenttransfer_" class="anchor" href="#api1paymenttransfer_"><span class="octicon octicon-link"></span></a>/api/1/payment/transfer_*</h3>
+<a name="api1paymenttransfer_to_trading-and-api1paymenttransfer_to_main" class="anchor" href="#api1paymenttransfer_to_trading-and-api1paymenttransfer_to_main"><span class="octicon octicon-link"></span></a>
+<a name="transfer"></a>/api/1/payment/transfer_to_trading and /api/1/payment/transfer_to_main</h3>
 
-<p>Request: <code>POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main</code></p>
+<p><i>Request:</i> <code>POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main</code></p>
 
-<p>Summary: transfer funds between main and trading accounts.</p>
+<p><i>Summary:</i> transfers funds between main and trading accounts; returns a transaction ID or an error.</p>
 
-<p>Parameters:</p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/account">https://hitbtc.com/account</a>. Click the appropriate arrow in the currency line then specify required amount and click <b>Transfer</b> button.</p>
+
+<p><i><i>Parameters:</i></i></p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Required</th>
 <th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
 <td><code>amount</code></td>
-<td>decimal, required</td>
-<td>amount</td>
+<td>Yes</td>
+<td>decimal</td>
+<td>Funds amount to transfer</td>
 </tr>
 <tr>
 <td><code>currency_code</code></td>
-<td>string, required, e.g. <code>BTC</code>
+<td>Yes</td>
+<td>string</td>
+<td>Currency symbol, e.g. <code>BTC</code>
 </td>
-<td></td>
 </tr>
 </tbody>
-</table><p>Return values: returns a transaction id or an error.</p>
-
-<p>Example responses:</p>
+</table><p><i>Example responses:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Balance not enough"</span><span class="p">,</span> <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">409</span><span class="p">,</span> <span class="nt">"body"</span><span class="p">:</span> <span class="s2">"Balance not enough"</span><span class="p">}</span>
 </pre></div>
@@ -1276,119 +1614,132 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 </pre></div>
 
 <h3>
-<a name="api1paymentaddress" class="anchor" href="#api1paymentaddress"><span class="octicon octicon-link"></span></a>/api/1/payment/address/</h3>
+<a name="api1paymentaddress-get" class="anchor" href="#api1paymentaddress-get"><span class="octicon octicon-link"></span></a>
+<a name="getaddress"></a>/api/1/payment/address/ (GET)</h3>
 
-<p>Request: <code>GET /api/1/payment/address/:currency</code></p>
+<p><i>Summary:</i> returns the last created incoming cryptocurrency address that can be used to deposit cryptocurrency to your account. </p>
 
-<p>Example request: <code>GET /api/1/payment/address/BTC</code></p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/account">https://hitbtc.com/account</a>. In the required currency line click <b>Fund</b> icon then click <b>copy address</b> link.</p>
 
-<p>Summary: returns the last created incoming cryptocurrency address</p>
+<p><i>Request:</i> <code>GET /api/1/payment/address/:currency</code></p>
 
-<p>Parameters: no parameters</p>
+<p><i><i>Parameters:</i></i> no parameters</p>
 
-<p>Return values: returns an address that can be used to deposit cryptocurrency.</p>
+<p><i>Example:</i> <code>GET /api/1/payment/address/BTC</code></p>
 
-<p>Example response:</p>
-
-<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"address"</span><span class="p">:</span><span class="s2">"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"</span><span class="p">}</span>
-</pre></div>
-
-<h3>
-<a name="api1paymentaddress-1" class="anchor" href="#api1paymentaddress-1"><span class="octicon octicon-link"></span></a>/api/1/payment/address/</h3>
-
-<p>Request: <code>POST /api/1/payment/address/:currency</code></p>
-
-<p>Example request: <code>POST /api/1/payment/address/BTC</code></p>
-
-<p>Summary: creates a incoming new cryptocurrency address.</p>
-
-<p>Parameters: no parameters</p>
-
-<p>Return values: returns an address that can be used to deposit cryptocurrency.</p>
-
-<p>Example response:</p>
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"address"</span><span class="p">:</span><span class="s2">"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"</span><span class="p">}</span>
 </pre></div>
 
 <h3>
-<a name="api1paymentpayout" class="anchor" href="#api1paymentpayout"><span class="octicon octicon-link"></span></a>/api/1/payment/payout</h3>
+<a name="api1paymentaddress-post" class="anchor" href="#api1paymentaddress-post"><span class="octicon octicon-link"></span></a>
+<a name="postaddress"></a>/api/1/payment/address/ (POST)</h3>
 
-<p>Request: <code>POST /api/1/payment/payout</code></p>
+<p><i>Summary:</i> creates an address that can be used to deposit cryptocurrency to your account; returns a new cryptocurrency address.</p>
 
-<p>Summary: withdraws money and creates an outgoing crypotocurrency transaction.</p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/account">https://hitbtc.com/account</a>. In the required currency line click <b>Fund</b> icon then click <b>create new address</b> link.</p>
 
-<p>Parameters:</p>
+<p><i>Request:</i> <code>POST /api/1/payment/address/:currency</code></p>
+
+<p><i><i>Parameters:</i></i> no parameters</p>
+
+<p><i>Example:</i> <code>POST /api/1/payment/address/BTC</code></p>
+
+<p><i>Example response:</i></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"address"</span><span class="p">:</span><span class="s2">"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"</span><span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="api1paymentpayout" class="anchor" href="#api1paymentpayout"><span class="octicon octicon-link"></span></a>
+<a name="payout"></a>/api/1/payment/payout</h3>
+
+<p><i>Summary:</i> withdraws money and creates an outgoing crypotocurrency transaction; returns a transaction ID on the exchange or an error.</p>
+
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/account">https://hitbtc.com/account</a>. In the required currency line click <b>Fund</b> icon then click <b>copy address</b> link.</p>
+
+<p><i>Request:</i> <code>POST /api/1/payment/payout</code></p>
+
+<p><i>Parameters:</i></p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Required</th>
 <th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
 <td><code>amount</code></td>
-<td>decimal, required</td>
-<td>amount</td>
+<td>Yes</td>
+<td>decimal</td>
+<td>Funds amount to withdraw</td>
 </tr>
 <tr>
 <td><code>currency_code</code></td>
-<td>string, required, e.g. <code>BTC</code>
+<td>Yes</td>
+<td>string</td>
+<td>Currency symbol, e.g. <code>BTC</code>
 </td>
-<td></td>
 </tr>
 <tr>
 <td><code>address</code></td>
-<td>string, required</td>
-<td>BTC/LTC address</td>
+<td>Yes</td>
+<td>string</td>
+<td>BTC/LTC address to withdraw to</td>
 </tr>
 </tbody>
-</table><p>Example: <code>amount=0.001&amp;currency_code=BTC&amp;address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5</code></p>
+</table><p><i>Example:</i> <code>amount=0.001&amp;currency_code=BTC&amp;address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5</code></p>
 
-<p>Return values: returns a transaction id on the exchange or an error.</p>
-
-<p>Example response:</p>
+<p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"transaction"</span><span class="p">:</span> <span class="s2">"51545-103004-18442681"</span><span class="p">}</span>
 </pre></div>
 
 <h3>
-<a name="api1paymenttransactions" class="anchor" href="#api1paymenttransactions"><span class="octicon octicon-link"></span></a>/api/1/payment/transactions</h3>
+<a name="api1paymenttransactions" class="anchor" href="#api1paymenttransactions"><span class="octicon octicon-link"></span></a>
+<a name="transactions"></a>/api/1/payment/transactions</h3>
 
-<p>Request: <code>GET /api/1/payment/transactions</code></p>
+<p><i>Summary:</i> returns a list of payment transactions and their statuses (array of transactions).</p>
 
-<p>Summary: return a list of payment transactions and their statuses.</p>
+<p><i>Sample usage at HitBTC site:</i> see <a href="https://hitbtc.com/account">https://hitbtc.com/account</a>, <b>History</b> panel.</p>
 
-<p>Parameters:</p>
+<p><i>Request:</i> <code>GET /api/1/payment/transactions</code></p>
+
+<p><i>Parameters:</i></p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Required</th>
 <th>Type</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
 <td><code>offset</code></td>
-<td>int, optional, default = 0</td>
-<td>start index for the query</td>
+<td>No</td>
+<td>integer</td>
+<td>Start index for the query, default = 0</td>
 </tr>
 <tr>
 <td><code>limit</code></td>
-<td>int, required</td>
-<td>max results for the query</td>
+<td>Yes</td>
+<td>integer</td>
+<td>Maximum results for the query</td>
 </tr>
 <tr>
 <td><code>dir</code></td>
-<td>string, optional, <code>ask</code> or <code>desc</code> default = <code>desc</code>
+<td>No</td>
+<td>
+<code>ask</code> or <code>desc</code>
 </td>
-<td>sort direction</td>
+<td>Transactions are sorted ascending or descending (default)</td>
 </tr>
 </tbody>
-</table><p>Response: array of transactions.</p>
-
-<p>Example response:</p>
+</table><p><i>Example response:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"transactions"</span><span class="p">:</span> <span class="p">[</span>
   <span class="p">{</span>
@@ -1409,46 +1760,66 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <span class="p">]}</span>
 </pre></div>
 
-<h2>
-<a name="socketio-market-data" class="anchor" href="#socketio-market-data"><span class="octicon octicon-link"></span></a>socket.io Market Data</h2>
+<h1>
+<a name="socketio-market-data" class="anchor" href="#socketio-market-data"><span class="octicon octicon-link"></span></a>
+<a name="socketio"></a>socket.io Market Data</h1>
 
-<p>The socket.io market data based on socket.io protocol and supports WebSocket, xhr-polling and jsonp-polling transports. API works on socket.io version 1.0.x</p>
+<p>The API provides socket.io version 1.0.x protocol for receiving market data. It supports:</p>
 
-<p>The API support multiplexing a single connection with socket.io namespaces. </p>
+<ul>
+<li>WebSocket and xhr-polling transport</li>
+<li>multiplexing a single connection with socket.io namespaces (see <a href="#tradesnamespace"><code>trades</code> namespace</a>)</li>
+</ul><p>Useful links:</p>
 
-<p>Please refer to official socket.io documentation on <a href="http://socket.io/">http://socket.io/</a>.  </p>
+<ul>
+<li>official socket.io documentation - <code>http://socket.io/</code>
+</li>
+<li>chrome extension Simple WebSocket Client - <code>https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo</code>. See also the <a href="#sample">Sample code</a>
+</li>
+</ul><p>API links:</p>
 
-<p>Socket.io URL: <code>http://api.hitbtc.com:8081</code></p>
-
-<p>Socket.io demo URL: <code>http://demo-api.hitbtc.com:8081</code></p>
-
-<h3>
+<ul>
+<li>socket.io URL: <code>http://api.hitbtc.com:8081</code>
+</li>
+<li>socket.io demo URL: <code>http://demo-api.hitbtc.com:8081</code>
+</li>
+<li>live example (both demo and primary API): <code>http://jsfiddle.net/rn7zy75n/1/</code>
+</li>
+</ul><h3>
 <a name="trades-namespace" class="anchor" href="#trades-namespace"><span class="octicon octicon-link"></span></a>
-<code>trades</code> namespace</h3>
+<a name="tradesnamespace"></a><code>trades</code> namespace</h3>
 
-<p>Namespace: <code>trades</code></p>
+<p><i>Namespace:</i> <code>trades</code></p>
 
-<p>URLs: <code>/trades/:symbol</code> e.g. <code>/trades/BTCUSD</code></p>
+<p><i>URLs:</i> <code>/trades/:symbol</code> e.g. <code>/trades/BTCUSD</code></p>
 
-<p>Event: <code>trade</code></p>
+<p><i>Event:</i> <code>trade</code></p>
 
-<p>Event example:</p>
+<p><i>Event example:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"price"</span><span class="p">:</span><span class="mf">478.33</span><span class="p">,</span><span class="nt">"amount"</span><span class="p">:</span><span class="mf">0.15</span><span class="p">}</span>
 </pre></div>
 
-<p>Live example (both demo and primary api): <a href="http://jsfiddle.net/rn7zy75n/1/">http://jsfiddle.net/rn7zy75n/1/</a></p>
-
-<h2>
-<a name="market-data-streaming-end-point" class="anchor" href="#market-data-streaming-end-point"><span class="octicon octicon-link"></span></a>Market data streaming end-point</h2>
+<h1>
+<a name="streaming-api" class="anchor" href="#streaming-api"><span class="octicon octicon-link"></span></a>
+<a name="streaming"></a>Streaming API</h1>
 
 <p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
 
-<p>URL: ws://api.hitbtc.com</p>
+<p>URL: wss://api.hitbtc.com:8080
+Demo URL: ws://demo-api.hitbtc.com:8080
+Once client connects to this URL the session is started. </p>
 
-<p>Demo URL: [ws://demo-api.hitbtc.com]ws://demo-api.hitbtc.com)</p>
+<p>Streaming API provides an access to: </p>
 
-<p>Once client connects to this URL the session is started. </p>
+<ul>
+<li>market data. See <a href="#marketstreaming">Market data streaming end-point</a><br>
+</li>
+<li>trading operations. See <a href="#tradingstreaming">Trading streaming end-point</a>
+</li>
+</ul><h2>
+<a name="market-data-streaming-end-point" class="anchor" href="#market-data-streaming-end-point"><span class="octicon octicon-link"></span></a>
+<a name="marketstreaming"></a>Market data streaming end-point</h2>
 
 <p>The server broadcasts the following types of messages:</p>
 
@@ -1464,12 +1835,12 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <li>It's recommended to invalidate a state of the application periodically using snapshots.</li>
 <li>It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.</li>
 </ul><h3>
-<a name="-marketdatasnapshotfullrefresh" class="anchor" href="#-marketdatasnapshotfullrefresh"><span class="octicon octicon-link"></span></a>
-<a name="MarketDataSnapshotFullRefresh"></a> MarketDataSnapshotFullRefresh</h3>
+<a name="marketdatasnapshotfullrefresh-message" class="anchor" href="#marketdatasnapshotfullrefresh-message"><span class="octicon octicon-link"></span></a>
+<a name="MarketDataSnapshotFullRefresh"></a>MarketDataSnapshotFullRefresh message</h3>
 
-<p>MarketDataSnapshotFullRefresh message contains a full snapshot of the order book.</p>
+<p><i>Summary:</i> contains a full snapshot of the order book.</p>
 
-<p>Example message:</p>
+<p><i>Example message:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"MarketDataSnapshotFullRefresh"</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">"snapshotSeqNo"</span><span class="p">:</span> <span class="mi">899009</span><span class="p">,</span>
@@ -1534,7 +1905,7 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <span class="p">}}</span>
 </pre></div>
 
-<p>Fields:</p>
+<p>The following fields are used in <code>MarketDataSnapshotFullRefresh</code> object:</p>
 
 <table>
 <thead><tr>
@@ -1543,34 +1914,35 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 </tr></thead>
 <tbody>
 <tr>
-<td>seqNo</td>
-<td>monotone increasing number, each symbol has an own sequence</td>
+<td><code>seqNo</code></td>
+<td>Monotone increasing number of the snapshot, each symbol has its own sequence</td>
 </tr>
 <tr>
-<td>timestamp</td>
-<td>millisecond timestamp UTC</td>
+<td><code>timestamp</code></td>
+<td>UTC timestamp, in milliseconds</td>
 </tr>
 <tr>
-<td>symbol</td>
-<td></td>
+<td><code>symbol</code></td>
+<td>Currency symbol traded on HitBTC exchange</td>
 </tr>
 <tr>
-<td>exchangeStatus</td>
+<td><code>exchangeStatus</code></td>
+<td>Exchange status: <code>on</code> - trading is open; <code>off</code> - trading is suspended</td>
+</tr>
+<tr>
 <td>
-<code>on</code> or <code>off</code>, <code>off</code> means the trading is suspended</td>
-</tr>
-<tr>
-<td>ask, bid</td>
-<td>sorted arrays of price levels in the order book; full snapshot (all price levels) is provided</td>
+<code>ask</code>, <code>bid</code>
+</td>
+<td>Sorted arrays of price levels in the order book; full snapshot (all price levels) is provided</td>
 </tr>
 </tbody>
 </table><h3>
-<a name="-marketdataincrementalrefresh" class="anchor" href="#-marketdataincrementalrefresh"><span class="octicon octicon-link"></span></a>
-<a name="MarketDataIncrementalRefresh"></a> MarketDataIncrementalRefresh</h3>
+<a name="marketdataincrementalrefresh-message" class="anchor" href="#marketdataincrementalrefresh-message"><span class="octicon octicon-link"></span></a>
+<a name="MarketDataIncrementalRefresh"></a>MarketDataIncrementalRefresh message</h3>
 
-<p>MarketDataIncrementalRefresh contains incremental changes of the order book and individual trades.</p>
+<p><i>Summary:</i> contains incremental changes of the order book and individual trades.</p>
 
-<p>Example message:</p>
+<p><i>Example message:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"MarketDataIncrementalRefresh"</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">"seqNo"</span><span class="p">:</span> <span class="mi">546693</span><span class="p">,</span>
@@ -1594,7 +1966,7 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <span class="p">}}</span>
 </pre></div>
 
-<p>Fields:</p>
+<p>The following fields are used in <code>MarketDataIncrementalRefresh</code> object:</p>
 
 <table>
 <thead><tr>
@@ -1603,29 +1975,31 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 </tr></thead>
 <tbody>
 <tr>
-<td>seqNo</td>
-<td>monotone increasing number, each symbol has an own sequence</td>
+<td><code>seqNo</code></td>
+<td>Monotone increasing number of the snapshot, each symbol has its own sequence</td>
 </tr>
 <tr>
-<td>timestamp</td>
-<td>millisecond timestamp UTC</td>
+<td><code>timestamp</code></td>
+<td>UTC timestamp, in milliseconds</td>
 </tr>
 <tr>
-<td>symbol</td>
-<td></td>
+<td><code>symbol</code></td>
+<td>Currency symbol traded on HitBTC exchange</td>
 </tr>
 <tr>
-<td>exchangeStatus</td>
+<td><code>exchangeStatus</code></td>
+<td>Exchange status: <code>on</code> - trading is open; <code>off</code> - trading is suspended</td>
+</tr>
+<tr>
 <td>
-<code>on</code> or <code>off</code>, <code>off</code> means the trading is suspended</td>
-</tr>
-<tr>
-<td>ask, bid, trade</td>
-<td>an array of changes in the order book; <br><code>size</code> means new size, <code>size</code>=0 means price level has been removed</td>
+<code>ask</code>, <code>bid</code>, <code>trade</code>
+</td>
+<td>An array of changes in the order book where <code>price</code> is a price, <code>size</code> is new size. <code>size</code>=0 means that the price level has been removed</td>
 </tr>
 </tbody>
 </table><h2>
-<a name="trading-streaming-end-point" class="anchor" href="#trading-streaming-end-point"><span class="octicon octicon-link"></span></a>Trading streaming end-point</h2>
+<a name="trading-streaming-end-point" class="anchor" href="#trading-streaming-end-point"><span class="octicon octicon-link"></span></a>
+<a name="tradingstreaming"></a>Trading streaming end-point</h2>
 
 <p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
 
@@ -1633,7 +2007,7 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 
 <p>Demo URL: ws://demo-api.hitbtc.com:8080</p>
 
-<p>Trading endpoint requires sending login message after connection esteblished. All client messages should be signed and should contain valid and active API key</p>
+<p>Trading endpoint requires sending login message after connection established. All client messages should be signed and should contain valid and active API key (see <a href="#authenticationwebsocket">API keys and message signatures</a>).</p>
 
 <p>The following message types are supported:</p>
 
@@ -1665,7 +2039,8 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 </tr>
 </tbody>
 </table><h3>
-<a name="api-keys-and-message-signatures" class="anchor" href="#api-keys-and-message-signatures"><span class="octicon octicon-link"></span></a>API keys and message signatures</h3>
+<a name="api-keys-and-message-signatures" class="anchor" href="#api-keys-and-message-signatures"><span class="octicon octicon-link"></span></a>
+<a name="authenticationwebsocket"></a>API keys and message signatures</h3>
 
 <p>All client messages should be signed in the following manner:</p>
 
@@ -1681,6 +2056,8 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <span class="p">}</span>
 </pre></div>
 
+<p><i>Fields:</i></p>
+
 <table>
 <thead><tr>
 <th>Field</th>
@@ -1688,19 +2065,19 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 </tr></thead>
 <tbody>
 <tr>
-<td>nonce</td>
-<td>should be monotonous within the same connection</td>
+<td><code>nonce</code></td>
+<td>Unique monotonous number that should be generated on the client. Should be monotonous within the same connection</td>
 </tr>
 <tr>
-<td>signature</td>
-<td>base64 <a href="http://en.wikipedia.org/wiki/Hash-based_message_authentication_code">hmac-sha512</a>(binary representation of the message)</td>
+<td><code>signature</code></td>
+<td>Signature - hash-based message authentication code: base64 <a href="http://en.wikipedia.org/wiki/Hash-based_message_authentication_code">hmac-sha512</a> (binary representation of the message)</td>
 </tr>
 </tbody>
 </table><h3>
-<a name="-login" class="anchor" href="#-login"><span class="octicon octicon-link"></span></a>
-<a name="Login"></a> Login</h3>
+<a name="login" class="anchor" href="#login"><span class="octicon octicon-link"></span></a>
+<a name="Login"></a>Login</h3>
 
-<p>Example:</p>
+<p><i>Example:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"apikey"</span><span class="p">:</span> <span class="s2">"e418f5b4a15608b78185540ef583b9fc"</span><span class="p">,</span>
@@ -1714,15 +2091,15 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <span class="p">}</span>
 </pre></div>
 
-<p>Parameters: no parameters</p>
+<p><i><i>Parameters:</i></i> no parameters</p>
 
 <p>If client doesn't send valid logon message in 10 second the connection will be dropped.</p>
 
 <h3>
-<a name="-neworder" class="anchor" href="#-neworder"><span class="octicon octicon-link"></span></a>
-<a name="NewOrder"></a> NewOrder</h3>
+<a name="neworder" class="anchor" href="#neworder"><span class="octicon octicon-link"></span></a>
+<a name="NewOrder"></a>NewOrder</h3>
 
-<p>Example:</p>
+<p><i>Example:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"apikey"</span><span class="p">:</span> <span class="s2">"e418f5b4a15608b78185540ef583b9fc"</span><span class="p">,</span>
@@ -1744,59 +2121,61 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <span class="p">}</span>
 </pre></div>
 
-<p>Parameters:</p>
+<p><i><i>Parameters:</i></i></p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
-<th>Type / Enum</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>clientOrderId</td>
-<td>should be unique, &lt;= 32 characters</td>
-<td></td>
+<td><code>clientOrderId</code></td>
+<td>string</td>
+<td>Unique order ID generated by client. From 8 to 32 characters</td>
 </tr>
 <tr>
-<td>symbol</td>
-<td></td>
-<td></td>
+<td><code>symbol</code></td>
+<td>string</td>
+<td>Currency symbol traded on HitBTC exchange</td>
 </tr>
 <tr>
-<td>side</td>
-<td>order side</td>
+<td><code>side</code></td>
 <td>
 <code>buy</code>, <code>sell</code>
 </td>
+<td>Order side</td>
 </tr>
 <tr>
-<td>quantity</td>
-<td>quantity in lots</td>
+<td><code>quantity</code></td>
 <td>integer</td>
+<td>Quantity, in lots</td>
 </tr>
 <tr>
-<td>type</td>
-<td>order type</td>
-<td>only <code>limit</code> orders are currently supported</td>
+<td><code>type</code></td>
+<td>
+<code>limit</code> or <code>market</code>
+</td>
+<td>Order type. Only <code>limit</code> orders are currently supported</td>
 </tr>
 <tr>
-<td>price</td>
-<td>price (in currency)</td>
-<td>decimal, consider price steps</td>
+<td><code>price</code></td>
+<td>decimal</td>
+<td>Price, in currency units, consider price steps</td>
 </tr>
 <tr>
-<td>timeInForce</td>
-<td>time in force</td>
+<td><code>timeInForce</code></td>
 <td>
 <code>GTC</code> - Good-Til-Canceled <br><code>IOC</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill</td>
+<td>Time in force</td>
 </tr>
 </tbody>
 </table><h3>
 <a name="ordercancel" class="anchor" href="#ordercancel"><span class="octicon octicon-link"></span></a>
 <a name="OrderCancel"></a>OrderCancel</h3>
 
-<p>Example:</p>
+<p><i>Example:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"apikey"</span><span class="p">:</span> <span class="s2">"e418f5b4a15608b78185540ef583b9fc"</span><span class="p">,</span>
@@ -1815,48 +2194,51 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <span class="p">}</span>
 </pre></div>
 
-<p>Parameters:</p>
+<p><i><i>Parameters:</i></i></p>
 
 <table>
 <thead><tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
-<th>Type / Enum</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>clientOrderId</td>
-<td>clientOrderId sent in NewOrder message</td>
-<td></td>
+<td><code>clientOrderId</code></td>
+<td>string</td>
+<td>
+<code>clientOrderId</code> parameter sent in <code>NewOrder</code> message</td>
 </tr>
 <tr>
-<td>cancelRequestClientOrderId</td>
-<td>&lt;= 32 characters</td>
-<td></td>
+<td><code>cancelRequestClientOrderId</code></td>
+<td>string</td>
+<td>Unqiue ID generated by client, from 8 to 32 characters</td>
 </tr>
 <tr>
-<td>symbol</td>
-<td></td>
-<td></td>
+<td><code>symbol</code></td>
+<td>string</td>
+<td>Currency symbol traded on HitBTC exchange</td>
 </tr>
 <tr>
-<td>side</td>
-<td>order side</td>
+<td><code>side</code></td>
 <td>
 <code>buy</code>, <code>sell</code>
 </td>
+<td>Order side</td>
 </tr>
 <tr>
-<td>type</td>
-<td>order type</td>
-<td>only <code>limit</code> orders are currently supported</td>
+<td><code>type</code></td>
+<td>
+<code>limit</code> or <code>market</code>
+</td>
+<td>Order type. Only <code>limit</code> orders are currently supported</td>
 </tr>
 </tbody>
 </table><h3>
 <a name="executionreport" class="anchor" href="#executionreport"><span class="octicon octicon-link"></span></a>
 <a name="ExecutionReport"></a>ExecutionReport</h3>
 
-<p>Example:</p>
+<p><i>Example:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
     <span class="nt">"ExecutionReport"</span><span class="p">:{</span>
@@ -1875,139 +2257,141 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <span class="p">}</span>
 </pre></div>
 
-<p>Fields:</p>
+<p>The following fields are used in <code>ExecutionReport</code> object:</p>
 
 <table>
 <thead><tr>
 <th>Field</th>
-<th>Description</th>
-<th>Type / Enum</th>
 <th>Required</th>
+<th>Type</th>
+<th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>orderId</td>
+<td><code>orderId</code></td>
+<td>Yes</td>
+<td>string</td>
 <td>Order ID on the Exchange</td>
-<td>string</td>
-<td>required</td>
 </tr>
 <tr>
-<td>clientOrderId</td>
-<td>clientOrderId sent in NewOrder message</td>
+<td><code>clientOrderId</code></td>
+<td>Yes</td>
 <td>string</td>
-<td>required</td>
+<td>
+<code>clientOrderId</code> sent in <code>NewOrder</code> message (see <a href="#neworder">/api/1/trading/new_order</a>)</td>
 </tr>
 <tr>
-<td>execReportType</td>
-<td>execution report type</td>
+<td><code>execReportType</code></td>
+<td>Yes</td>
 <td>
 <code>new</code> <br><code>canceled</code> <br><code>rejected</code> <br><code>expired</code> <br><code>trade</code> <br><code>status</code>
 </td>
-<td>required</td>
+<td>Execution report type</td>
 </tr>
 <tr>
-<td>orderStatus</td>
-<td>order status</td>
+<td><code>orderStatus</code></td>
+<td>Yes</td>
 <td>
 <code>new</code> <br><code>partiallyFilled</code> <br><code>filled</code> <br><code>canceled</code> <br><code>rejected</code> <br><code>expired</code>
 </td>
-<td>required</td>
+<td>Order status</td>
 </tr>
 <tr>
-<td>orderRejectReason</td>
-<td>Relevant only for the orders in rejected state</td>
+<td><code>orderRejectReason</code></td>
+<td>Yes - for orders in <code>rejected</code> state</td>
 <td>
 <code>unknownSymbol</code> <br><code>exchangeClosed</code> <br><code>orderExceedsLimit</code> <br><code>unknownOrder</code> <br><code>duplicateOrder</code> <br><code>unsupportedOrder</code> <br><code>unknownAccount</code> <br><code>other</code>
 </td>
-<td></td>
+<td>Reason of rejection. Relevant only for orders in rejected state</td>
 </tr>
 <tr>
-<td>symbol</td>
-<td></td>
-<td></td>
-<td>required</td>
+<td><code>symbol</code></td>
+<td>Yes</td>
+<td>string, e.g. <code>BTCUSD</code>
+</td>
+<td>Currency symbol traded on HitBTC exchange (see <a href="#cursymbols">Currency symbols</a>)</td>
 </tr>
 <tr>
-<td>side</td>
-<td></td>
+<td><code>side</code></td>
+<td>Yes</td>
 <td>
 <code>buy</code> or <code>sell</code>
 </td>
-<td>required</td>
+<td>Side of a trade</td>
 </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
+<td>No</td>
+<td>integer</td>
 <td>UTC timestamp in milliseconds</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
-<td>price</td>
-<td></td>
+<td><code>price</code></td>
+<td>No</td>
 <td>decimal</td>
-<td></td>
+<td>Price of an order</td>
 </tr>
 <tr>
-<td>quantity</td>
-<td></td>
+<td><code>quantity</code></td>
+<td>Yes</td>
 <td>integer</td>
-<td>required</td>
+<td>Order quantity in lots</td>
 </tr>
 <tr>
-<td>type</td>
-<td></td>
-<td>only <code>limit</code> orders are currently supported</td>
-<td>required</td>
+<td><code>type</code></td>
+<td>Yes</td>
+<td><code>limit</code></td>
+<td>Type of an order. Only <code>limit</code> orders are currently supported</td>
 </tr>
 <tr>
-<td>timeInForce</td>
-<td>time in force</td>
+<td><code>timeInForce</code></td>
+<td>Yes</td>
 <td>
-<code>GTC</code> - Good-Til-Canceled <br><code>IOC</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill</td>
-<td>required</td>
+<code>GTC</code> - Good-Til-Canceled <br><code>IOC</code> - Immediate-Or-Cancel<br><code>FOK</code> - Fill-Or-Kill<br><code>DAY</code> - day orders&lt;</td>
+<td>Time in force</td>
 </tr>
 <tr>
-<td>tradeId</td>
+<td><code>tradeId</code></td>
+<td>Yes - for trades</td>
+<td>integer</td>
 <td>Trade ID on the exchange</td>
-<td></td>
-<td>for trades</td>
 </tr>
 <tr>
-<td>lastQuantity</td>
-<td></td>
+<td><code>lastQuantity</code></td>
+<td>Yes - for trades</td>
 <td>integer</td>
-<td>for trades</td>
+<td>Last quantity</td>
 </tr>
 <tr>
-<td>lastPrice</td>
-<td></td>
+<td><code>lastPrice</code></td>
+<td>Yes - for trades</td>
 <td>decimal</td>
-<td>for trades</td>
+<td>Last price</td>
 </tr>
 <tr>
-<td>leavesQuantity</td>
-<td></td>
+<td><code>leavesQuantity</code></td>
+<td>No</td>
 <td>integer</td>
-<td></td>
+<td>Leaves quantity</td>
 </tr>
 <tr>
-<td>cumQuantity</td>
-<td></td>
+<td><code>cumQuantity</code></td>
+<td>No</td>
 <td>integer</td>
-<td></td>
+<td>Cumulative quantity</td>
 </tr>
 <tr>
-<td>averagePrice</td>
-<td></td>
-<td>decimal, will be 0 if 'cumQuantity'=0</td>
-<td></td>
+<td><code>averagePrice</code></td>
+<td>No</td>
+<td>decimal</td>
+<td>Average price. Equals 0 if <code>cumQuantity</code>=0</td>
 </tr>
 </tbody>
 </table><h3>
 <a name="cancelreject" class="anchor" href="#cancelreject"><span class="octicon octicon-link"></span></a>
 <a name="CancelReject"></a>CancelReject</h3>
 
-<p>Example:</p>
+<p><i>Example:</i></p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span><span class="nt">"CancelReject"</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">"clientOrderId"</span><span class="p">:</span> <span class="s2">"68f82819-723a-4b60-ad6b"</span><span class="p">,</span>
@@ -2018,52 +2402,50 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 <span class="p">}}</span>
 </pre></div>
 
-<p>Fields:</p>
+<p>The following fields are used in <code>CancelReject</code> object:</p>
 
 <table>
 <thead><tr>
 <th>Field</th>
-<th>Description</th>
-<th>Type / Enum</th>
 <th>Required</th>
+<th>Type</th>
+<th>Description</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>cancelRequestClientOrderId</td>
-<td>
-<code>cancelRequestClientOrderId</code> from OrderCancel</td>
+<td><code>cancelRequestClientOrderId</code></td>
+<td>Yes</td>
 <td>string</td>
-<td>required</td>
+<td>
+<code>cancelRequestClientOrderId</code> parameter from <a href="#ordercancel"><code>OrderCancel</code></a>
+</td>
 </tr>
 <tr>
-<td>clientOrderId</td>
-<td>
-<code>clientOrderId</code> from OrderCancel</td>
+<td><code>clientOrderId</code></td>
+<td>Yes</td>
 <td>string</td>
-<td>required</td>
+<td>
+<code>clientOrderId</code> parameter from <a href="#ordercancel"><code>OrderCancel</code></a>
+</td>
 </tr>
 <tr>
-<td>rejectReasonCode</td>
-<td></td>
+<td><code>rejectReasonCode</code></td>
+<td>Yes</td>
 <td>
 <code>orderNotFound</code> <br><code>unknownSymbol</code> <br><code>unknownUser</code> <br><code>other</code>
 </td>
-<td>required</td>
+<td>Code of the reason why the order was cancelled</td>
 </tr>
 <tr>
-<td>rejectReasonText</td>
-<td>Optional reject reason text</td>
+<td><code>rejectReasonText</code></td>
+<td>No</td>
 <td>string</td>
-<td></td>
+<td>Optional text explaining reject reason</td>
 </tr>
 </tbody>
 </table><h2>
-<a name="useful-tools" class="anchor" href="#useful-tools"><span class="octicon octicon-link"></span></a>Useful tools</h2>
-
-<p>Chrome extension Simple WebSocket Client (<a href="https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo">https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo</a>)</p>
-
-<h2>
-<a name="sample-code" class="anchor" href="#sample-code"><span class="octicon octicon-link"></span></a>Sample code</h2>
+<a name="sample-code" class="anchor" href="#sample-code"><span class="octicon octicon-link"></span></a>
+<a name="sample"></a>Sample code</h2>
 
 <h3>
 <a name="nodejs-snippet-message-signature" class="anchor" href="#nodejs-snippet-message-signature"><span class="octicon octicon-link"></span></a>Node.js snippet: message signature</h3>
