@@ -1,9 +1,39 @@
-## Summary
+# HitBTC API Guide
 
-This document provides the complete reference for [hitbtc](https://hitbtc.com) API.
+## Table of contents
+* [SUMMARY](#summary)<br>
+  — [Currency symbols](#cursymbols)
+* [RESTFUL API](#restful)<br>
+  — [Market data](#marketrestful)<br>
+  — [Trading](#tradingrestful)<br>
+  — [Payment](#paymentsrestful)
+* [SOCKET.IO API](#socketio)<br>
+  — [Market Data](#socketio)
+* [STREAMING API](#streaming)<br>
+  — [Market data](#marketstreaming) <br>
+  — [Trading](#tradingstreaming)<br>
+  — [Sample code](#sample)
 
+# <a name="summary"/>Summary
 
-The following symbols are traded on hitbtc exchange.
+This document provides the complete reference for [HitBTC](https://hitbtc.com) API.
+
+HitBTC API has several interfaces to implement them in a custom software:
+* <b>RESTful API</b> that allows: 
+  - access to the market data: get ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
+  - performing trading operations: get trading balance, place or cancel orders, get history, etc. See [Trading RESTful API](#tradingrestful)
+  - managing funds: get balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
+* <b>socket.io</b> protocol for receiving the market data. socket.io protocol supports WebSocket and xhr-polling  transport. See [socket.io Market Data](#socketio)
+* <b>Streaming API</b> based on WebSocket protocol to get an access to: 
+  - market data. See [Market data streaming end-point](#marketstreaming)  
+  - trading operations. See [Trading streaming end-point](#tradingstreaming)
+
+Trading and payment operations require user's authentification: each request or message should have a signature. 
+You should get your API key and Secret key on the [Settings](https://hitbtc.com/settings) page. See details in [RESTful API authentification](#authenticationrestful) and [WebSocket API authentification](#authenticationwebsocket).
+
+### <a name="cursymbols"/>Currency symbols
+
+The following currency symbols are traded on HitBTC exchange.
 
 | Symbol	| Lot size | Price step
 | --- | --- | --- |
@@ -18,39 +48,62 @@ The following symbols are traded on hitbtc exchange.
 | BCNBTC | 100 BCN | 0.000000001 |
 | XDNBTC | 100 XDN | 0.000000001 |
 
-(/api/1/public/symbols returns an actual list of symbols)
+The actual list of symbols can be obtained by [/api/1/public/symbols](#symbols) method.
 
 Size representation:
 * Size values in streaming messages are represented in lots.
 * Size values in RESTful market data are represented in money (e.g. in coins or in USD). 
 * Size values in RESTful trade are represented in lots (e.g. 1 means 0.01 BTC for BTCUSD)
 
-### Demo trading
+# <a name="restful"/>RESTful API
 
-Hitbtc provides a demo trading option.  You can enable demo mode and acquire demo API keys on the Settings page.
+RESTful API provides the most functional access to HitBTC facilities.
+RESTful API allows: 
+  - access to the market data: get ticker, order book, trades, etc. See [Market data RESTful API](#marketrestful)
+  - performing trading operations: get trading balance, place or cancel orders, get history, etc. See [Trading RESTful API](#tradingrestful)
+  - managing funds: get balance of the main account, transfer funds between main and trading accounts, create an outgoing  transactions, etc. See [Payment RESTful API](#paymentsrestful)
 
-## Market data RESTful API
+Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com).
 
-Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com)
+HitBTC provides a <b>demo trading</b> option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.<br>Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
-Demo endoint: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
+Trading and payment operations require [authentication](#authentication). See also [error codes](#errors) and [reports representing order status changes](#reports).
 
-### /api/1/public/time
+## <a name="marketrestful"/>Market data RESTful API
 
-Request: `GET /api/1/public/time`
+RESTful API provides access to the market data with following methods:
+  - get the timestamp- [/api/1/public/time](#time)
+  - get the list of symbols - [/api/1/public/symbols](#symbols)
+  - get the ticker for specified symbol - [/api/1/public/:symbol/ticker](#ticker)
+  - get all tickers - [/api/1/public/ticker](#alltickers)
+  - get the order book for specified symbol - [/api/1/public/:symbol/orderbook](#orderbook)
+  - get the individual trades data for specified symbol - [/api/1/public/:symbol/trades](#trades)
 
-Example: `/api/1/public/time`
+
+### <a name="time"/>/api/1/public/time
+
+<i>Summary:</i> returns the server time in UNIX timestamp format
+
+<i>Request:</i> `GET /api/1/public/time`
+
+<i>Example:</i> `/api/1/public/time`
+
+<i>Example response:</i>
 ``` json
 {
     "timestamp": 1393492619000
 }
 ```
 
-### /api/1/public/symbols
+### <a name="symbols"/>/api/1/public/symbols
 
-Request: `GET /api/1/public/symbols`
+<i>Summary:</i> returns the actual list of currency symbols traded on HitBTC exchange, their lot sizes (`lot` parameter) and price step (`step` parameter).
 
-Example: `/api/1/public/symbols`
+<i>Request:</i> `GET /api/1/public/symbols`
+
+<i>Example:</i> `/api/1/public/symbols`
+
+<i>Example response:</i>
 ``` json
 {
     "symbols": [
@@ -69,12 +122,18 @@ Example: `/api/1/public/symbols`
 }
 ```
 
-### /api/1/public/:symbol/ticker
+### <a name="ticker"/>/api/1/public/:symbol/ticker
 
-Request: `GET /api/1/public/:symbol/ticker`
+<i>Summary:</i> returns the actual data on exchange rates of the specified cryptocurrency.
 
-Example: `/api/1/public/BTCUSD/ticker`
+Sample usage at HitBTC site: see [https://hitbtc.com/market-overview](https://hitbtc.com/market-overview) for each line.
 
+<i>Request:</i> `GET /api/1/public/:symbol/ticker`
+  where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
+
+<i>Example:</i> `/api/1/public/BTCUSD/ticker`
+
+<i>Example response:</i>
 ``` json
 {
     "last": "550.73",
@@ -87,17 +146,26 @@ Example: `/api/1/public/BTCUSD/ticker`
 }
 ```
 
-* 24h means last 24h + last incomplete minute
-* high - highest trade price / 24 h
-* low - lowest trade price / 24 h
-* volume - volume / 24h
+The following fields are used in the `ticker` object:
 
-### /api/1/public/ticker
+| Field | Description |
+| --- | --- |
+| last  | Last price |
+| bid | Highest buy order |
+| ask | Lowest sell order |
+| high | Highest trade price per last 24h + last incomplete minute | 
+| low | Lowest trade price per last 24h + last incomplete minute |
+| volume | Volume per last 24h + last incomplete minute |
+| timestamp | Server time in UNIX timestamp format |
 
-Summary: returns all tickers
 
-Example: `/api/1/public/ticker`
+### <a name="alltickers"/>/api/1/public/ticker
 
+<i>Summary:</i> returns the actual data on exchange rates for all traded cryptocurrencies - all tickers.
+
+<i>Example:</i> `/api/1/public/ticker`
+
+<i>Example response:</i>
 ``` json
 {
     "BCNBTC": {
@@ -132,23 +200,30 @@ Example: `/api/1/public/ticker`
     }
     ....
 }
-
-
 ```
 
-### /api/1/public/:symbol/orderbook
+### <a name="orderbook"/>/api/1/public/:symbol/orderbook
 
-Request: `GET /api/1/public/:symbol/orderbook`
+<i>Summary:</i> returns a list of open orders for specified currency symbol: their prices and sizes.
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| format_price | optional, "string" (default) or "number" | |
-| format_amount | optional, "string" (default) or "number" | |
-| format_amount_unit | optional, "currency" (default) or "lot" | |
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Order book</b> tab.
 
-Alias: `/api/1/request/:symbol/orderbook.json` -> `/api/1/public/:symbol/orderbook?format_price=number&format_amount=number`
+<i>Request:</i> `GET /api/1/public/:symbol/orderbook`
+  where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
 
-Example: `/api/1/public/BTCUSD/orderbook`
+<i>Parameters:</i>
+
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `format_price` | No | `string` or `number` | Format of prices returned: as a string (default) or as a number| 
+| `format_amount` | No | `string` or `number` | Format of amount returned: as a string (default) or as a number|
+| `format_amount_unit` | No | `currency` or `lot` | Units of amount returned: in currency units (default) or in lots|
+
+<i>Alias:</i> `/api/1/request/:symbol/orderbook.json` -> `/api/1/public/:symbol/orderbook?format_price=number&format_amount=number`
+
+<i>Example:</i> `/api/1/public/BTCUSD/orderbook`
+
+<i>Example response:</i>
 ``` json
 {
     "asks": [
@@ -168,7 +243,9 @@ Example: `/api/1/public/BTCUSD/orderbook`
 }
 ```
 
-Example: `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=number`
+<i>Example:</i> `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=number`
+
+<i>Example response:</i>
 ``` json
 {
     "asks": [
@@ -188,31 +265,44 @@ Example: `/api/1/public/BTCUSD/orderbook?format_price=number&format_amount=numbe
 }
 ```
 
-### /api/1/public/:symbol/trades
+### <a name="trades"/>/api/1/public/:symbol/trades
 
-Request: `GET /api/1/public/:symbol/trades`
+<i>Summary:</i> returns data on trades for specified currency symbol in specified ID or timestamp interval.
 
-Parameters:
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Market trades</b> tab.
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| from | required, int, trade_id or timestamp | returns trades with trade_id > specified trade_id <br> returns trades with timestamp >= specified timestamp |
-| till | optional, int, trade_id or timestamp | returns trades with trade_id < specified trade_id <br> returns trades with timestamp < specified timestamp |
-| by | required, filter and sort by `trade_id` or `ts` (timestamp) | |
-| sort | optional, `asc` (default) or `desc` | |
-| start_index | required, int | zero-based |
-| max_results | required, int, max value = 1000 | |
-| format_item | optional, "array" (default) or "object" |  |
-| format_price | optional, "string" (default) or "number" | |
-| format_amount | optional, "string" (default) or "number" | |
-| format_amount_unit | optional, "currency" (default) or "lot" | |
-| format_tid | optional, "string" or "number" (default) | |
-| format_timestamp | optional, "millisecond" (default) or "second" | |
-| format_wrap | optional, "true" (default) or "false" | |
+<i>Request:</i> `GET /api/1/public/:symbol/trades`
+  where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
 
-Alias: `/api/1/request/:symbol/trades.json?since=<trade_id>` -> `/api/1/public/:symbol/trades?from=<trade_id>&by=trade_id&start_index=0&format_numbers=number&format_tradeid=string&format_objects=object&format_timestamp=second`
+<i>Parameters:</i>
 
-Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100`
+| Parameter | Reqired | Type | Description | 
+| --- | --- | --- | --- |
+| `from` | Yes | integer | Returns trades with `trade_id` > specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` >= specified `timestamp` (if `by=ts`)|
+| `till` | No | integer | Returns trades with `trade_id` < specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` < specified `timestamp` (if `by=ts`)| 
+| `by` | Yes | `trade_id` or `ts`| Selects if filtering and sorting is performed by trade_id or by timestamp
+| `sort` | No| `asc` or `desc`| Trades are sorted ascending (default) or descending|
+| `start_index` | Yes| integer | Start index for the query, zero-based |
+| `max_results` | Yes| integer | Maximum quantity of returned items, at most 1000|
+| `format_item` | No | `array` or `object` | Format of items returned: as an array (default) or as a list of objects |
+| `format_price` | No | `string` or `number`| Format of prices returned: as a string (default) or as a number |
+| `format_amount` | No | `string` or `number` | Format of amount returned: as a string (default) or as a number  |
+| `format_amount_unit` | No | `currency` or `lot` | Units of amount returned: in currency units (default) or in lots|
+| `format_tid` | No | `string` or `number`| Format of trade ID returned: as a string or as a number (default)|
+| `format_timestamp` | No | `millisecond` or `second` | Format of trade timestamp returned: in milliseconds (default) or in seconds|
+| `format_wrap `| No | `true` or `false` | Select if the line wrappnig is used in item returned. Default value - `true`|
+
+<i>Alias:</i>
+```
+/api/1/request/:symbol/trades.json?since=<trade_id> -> /api/1/public/:symbol/trades?from=<trade_id>&by=trade_id&start_index=0&format_numbers=number&format_tradeid=string&format_objects=object&format_timestamp=second
+```
+
+<i>Example:</i>
+```
+/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100
+```
+<i>Example response:</i>
+
 ``` json
 {
     "trades": [
@@ -226,11 +316,12 @@ Example: `/api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0
 ```
 
 
-Example: 
+<i>Example:</i>
 
 ```
 /api/1/public/BTCUSD/trades?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object&format_price=number&format_amount=number&format_tid=string&format_timestamp=second&format_wrap=false
 ```
+<i>Example response:</i>
 
 ``` json
 [
@@ -242,25 +333,37 @@ Example:
 ]
 ```
 
-## Trading RESTful API
 
-Base URL: [https://api.hitbtc.com](https://api.hitbtc.com)
+## <a name="tradingrestful"/>Trading RESTful API
 
-Demo endoint: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
+RESTful API allows to perform trading operations with the following methods:
+  - get the trading balance - [/api/1/trading/time](#tradingbalance)
+  - get all active orders  - [/api/1/trading/active](#active)
+  - place a new order - [/api/1/trading/new_order](#neworder)
+  - cancel an order - [/api/1/trading/cancel_order](#cancelorder)
+  - get user's trading history - [/api/1/trading/trades](#usertrades)
+  - get user's recent orders (RESTful - [/api/1/trading/recent](#recentorders)
 
-### Authentication
+Trading operations require [authentication](#authentication).
 
-RESTful Trading API requires a HMAC-SHA512 signatures for each request.
+[Error codes](#errors) and [reports representing order status changes](#reports) are described below.
 
-You should get your API key and Secret key from the Settings page on [https://hitbtc.com](https://hitbtc.com) in order to use this API endpoint. 
 
-Each request should include three parameters: `apikey`, `signature` and `nonce`.
+### <a name="authenticationrestful"/>Authentication
 
-* `nonce` - unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp for `nonce`. This parameter should be added as a query string parameter `nonce`. `nonce` should be < (2^53-1).
-* `apikey` - API key from Settings page. This parameter should be added as a query string parameter `apikey`.
-* `signature` - _lower-case_ hex representation of hmac-sha512 of concatenated `uri` and `postData`. This parameter should be added as a HTTP header `X-Signature`.
+RESTful Trading API requires HMAC-SHA512 signatures for each request.
 
-Signture generation pseudo-code:
+To use this API endpoint you should get your API key and Secret key from the [Settings](https://hitbtc.com/settings) page. 
+
+Each request should include the following parameters:
+
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `nonce` | Yes | query string parameter, less than (2^53-1) | Unique monotonous number that should be generated on the client. Hint: use millisecond or microsecond timestamp | 
+| `apikey` | Yes | query string parameter | API key from [Settings](https://hitbtc.com/settings) page|
+| `signature` | Yes | _lower-case_ hex representation of hmac-sha512 of concatenated `uri` and `postData` | This parameter should be added as a HTTP header `X-Signature`| 
+
+Signature generation pseudo-code:
 
 ```
 uri = path + '?' + query (example: /api/1/trading/orders/active?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d&symbols=EURUSD)
@@ -277,49 +380,49 @@ Javascript code (example):
    var signature = crypto.createHmac('sha512', secretKey).update(message).digest('hex');
 ```
 
-Check out examples that are provided by the community:
+Useful examples provided by the community:
 * C# example code: https://gist.github.com/hitbtc-com/9808530
 * PHP example code: https://gist.github.com/hitbtc-com/10885873 
 
-### Error codes
+### <a name="errors"/>Error codes
 
-RESTful Trading API can return the following errors:
+Trading RESTful API can return the following errors:
 
 | HTTP code | Text | Description |
 | --- | --- | --- |
-| 403 | Invalid apikey | API key doesn't exist or API key is currently used on another endpoint (max last 15 min) |
-| 403 | Nonce has been used | nonce is not monotonous |
-| 403 | Nonce is not valid | too big number or not a number |
-| 403 | Wrong signature | |
+| 403 | Invalid API key | API key doesn't exist or API key is currently used on another endpoint (max last 15 min) |
+| 403 | Nonce has been used | Nonce is not monotonous |
+| 403 | Nonce is not valid | Too big number or not a number |
+| 403 | Wrong signature | Specified signature is not correct|
 
-### Execution reports
+### <a name="reports"/>Execution reports
 
 The API uses `ExecutionReport` as an object that represents change of order status.
 
-The following fields are used in this object:
+The following fields are used in `ExecutionReport` object:
 
-| Field	| Description | Type / Enum | Required |
+| Field	| Required | Type | Description |
 | --- | --- | --- | --- |
-| orderId | Order ID on the Exchange | string | required |
-| clientOrderId | clientOrderId sent in NewOrder message | string | required |
-| execReportType | execution report type | `new` <br> `canceled` <br> `rejected` <br> `expired` <br> `trade` <br> `status` | required |
-| orderStatus | order status | `new` <br> `partiallyFilled` <br> `filled` <br> `canceled` <br> `rejected` <br> `expired` | required |
-| orderRejectReason | Relevant only for the orders in rejected state | `unknownSymbol` <br> `exchangeClosed` <br>`orderExceedsLimit` <br> `unknownOrder` <br> `duplicateOrder` <br> `unsupportedOrder` <br> `unknownAccount` <br> `other`| for rejects |
-| symbol | | string, e.g. `BTCUSD` | required |
-| side | | `buy` or `sell` | required |
-| timestamp | UTC timestamp in milliseconds | | |
-| price | | decimal | |
-| quantity | | integer | required |
-| type | | only `limit` orders are currently supported | required |
-| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day orders< | required |
-| tradeId | Trade ID on the exchange | | for trades |
-| lastQuantity | | integer | for trades |
-| lastPrice | | decimal | for trades |
-| leavesQuantity | | integer |  |
-| cumQuantity | | integer | |
-| averagePrice | | decimal, will be 0 if 'cumQuantity'=0 | |
+| `orderId` | Yes | string | Order ID on the Exchange|
+| `clientOrderId` | Yes | string | `clientOrderId` sent in `NewOrder` message (see [/api/1/trading/new_order](#neworder)) |
+| `execReportType` | Yes | `new` <br> `canceled` <br> `rejected` <br> `expired` <br> `trade` <br> `status` | Execution report type |
+| `orderStatus` | Yes | `new` <br> `partiallyFilled` <br> `filled` <br> `canceled` <br> `rejected` <br> `expired` | Order status |
+| `orderRejectReason` | Yes - for orders in `rejected` state| `unknownSymbol` <br> `exchangeClosed` <br>`orderExceedsLimit` <br> `unknownOrder` <br> `duplicateOrder` <br> `unsupportedOrder` <br> `unknownAccount` <br> `other`|Reason of rejection. Relevant only for orders in rejected state |
+| `symbol` | Yes | string, e.g. `BTCUSD` | Currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))|
+| `side` | Yes| `buy` or `sell` | Side of a trade |
+| `timestamp` | No | integer | UTC timestamp in milliseconds |
+| `price` | No | decimal | Price of an order|
+| `quantity` | Yes | integer | Order quantity in lots |
+| `type` | Yes| `limit` | Type of an order. Only `limit` orders are currently supported |
+| `timeInForce` | Yes | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day orders< | Time in force |
+| `tradeId` | Yes - for trades| integer | Trade ID on the exchange |
+| `lastQuantity` | Yes - for trades | integer | Last quantity |
+| `lastPrice` | Yes - for trades | decimal | Last price  |
+| `leavesQuantity` | No | integer |  Leaves quantity|
+| `cumQuantity` | No | integer | Cumulative quantity |
+| `averagePrice` | No | decimal | Average price. Equals 0 if `cumQuantity`=0|
 
-Example:
+<i>Example response:</i>
 
 ``` json
 { "ExecutionReport": { 
@@ -343,15 +446,17 @@ Example:
 ```
 
 
-### /api/1/trading/balance
+### <a name="tradingbalance"/>/api/1/trading/balance
 
-Request: `GET /api/1/trading/balance`
+<i>Summary:</i> returns trading balance.
 
-Summary: returns trading balance.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), the upper panel, <i>Trading</i> line. The black number displays total trade balance of the currency (`cash` parameter), the gray number is amount reserved against unexecuted orders and unfinished transactions (`reserved` parameter).
 
-Parameters: no parameters
+<i>Request:</i> `GET /api/1/trading/balance`
 
-Example: 
+<i><i>Parameters:</i></i> no parameters
+
+<i>Example response:</i>
 ``` json
 {"balance": [
   {
@@ -377,19 +482,21 @@ Example:
 ]}
 ```
 
-### /api/1/trading/orders/active
+### <a name="active"/>/api/1/trading/orders/active
 
-Request: `GET /api/1/trading/orders/active`
+<i>Summary:</i> returns all orders in status `new` or `partiallyFilled`.
 
-Summary: returns all active orders (`new` or `partiallyFilled`).
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My orders</b> tab, <b>Active</b> group.
 
-Parameters: 
+<i>Request:</i> `GET /api/1/trading/orders/active`
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| symbols | string, comma-delimeted list of symbols, optional, default - all symbols | |
+<i>Parameters:</i> 
 
-Example:
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `symbols` | No | string | Comma-separated list of symbols. Default - all symbols|
+
+<i>Example response:</i>
 
 ``` json
 {"orders": [
@@ -412,34 +519,34 @@ Example:
 ]}
 ```
 
-### /api/1/trading/new_order
+### <a name="neworder"/>/api/1/trading/new_order
 
-Request: `POST /api/1/trading/new_order`
+<i>Summary:</i> place a new order. Returns a JSON object `ExecutionReport` that respresent a status of the order.
 
-Summary: place a new order.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Sell Order</b> and <b>Buy Order</b> panels.
 
-Parameters: 
+<i>Request:</i> `POST /api/1/trading/new_order`
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| clientOrderId | string, >=8 characters, <= 32 characters, required | unique order id generated by client |
-| symbol | string, required | e.g. `BTCUSD` |
-| side | `buy` or `sell`, required | |
-| price | decimal, required | order price, required for limit orders |
-| quantity | int | order quantity in lots |
-| type | `limit` or `market` | order type |
-| timeInForce | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | use `GTC` by default |
+<i>Parameters:</i>
 
-Return value: returns a JSON object `ExecutionReport` that respresent a status of the order.
+| Parameter | Required| Type | Description |
+| --- | --- | --- | --- |
+| `clientOrderId` | Yes | string | Unique order ID generated by client. From 8 to 32 characters |
+| `symbol` | Yes| string | Currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols)), e.g. `BTCUSD` |
+| `side` | Yes | `buy` or `sell`| Side of a trade |
+| `price` | Yes - for limit orders | decimal | Order price |
+| `quantity` | No | integer | Order quantity in lots |
+| `type` | No | `limit` or `market` | Order type |
+| `timeInForce` | No | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | Time in force. Default value - `GTC` |
 
-Example:
+<i>Example:</i>
 
 ```
 post url: /api/1/trading/new_order?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d
 post data: clientOrderId=11111112&symbol=BTCUSD&side=buy&price=0.1&quantity=100&type=limit&timeInForce=GTC
 ```
 
-Example response:
+<i>Example response:</i>
 ``` json
 { "ExecutionReport": 
    { "orderId": "58521038",
@@ -460,31 +567,31 @@ Example response:
      "averagePrice": 0 } }
 ```
 
-### /api/1/trading/cancel_order
+### <a name="cancelorder"/>/api/1/trading/cancel_order
 
-Request: `POST /api/1/trading/cancel_order`
+<i>Summary:</i> cancels an order. Returns `ExecutionReport` JSON object or `CancelReject` JSON object.
 
-Summary: cancels an order.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My Orders</b> tab. Click <b>Cancel</b> button in required order line.
 
-Parameters: 
+<i>Request:</i> `POST /api/1/trading/cancel_order`
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| clientOrderId | string, >=8 characters, <= 32 characters, required | the same an in your order |
-| cancelRequestClientOrderId | string, >=8 characters, <= 32 characters, required | unqiue id generated by client |
-| symbol | string, required | the same an in your order |
-| side | `buy` or `sell`, required | the same an in your order |
+<i>Parameters:</i>
 
-Return values: could return `ExecutionReport` JSON object or `CancelReject` JSON object.
+| Parameter | Required| Type | Description |
+| --- | --- | --- | ---| 
+| `clientOrderId` | Yes | string | Order ID, the same as in cancelling order, from 8 to 32 characters|
+| `cancelRequestClientOrderId` | Yes | string | Unqiue ID generated by client, from 8 to 32 characters|
+| `symbol` | Yes | string | Currency symbol, the same as in cancelling order |
+| `side` | Yes | `buy` or `sell`| Side of a trade, the same as in cancelling order |
 
-Example:
+<i>Example:</i>
 
 ```
 post url: /api/1/trading/cancel_order?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d
 post data: clientOrderId=11111112&cancelRequestClientOrderId=38257825798349578945&symbol=BTCUSD&side=buy
 ```
 
-Example response:
+<i>Example response:</i>
 ``` json
 { "ExecutionReport": 
    { "orderId": "58521038",
@@ -515,41 +622,41 @@ Example response:
 } }
 ```
 
-### /api/1/trading/trades
+### <a name="usertrades"/>/api/1/trading/trades
 
-Request: `GET /api/1/trading/trades`
+<i>Summary:</i> returns the trading history - an array of user's trades (`trade` objects).
 
-Summary: returns an user's trading history.
+<i>Sample usage at HitBTC site:</i> [https://hitbtc.com/trading-history](https://hitbtc.com/trading-history). Trades for preceding 24 hours see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My trades</b> tab. 
 
-Parameters: 
+<i>Request:</i> `GET /api/1/trading/trades`
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `by` | `trade_id` or `ts` (timestamp) | |
-| `start_index` | int, optional, default(0) | zero-based index |
-| `max_results` | int, required, <=1000 | |
-| `symbols` | string, comma-delimited | |
-| `sort` | `asc` (default) or `desc` | |
-| `from` | optional | start `trade_id` or `ts`, see `by` |
-| `till` | optional | end `trade_id` or `ts`, see `by` |
+<i>Parameters:</i>
 
-Return values: could return an array of user's trades.
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `by` | No |  `trade_id` or `ts` | Selects if filtering and sorting is performed by `trade_id` or by `timestamp` |
+| `start_index` | No | integer | Zero-based index. Default value is 0 |
+| `max_results` | Yes | integer | Maximum quantity of returned results, at most 1000 |
+| `symbols` | No | string | Comma-separated list of currency symbols |
+| `sort` | No | `asc` or `desc` | Trades are sorted ascending (default) or descending |
+| `from` | No | integer | Returns trades with `trade_id` > specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` >= specified timestamp` (if `by=ts`) |
+| `till` | No | integer | Returns trades with `trade_id` < specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` < specified `timestamp` (if `by=ts`)|
 
 The following fields are used in `trade` object:
 
-| Field	| Description | Type / Enum |
-| --- | --- | --- |
-| `tradeId` | Trade ID on the exchange  | int, required | 
-| `execPrice` | Trade price  | decimal, required | 
-| `timestamp` |   | millisecond timestamp, required |
-| `originalOrderId` | Order ID on the exchange | |
-| `fee` | Fee for the trade | decimal, negative means rebate |
-| `clientOrderId` | Unique client-generated ID | string |
-| `symbol` | | string |
-| `side` | | `buy` or `sell` |
-| `execQuantity` | trade size, in lots | int |
+| Field	|Required | Type | Description |
+| --- | --- | --- | --- |
+| `tradeId` | Yes | integer | Trade ID on the exchange |
+| `execPrice` | Yes | decimal | Trade price | 
+| `timestamp` |  Yes | integer | Timestamp, in milliseconds |
+| `originalOrderId` | No | integer | Order ID on the exchange |
+| `fee` | No | decimal | Fee for the trade, negative value means rebate |
+| `clientOrderId` | No | string | Unique order ID generated by client. From 8 to 32 characters |
+| `symbol` | No | string | Currency symbol |
+| `side` | No | `buy` or `sell` | Side of a trade |
+| `execQuantity` | No | integer | Trade size, in lots |
 
-Example response:
+<i>Example response:</i>
 
 ``` json
 {"trades": [
@@ -600,43 +707,43 @@ Example response:
 ]}
 ```
 
-### /api/1/trading/orders/recent
+### <a name="recentorders"/>/api/1/trading/orders/recent
 
-Request: `GET /api/1/trading/orders/recent`
+<i>Summary:</i> returns an array of user's recent orders (`order` objects) for last 24 hours, sorted by order update time.
 
-Summary: returns an user's recent orders (for last 24 hours) sorted by order update time.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My orders</b> tab.
 
-Parameters: 
+<i>Request:</i> `GET /api/1/trading/orders/recent`
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `start_index` | int, optional, default(0) | zero-based index |
-| `max_results` | int, required, <=1000 | |
-| `sort` | `asc` or `desc` (`asc` by default) | |
-| `symbols` | string, comma-delimited | |
-| `statuses` | string, comma-delimited, `new`, `partiallyFilled`, `filled`, `canceled`, `expired`, `rejected` | |
+<i><i>Parameters:</i></i> 
 
-Return values: returns an array of user's recent orders.
+| Parameter | Required | Type | Description |
+| --- | --- | --- | ---|
+| `start_index` | No | integer | Zero-based index, 0 by default |
+| `max_results` | Yes | integer | Maximum quantity of returned items, at most 1000 |
+| `sort` | No | `asc` or `desc` | Orders are sorted ascending (default) or descending |
+| `symbols` | No | string | Comma-separated list of currency symbols |
+| `statuses` | No | `new` <br> `partiallyFilled` <br> `filled` <br> `canceled` <br> `expired` <br> `rejected` | Comma-separated list of order statuses |
 
 The following fields are used in `order` object:
 
-| Field	| Description | Type / Enum |
-| --- | --- | --- |
-| `orderId` | Order ID on the exchange | |
-| `orderStatus` |  | `new`, `partiallyFilled`, `filled`, `canceled`, `expired`, `rejected` |
-| `lastTimestamp` | last change  | millisecond timestamp, required |
-| `orderPrice` | Order price  | decimal, required for limit orders | 
-| `orderQuantity` | Order quantity in lots | int, required | 
-| `avgPrice` | Avg. price  | decimal | 
-| `quantityLeaves` | Remaining quantity in lots | int, required | 
-| `type` |  | `limit` or `market` |
-| `timeInForce` | | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day |
-| `clientOrderId` | Unique client-generated ID | string |
-| `symbol` | | string |
-| `side` | | `buy` or `sell` |
-| `execQuantity` | last executed quantity in lots | int |
+| Field	| Required | Type | Description |
+| --- | --- | --- | ---|
+| `orderId` | No | integer | Order ID on the exchange |
+| `orderStatus` | No | `new` <br> `partiallyFilled` <br> `filled` <br> `canceled` <br> `expired` <br> `rejected` | Order status |
+| `lastTimestamp` | Yes | integer | UTC timestamp of the last change, in milliseconds |
+| `orderPrice` | Yes - for limit orders | decimal | Order price | 
+| `orderQuantity` | Yes | integer | Order quantity, in lots |
+| `avgPrice` | Yes | decimal | Average price | 
+| `quantityLeaves` | Yes | integer | Remaining quantity, in lots | 
+| `type` | No | `limit` or `market` | Type of an order |
+| `timeInForce` | No | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | Time in force |
+| `clientOrderId` | No | string | Unique client-generated ID |
+| `symbol` | No | string | Currency symbol |
+| `side` | No | `buy` or `sell` | Side of a trade |
+| `execQuantity` | No | integer | Last executed quantity, in lots |
 
-Example response:
+<i>Example response:</i>
 
 ``` json
 {"orders": [
@@ -688,44 +795,49 @@ Example response:
 ]}
 ```
 
-## Payment RESTful API
+## <a name="paymentsrestful"/>Payment RESTful API
 
-Base URL: [https://api.hitbtc.com](https://api.hitbtc.com)
+RESTful API allows to manage funds with the following methods:
+  - get multi-currency balance of the main account - [/api/1/payment/balance](#paymentbalance)
+  - transfer funds between main and trading accounts - [/api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main](#transfer)
+  - get the last created incoming cryptocurrency address or create a new one -  [/api/1/payment/address/ (GET)](#getaddress), [/api/1/payment/address/ (POST)](#postaddress),
+  - create an outgoing crypotocurrency transaction - [/api/1/payment/payout](#payout)
+  - get a list of payment transactions - [/api/1/payment/transactions](#transactions)
+ 
+Payment operations require [authentication](#authentication)
 
-Demo endoint: the Payment API is not available in demo mode.
+### <a name="paymentbalance"/>/api/1/payment/balance
 
-### /api/1/payment/balance
+<i>Summary:</i> returns multi-currency balance of the main account.
 
-Request: `GET /api/1/payment/balance`
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account).
 
-Summary: returns a balance of the main account.
+<i>Request:</i> `GET /api/1/payment/balance`
 
-Parameters: no parameters
+<i><i>Parameters:</i></i> no parameters
 
-Return values: returns multi-currency balance of the main account.
-
-Example response:
+<i>Example response:</i>
 
 ``` json
 {"balance": [{"currency_code": "USD", "balance": 13.12}, {"currency_code": "EUR", "balance": 0}, {"currency_code": "LTC", "balance": 1.07}, {"currency_code": "BTC", "balance": 11.9}]}
 ```
 
-### /api/1/payment/transfer_*
+### <a name="transfer"/>/api/1/payment/transfer_to_trading and /api/1/payment/transfer_to_main
 
-Request: `POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main`
+<i>Request:</i> `POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main`
 
-Summary: transfer funds between main and trading accounts.
+<i>Summary:</i> transfers funds between main and trading accounts; returns a transaction ID or an error.
 
-Parameters:
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account). Click the appropriate arrow in the currency line then specify required amount and click <b>Transfer</b> button.
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `amount` | decimal, required | amount |
-| `currency_code` | string, required, e.g. `BTC` | |
+<i><i>Parameters:</i></i>
 
-Return values: returns a transaction id or an error.
+| Parameter |Required | Type | Description |
+| --- | --- | --- | --- |
+| `amount` | Yes | decimal | Funds amount to transfer |
+| `currency_code` | Yes | string | Currency symbol, e.g. `BTC` |
 
-Example responses:
+<i>Example responses:</i>
 
 ```json
 {"message": "Balance not enough", "statusCode": 409, "body": "Balance not enough"}
@@ -735,82 +847,82 @@ Example responses:
 {"transaction": "52976-103925-18443984"}
 ```
 
-### /api/1/payment/address/
+### <a name="getaddress"/>/api/1/payment/address/ (GET)
 
-Request: `GET /api/1/payment/address/:currency`
+<i>Summary:</i> returns the last created incoming cryptocurrency address that can be used to deposit cryptocurrency to your account. 
 
-Example request: `GET /api/1/payment/address/BTC`
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>copy address</b> link.
 
-Summary: returns the last created incoming cryptocurrency address
+<i>Request:</i> `GET /api/1/payment/address/:currency`
 
-Parameters: no parameters
+<i><i>Parameters:</i></i> no parameters
 
-Return values: returns an address that can be used to deposit cryptocurrency.
+<i>Example:</i> `GET /api/1/payment/address/BTC`
 
-Example response:
-
-```json
-{"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
-```
-
-### /api/1/payment/address/
-
-Request: `POST /api/1/payment/address/:currency`
-
-Example request: `POST /api/1/payment/address/BTC`
-
-Summary: creates a incoming new cryptocurrency address.
-
-Parameters: no parameters
-
-Return values: returns an address that can be used to deposit cryptocurrency.
-
-Example response:
+<i>Example response:</i>
 
 ```json
 {"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
 ```
 
-### /api/1/payment/payout
+### <a name="postaddress"/>/api/1/payment/address/ (POST)
 
-Request: `POST /api/1/payment/payout`
+<i>Summary:</i> creates an address that can be used to deposit cryptocurrency to your account; returns a new cryptocurrency address.
 
-Summary: withdraws money and creates an outgoing crypotocurrency transaction.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>create new address</b> link.
 
-Parameters:
+<i>Request:</i> `POST /api/1/payment/address/:currency`
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `amount` | decimal, required | amount |
-| `currency_code` | string, required, e.g. `BTC` | |
-| `address` | string, required | BTC/LTC address |
+<i><i>Parameters:</i></i> no parameters
 
-Example: ```amount=0.001&currency_code=BTC&address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5```
+<i>Example:</i> `POST /api/1/payment/address/BTC`
 
-Return values: returns a transaction id on the exchange or an error.
+<i>Example response:</i>
 
-Example response:
+```json
+{"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
+```
+
+### <a name="payout"/>/api/1/payment/payout
+
+<i>Summary:</i> withdraws money and creates an outgoing crypotocurrency transaction; returns a transaction ID on the exchange or an error.
+
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account). In the required currency line click <b>Fund</b> icon then click <b>copy address</b> link.
+
+<i>Request:</i> `POST /api/1/payment/payout`
+
+<i>Parameters:</i>
+
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `amount` | Yes | decimal | Funds amount to withdraw |
+| `currency_code` | Yes | string | Currency symbol, e.g. `BTC`|
+| `address` | Yes | string | BTC/LTC address to withdraw to |
+
+<i>Example:</i> ```amount=0.001&currency_code=BTC&address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5```
+
+<i>Example response:</i>
 ```json
 {"transaction": "51545-103004-18442681"}
 ```
 
-### /api/1/payment/transactions
+### <a name="transactions"/>/api/1/payment/transactions
 
-Request: `GET /api/1/payment/transactions`
+<i>Summary:</i> returns a list of payment transactions and their statuses (array of transactions).
 
-Summary: return a list of payment transactions and their statuses.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account), <b>History</b> panel.
 
-Parameters:
+<i>Request:</i> `GET /api/1/payment/transactions`
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `offset` | int, optional, default = 0 | start index for the query |
-| `limit` | int, required | max results for the query |
-| `dir` | string, optional, `ask` or `desc` default = `desc` | sort direction |
+<i>Parameters:</i>
 
-Response: array of transactions.
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `offset` | No | integer | Start index for the query, default = 0 |
+| `limit` | Yes | integer | Maximum results for the query |
+| `dir` | No | `ask` or `desc` | Transactions are sorted ascending or descending (default) |
 
-Example response:
+<i>Example response:</i>
 ```json
 {"transactions": [
   {
@@ -831,59 +943,65 @@ Example response:
 ]}
 ```
 
-## socket.io Market Data
 
-The socket.io market data based on socket.io protocol and supports WebSocket, xhr-polling and jsonp-polling transports. API works on socket.io version 1.0.x
+# <a name="socketio"/>socket.io Market Data
 
-The API support multiplexing a single connection with socket.io namespaces. 
+The API provides socket.io version 1.0.x protocol for receiving market data. It supports:
+* WebSocket and xhr-polling transport
+* multiplexing a single connection with socket.io namespaces (see [`trades` namespace](#tradesnamespace))
 
-Please refer to official socket.io documentation on http://socket.io/.  
+Useful links:
+* official socket.io documentation - `http://socket.io/`
+* chrome extension Simple WebSocket Client - `https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo`. See also the [Sample code](#sample)
 
-Socket.io URL: `http://api.hitbtc.com:8081`
+API links:
+* socket.io URL: `http://api.hitbtc.com:8081`
+* socket.io demo URL: `http://demo-api.hitbtc.com:8081`
+* live example (both demo and primary API): `http://jsfiddle.net/rn7zy75n/1/`
 
-Socket.io demo URL: `http://demo-api.hitbtc.com:8081`
+### <a name="tradesnamespace"/>`trades` namespace
 
-### `trades` namespace
+<i>Namespace:</i> `trades`
 
-Namespace: `trades`
+<i>URLs:</i> `/trades/:symbol` e.g. `/trades/BTCUSD`
 
-URLs: `/trades/:symbol` e.g. `/trades/BTCUSD`
+<i>Event:</i> `trade`
 
-Event: `trade`
-
-Event example:
+<i>Event example:</i>
 ```json
 {"price":478.33,"amount":0.15}
 ```
 
-Live example (both demo and primary api): http://jsfiddle.net/rn7zy75n/1/
 
-## Market data streaming end-point
+# <a name="streaming"/>Streaming API
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
-URL: [ws://api.hitbtc.com](ws://api.hitbtc.com)
-
-Demo URL: [ws://demo-api.hitbtc.com]ws://demo-api.hitbtc.com)
-
+URL: <wss://api.hitbtc.com:8080>
+Demo URL: <ws://demo-api.hitbtc.com:8080>
 Once client connects to this URL the session is started. 
 
-The server broadcasts the following types of messages:
+Streaming API provides an access to: 
+  - market data. See [Market data streaming end-point](#marketstreaming)  
+  - trading operations. See [Trading streaming end-point](#tradingstreaming)
 
+
+## <a name="marketstreaming"/>Market data streaming end-point
+
+The server broadcasts the following types of messages:
 * [MarketDataSnapshotFullRefresh](#MarketDataSnapshotFullRefresh) message contains a full snapshot of the order book.
 * [MarketDataIncrementalRefresh](#MarketDataIncrementalRefresh) message contains incremental changes
 
 Some recommendations to consider:
-
 * The application could receive the first snapshot and maintain the order book by applying incremental updates.
 * It's recommended to invalidate a state of the application periodically using snapshots.
 * It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.
 
-### <a name="MarketDataSnapshotFullRefresh"></a> MarketDataSnapshotFullRefresh
+### <a name="MarketDataSnapshotFullRefresh"/>MarketDataSnapshotFullRefresh message
 
-MarketDataSnapshotFullRefresh message contains a full snapshot of the order book.
+<i>Summary:</i> contains a full snapshot of the order book.
 
-Example message:
+<i>Example message:</i>
 ```json
 {"MarketDataSnapshotFullRefresh": {
     "snapshotSeqNo": 899009,
@@ -948,21 +1066,21 @@ Example message:
 }}
 ```
 
-Fields:
+The following fields are used in `MarketDataSnapshotFullRefresh` object:
 
 | Field | Description |
 | --- | --- |
-| seqNo | monotone increasing number, each symbol has an own sequence |
-| timestamp | millisecond timestamp UTC |
-| symbol | |
-| exchangeStatus | `on` or `off`, `off` means the trading is suspended |
-| ask, bid | sorted arrays of price levels in the order book; full snapshot (all price levels) is provided |
+| `seqNo` | Monotone increasing number of the snapshot, each symbol has its own sequence |
+| `timestamp` | UTC timestamp, in milliseconds |
+| `symbol` | Currency symbol traded on HitBTC exchange |
+| `exchangeStatus` | Exchange status: `on` - trading is open; `off` - trading is suspended |
+| `ask`, `bid` | Sorted arrays of price levels in the order book; full snapshot (all price levels) is provided |
 
-### <a name="MarketDataIncrementalRefresh"></a> MarketDataIncrementalRefresh
+### <a name="MarketDataIncrementalRefresh"/>MarketDataIncrementalRefresh message
 
-MarketDataIncrementalRefresh contains incremental changes of the order book and individual trades.
+<i>Summary:</i> contains incremental changes of the order book and individual trades.
 
-Example message:
+<i>Example message:</i>
 ```json
 {"MarketDataIncrementalRefresh": {
     "seqNo": 546693,
@@ -986,17 +1104,18 @@ Example message:
 }}
 ```
 
-Fields:
+The following fields are used in `MarketDataIncrementalRefresh` object:
 
 | Field | Description |
 | --- | --- |
-| seqNo	| monotone increasing number, each symbol has an own sequence
-| timestamp |	millisecond timestamp UTC |
-| symbol	| |
-| exchangeStatus |  `on` or `off`, `off` means the trading is suspended |
-| ask, bid, trade | an array of changes in the order book; <br> `size` means new size, `size`=0 means price level has been removed |
+| `seqNo`	| Monotone increasing number of the snapshot, each symbol has its own sequence |
+| `timestamp` |	UTC timestamp, in milliseconds |
+| `symbol`	| Currency symbol traded on HitBTC exchange |
+| `exchangeStatus` |  Exchange status: `on` - trading is open; `off` - trading is suspended |
+| `ask`, `bid`, `trade` | An array of changes in the order book where `price` is a price, `size` is new size. `size`=0 means that the price level has been removed |
 
-## Trading streaming end-point
+
+## <a name="tradingstreaming"/>Trading streaming end-point
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
@@ -1004,7 +1123,8 @@ URL: <wss://api.hitbtc.com:8080>
 
 Demo URL: <ws://demo-api.hitbtc.com:8080>
 
-Trading endpoint requires sending login message after connection esteblished. All client messages should be signed and should contain valid and active API key
+Trading endpoint requires sending login message after connection established. All client messages should be signed and should contain valid and active API key (see [API keys and message signatures](#authenticationwebsocket)).
+
 
 The following message types are supported:
 
@@ -1017,7 +1137,7 @@ The following message types are supported:
 | [CancelReject](#CancelReject) | Server -> Client |
 
 
-### API keys and message signatures
+### <a name="authenticationwebsocket"/>API keys and message signatures
 
 All client messages should be signed in the following manner:
 
@@ -1033,15 +1153,16 @@ All client messages should be signed in the following manner:
     }
 }
 ```
+<i>Fields:</i>
 
 | Field | Description |
 | --- | --- |
-| nonce | should be monotonous within the same connection |
-| signature | base64 [hmac-sha512](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code)(binary representation of the message) |
+|`nonce` | Unique monotonous number that should be generated on the client. Should be monotonous within the same connection |
+| `signature` | Signature - hash-based message authentication code: base64 [hmac-sha512](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code) (binary representation of the message) |
 
-### <a name="Login"></a> Login 
+### <a name="Login"/>Login 
 
-Example:
+<i>Example:</i>
 ```json
 {
 	"apikey": "e418f5b4a15608b78185540ef583b9fc",
@@ -1055,13 +1176,13 @@ Example:
 }
 ```
 
-Parameters: no parameters
+<i><i>Parameters:</i></i> no parameters
 
 If client doesn't send valid logon message in 10 second the connection will be dropped.
 
-### <a name="NewOrder"></a> NewOrder
+### <a name="NewOrder"/>NewOrder
 
-Example:
+<i>Example:</i>
 
 ```json
 {
@@ -1084,21 +1205,21 @@ Example:
 }
 ```
 
-Parameters:
+<i><i>Parameters:</i></i>
 
-| Parameter	| Description | Type / Enum |
-| --- | --- | --- |
-| clientOrderId | should be unique, <= 32 characters | |
-| symbol | | |
-| side | order side | `buy`, `sell` |
-| quantity | quantity in lots | integer |
-| type | order type	| only `limit` orders are currently supported |
-| price	| price (in currency) | decimal, consider price steps |
-| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill |
+| Parameter	| Type | Description |
+| --- | --- | --- | 
+| `clientOrderId` | string  | Unique order ID generated by client. From 8 to 32 characters |
+| `symbol` | string | Currency symbol traded on HitBTC exchange |
+| `side` | `buy`, `sell`| Order side  |
+| `quantity` | integer | Quantity, in lots | 
+| `type` | `limit` or `market` | Order type. Only `limit` orders are currently supported |
+| `price`	| decimal | Price, in currency units, consider price steps |
+| `timeInForce` | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill | Time in force |  |
 
-### <a name="OrderCancel"></a>OrderCancel
+### <a name="OrderCancel"/>OrderCancel
 
-Example:
+<i>Example:</i>
 
 ```json
 {
@@ -1118,19 +1239,20 @@ Example:
 }
 ```
 
-Parameters:
+<i><i>Parameters:</i></i>
 
-| Parameter	| Description | Type / Enum |
+| Parameter	| Type | Description |
 | --- | --- | --- |
-| clientOrderId | clientOrderId sent in NewOrder message | |
-| cancelRequestClientOrderId | <= 32 characters | |
-| symbol | | |
-| side | order side | `buy`, `sell` |
-| type | order type	| only `limit` orders are currently supported |
+| `clientOrderId` | string  | `clientOrderId` parameter sent in `NewOrder` message |
+| `cancelRequestClientOrderId` | string | Unqiue ID generated by client, from 8 to 32 characters |
+| `symbol` | string | Currency symbol traded on HitBTC exchange |
+| `side` |  `buy`, `sell`| Order side |
+| `type` | `limit` or `market` | Order type. Only `limit` orders are currently supported |
 
-### <a name="ExecutionReport"></a>ExecutionReport
 
-Example:
+### <a name="ExecutionReport"/>ExecutionReport
+
+<i>Example:</i>
 
 ```json
 {
@@ -1150,32 +1272,33 @@ Example:
 }
 ```
 
-Fields:
+The following fields are used in `ExecutionReport` object:
 
-| Field	| Description | Type / Enum | Required |
+| Field	| Required | Type | Description |
 | --- | --- | --- | --- |
-| orderId | Order ID on the Exchange | string | required |
-| clientOrderId | clientOrderId sent in NewOrder message | string | required |
-| execReportType | execution report type | `new` <br> `canceled` <br> `rejected` <br> `expired` <br> `trade` <br> `status` | required |
-| orderStatus | order status | `new` <br> `partiallyFilled` <br> `filled` <br> `canceled` <br> `rejected` <br> `expired` | required |
-| orderRejectReason | Relevant only for the orders in rejected state | `unknownSymbol` <br> `exchangeClosed` <br>`orderExceedsLimit` <br> `unknownOrder` <br> `duplicateOrder` <br> `unsupportedOrder` <br> `unknownAccount` <br> `other`| |
-| symbol | | | required |
-| side | | `buy` or `sell` | required |
-| timestamp | UTC timestamp in milliseconds | | |
-| price | | decimal | |
-| quantity | | integer | required |
-| type | | only `limit` orders are currently supported | required |
-| timeInForce | time in force | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill | required |
-| tradeId | Trade ID on the exchange | | for trades |
-| lastQuantity | | integer | for trades |
-| lastPrice | | decimal | for trades |
-| leavesQuantity | | integer |  |
-| cumQuantity | | integer | |
-| averagePrice | | decimal, will be 0 if 'cumQuantity'=0 | |
+| `orderId` | Yes | string | Order ID on the Exchange|
+| `clientOrderId` | Yes | string | `clientOrderId` sent in `NewOrder` message (see [/api/1/trading/new_order](#neworder)) |
+| `execReportType` | Yes | `new` <br> `canceled` <br> `rejected` <br> `expired` <br> `trade` <br> `status` | Execution report type |
+| `orderStatus` | Yes | `new` <br> `partiallyFilled` <br> `filled` <br> `canceled` <br> `rejected` <br> `expired` | Order status |
+| `orderRejectReason` | Yes - for orders in `rejected` state| `unknownSymbol` <br> `exchangeClosed` <br>`orderExceedsLimit` <br> `unknownOrder` <br> `duplicateOrder` <br> `unsupportedOrder` <br> `unknownAccount` <br> `other`|Reason of rejection. Relevant only for orders in rejected state |
+| `symbol` | Yes | string, e.g. `BTCUSD` | Currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))|
+| `side` | Yes| `buy` or `sell` | Side of a trade |
+| `timestamp` | No | integer | UTC timestamp in milliseconds |
+| `price` | No | decimal | Price of an order|
+| `quantity` | Yes | integer | Order quantity in lots |
+| `type` | Yes| `limit` | Type of an order. Only `limit` orders are currently supported |
+| `timeInForce` | Yes | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day orders< | Time in force |
+| `tradeId` | Yes - for trades| integer | Trade ID on the exchange |
+| `lastQuantity` | Yes - for trades | integer | Last quantity |
+| `lastPrice` | Yes - for trades | decimal | Last price  |
+| `leavesQuantity` | No | integer |  Leaves quantity|
+| `cumQuantity` | No | integer | Cumulative quantity |
+| `averagePrice` | No | decimal | Average price. Equals 0 if `cumQuantity`=0|
 
-### <a name="CancelReject"></a>CancelReject
 
-Example:
+### <a name="CancelReject"/>CancelReject
+
+<i>Example:</i>
 ```json
 {"CancelReject": {
     "clientOrderId": "68f82819-723a-4b60-ad6b",
@@ -1186,20 +1309,17 @@ Example:
 }}
 ```
 
-Fields:
+The following fields are used in `CancelReject` object:
 
-| Field	| Description | Type / Enum | Required |
+| Field	| Required | Type | Description |
 | --- | --- | --- | --- |
-| cancelRequestClientOrderId | `cancelRequestClientOrderId` from OrderCancel | string | required |
-| clientOrderId | `clientOrderId` from OrderCancel | string | required |
-| rejectReasonCode | | `orderNotFound` <br> `unknownSymbol` <br> `unknownUser` <br> `other` | required |
-| rejectReasonText | Optional reject reason text | string | |
+| `cancelRequestClientOrderId` | Yes | string | `cancelRequestClientOrderId` parameter from [`OrderCancel`](#ordercancel) |
+| `clientOrderId` | Yes | string | `clientOrderId` parameter from [`OrderCancel`](#ordercancel) |
+| `rejectReasonCode` | Yes | `orderNotFound` <br> `unknownSymbol` <br> `unknownUser` <br> `other` | Code of the reason why the order was cancelled|
+| `rejectReasonText` | No | string | Optional text explaining reject reason |
 
-## Useful tools
 
-Chrome extension Simple WebSocket Client (https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo)
-
-## Sample code
+## <a name="sample"/>Sample code
 
 ### Node.js snippet: message signature
 
@@ -1229,5 +1349,3 @@ Chrome extension Simple WebSocket Client (https://chrome.google.com/webstore/det
     msg.signature = crypto.createHmac('sha512', secretkey).update(JSON.stringify(msg.message)).digest('base64');
     return JSON.stringify(msg);
 ```
-
-
