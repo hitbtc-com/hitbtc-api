@@ -28,8 +28,8 @@ HitBTC API has several interfaces to implement them in a custom software:
   - market data. See [Market data streaming end-point](#marketstreaming)  
   - trading operations. See [Trading streaming end-point](#tradingstreaming)
 
-Trading and payment operations require user's authentification: each request or message should have a signature. 
-You should get your API key and Secret key on the [Settings](https://hitbtc.com/settings) page. See details in [RESTful API authentification](#authenticationrestful) and [WebSocket API authentification](#authenticationwebsocket).
+Trading and payment operations require user's authentication: each request or message should have a signature. 
+You should get your API key and Secret key on the [Settings](https://hitbtc.com/settings) page. See details in [RESTful API authentication](#authenticationrestful) and [WebSocket API authentication](#authenticationwebsocket).
 
 ### <a name="cursymbols"/>Currency symbols
 
@@ -65,7 +65,7 @@ RESTful API allows:
 
 Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com).
 
-HitBTC provides a <b>demo trading</b> option.  You can enable demo mode and acquire demo API keys on the [Settings](https://hitbtc.com/settings) page.<br>Demo endoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
+HitBTC provides a <b>demo trading</b> option.  You can enable demo mode and acquire demo API keys on the  [Settings](https://hitbtc.com/settings) page.<br>Demo endpoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
 Trading and payment operations require [authentication](#authentication). See also [error codes](#errors) and [reports representing order status changes](#reports).
 
@@ -77,7 +77,8 @@ RESTful API provides access to the market data with following methods:
   - get the ticker for specified symbol - [/api/1/public/:symbol/ticker](#ticker)
   - get all tickers - [/api/1/public/ticker](#alltickers)
   - get the order book for specified symbol - [/api/1/public/:symbol/orderbook](#orderbook)
-  - get the individual trades data for specified symbol - [/api/1/public/:symbol/trades](#trades)
+  - get individual trades data for specified symbol - [/api/1/public/:symbol/trades](#trades)
+  - get recent trades for specified symbol  - [/api/1/public/:symbol/trades/recent](#recenttrades)
 
 
 ### <a name="time"/>/api/1/public/time
@@ -97,7 +98,7 @@ RESTful API provides access to the market data with following methods:
 
 ### <a name="symbols"/>/api/1/public/symbols
 
-<i>Summary:</i> returns the actual list of currency symbols traded on HitBTC exchange, their lot sizes (`lot` parameter) and price step (`step` parameter).
+<i>Summary:</i> returns the actual list of currency symbols traded on HitBTC exchange, their lot sizes (`lot`  parameter) and price step (`step` parameter).
 
 <i>Request:</i> `GET /api/1/public/symbols`
 
@@ -290,7 +291,8 @@ The following fields are used in the `ticker` object:
 | `format_amount_unit` | No | `currency` or `lot` | Units of amount returned: in currency units (default) or in lots|
 | `format_tid` | No | `string` or `number`| Format of trade ID returned: as a string or as a number (default)|
 | `format_timestamp` | No | `millisecond` or `second` | Format of trade timestamp returned: in milliseconds (default) or in seconds|
-| `format_wrap `| No | `true` or `false` | Select if the line wrappnig is used in item returned. Default value - `true`|
+| `format_wrap `| No | `true` or `false` | Selects if the line wrappnig is used in item returned. Default value - `true`|
+| `side` | No | `true` or `false` | Selects if the side of a trade is returned|
 
 <i>Alias:</i>
 ```
@@ -333,6 +335,45 @@ The following fields are used in the `ticker` object:
 ]
 ```
 
+### <a name="recenttrades"/>/api/1/public/:symbol/trades/recent
+
+<i>Summary:</i> returns recent trades for the specified currency symbol.
+
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Market trades</b> tab. Select the currency pair at top of the tab.
+
+<i>Request:</i> `/api/1/public/:symbol/trades/recent`
+  where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
+
+<i>Parameters:</i>
+
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `from` | No | integer | Returns trades with `trade_id` > specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` >= specified timestamp` (if `by=ts`) |
+| `by` | No |  `trade_id` or `ts` | Selects if filtering and sorting is performed by `trade_id` or by `timestamp` |
+| `sort` | No| `asc` or `desc`| Trades are sorted ascending or descending (default)|
+| `start_index` | No | integer | Zero-based index. Default value is 0 |
+| `max_results` | Yes | integer | Maximum quantity of returned results, at most 1000 |
+| `format_item` | No | `array` or `object` | Format of items returned: as an array (default) or as a list of objects|
+| `side` | No | `true` or `false` | Selects if the side of a trade is returned|
+
+<i>Example:</i> `GET api/1/public/LTCEUR/trades/recent?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object`
+
+<i>Example response:</i>
+
+``` json
+{"trades":[
+  {"date":1411045690003,"price":"442.12","amount":"0.09","tid":1413901,"side":"buy"},
+  {"date":1411045690003,"price":"442.02","amount":"0.60","tid":1413900,"side":"buy"},
+  {"date":1411045690003,"price":"441.57","amount":"0.19","tid":1413899,"side":"buy"},
+  {"date":1411045635556,"price":"442.00","amount":"0.42","tid":1413889,"side":"buy"},
+  {"date":1411045635556,"price":"441.59","amount":"0.19","tid":1413888,"side":"buy"},
+  {"date":1411045635556,"price":"441.59","amount":"0.39","tid":1413887,"side":"buy"},
+  {"date":1411045621329,"price":"442.00","amount":"0.01","tid":1413882,"side":"buy"},
+  {"date":1411045621329,"price":"442.00","amount":"0.32","tid":1413881,"side":"buy"},
+  {"date":1411045621329,"price":"441.57","amount":"0.28","tid":1413880,"side":"buy"},
+  {"date":1411045621329,"price":"441.56","amount":"0.38","tid":1413879,"side":"buy"}
+]
+```
 
 ## <a name="tradingrestful"/>Trading RESTful API
 
@@ -341,8 +382,8 @@ RESTful API allows to perform trading operations with the following methods:
   - get all active orders  - [/api/1/trading/active](#active)
   - place a new order - [/api/1/trading/new_order](#neworder)
   - cancel an order - [/api/1/trading/cancel_order](#cancelorder)
+  - get user's recent orders - [/api/1/trading/recent](#recentorders)
   - get user's trading history - [/api/1/trading/trades](#usertrades)
-  - get user's recent orders (RESTful - [/api/1/trading/recent](#recentorders)
 
 Trading operations require [authentication](#authentication).
 
@@ -459,26 +500,10 @@ The following fields are used in `ExecutionReport` object:
 <i>Example response:</i>
 ``` json
 {"balance": [
-  {
-    "currency_code": "BTC",
-    "cash": 0.045457701,
-    "reserved": 0.01
-  },
-  {
-    "currency_code": "EUR",
-    "cash": 0.0445544,
-    "reserved": 0
-  },
-  {
-    "currency_code": "LTC",
-    "cash": 0.7,
-    "reserved": 0.1
-  },
-  {
-    "currency_code": "USD",
-    "cash": 2.9415029,
-    "reserved": 1.001
-  }
+  {"currency_code": "BTC","cash": 0.045457701,"reserved": 0.01},
+  {"currency_code": "EUR","cash": 0.0445544,"reserved": 0},
+  {"currency_code": "LTC","cash": 0.7,"reserved": 0.1},
+  {"currency_code": "USD","cash": 2.9415029,"reserved": 1.001}
 ]}
 ```
 
@@ -622,91 +647,6 @@ post data: clientOrderId=11111112&cancelRequestClientOrderId=3825782579834957894
 } }
 ```
 
-### <a name="usertrades"/>/api/1/trading/trades
-
-<i>Summary:</i> returns the trading history - an array of user's trades (`trade` objects).
-
-<i>Sample usage at HitBTC site:</i> [https://hitbtc.com/trading-history](https://hitbtc.com/trading-history). Trades for preceding 24 hours see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My trades</b> tab. 
-
-<i>Request:</i> `GET /api/1/trading/trades`
-
-<i>Parameters:</i>
-
-| Parameter | Required | Type | Description |
-| --- | --- | --- | --- |
-| `by` | No |  `trade_id` or `ts` | Selects if filtering and sorting is performed by `trade_id` or by `timestamp` |
-| `start_index` | No | integer | Zero-based index. Default value is 0 |
-| `max_results` | Yes | integer | Maximum quantity of returned results, at most 1000 |
-| `symbols` | No | string | Comma-separated list of currency symbols |
-| `sort` | No | `asc` or `desc` | Trades are sorted ascending (default) or descending |
-| `from` | No | integer | Returns trades with `trade_id` > specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` >= specified timestamp` (if `by=ts`) |
-| `till` | No | integer | Returns trades with `trade_id` < specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` < specified `timestamp` (if `by=ts`)|
-
-The following fields are used in `trade` object:
-
-| Field	|Required | Type | Description |
-| --- | --- | --- | --- |
-| `tradeId` | Yes | integer | Trade ID on the exchange |
-| `execPrice` | Yes | decimal | Trade price | 
-| `timestamp` |  Yes | integer | Timestamp, in milliseconds |
-| `originalOrderId` | No | integer | Order ID on the exchange |
-| `fee` | No | decimal | Fee for the trade, negative value means rebate |
-| `clientOrderId` | No | string | Unique order ID generated by client. From 8 to 32 characters |
-| `symbol` | No | string | Currency symbol |
-| `side` | No | `buy` or `sell` | Side of a trade |
-| `execQuantity` | No | integer | Trade size, in lots |
-
-<i>Example response:</i>
-
-``` json
-{"trades": [
-  {
-    "tradeId": 39,
-    "execPrice": 150,
-    "timestamp": 1395231854030,
-    "originalOrderId": "114",
-    "fee": 0.03,
-    "clientOrderId": "FTO18jd4ou41--25",
-    "symbol": "BTCUSD",
-    "side": "sell",
-    "execQuantity": 10
-  },
-  {
-    "tradeId": 38,
-    "execPrice": 140.1,
-    "timestamp": 1395231853882,
-    "originalOrderId": "112",
-    "fee": 0.028,
-    "clientOrderId": "FTO18jd4ou3n--15",
-    "symbol": "BTCUSD",
-    "side": "buy",
-    "execQuantity": 10
-  },
-  {
-    "tradeId": 2,
-    "execPrice": 150,
-    "timestamp": 1394789991659,
-    "originalOrderId": "24",
-    "fee": 0.03,
-    "clientOrderId": "FTO18ivvcbvt--25",
-    "symbol": "BTCUSD",
-    "side": "sell",
-    "execQuantity": 10
-  },
-  {
-    "tradeId": 1,
-    "execPrice": 140,
-    "timestamp": 1394789991527,
-    "originalOrderId": "22",
-    "fee": 0.028,
-    "clientOrderId": "FTO18ivvcbvj--15",
-    "symbol": "BTCUSD",
-    "side": "buy",
-    "execQuantity": 10
-  }
-]}
-```
-
 ### <a name="recentorders"/>/api/1/trading/orders/recent
 
 <i>Summary:</i> returns an array of user's recent orders (`order` objects) for last 24 hours, sorted by order update time.
@@ -795,6 +735,94 @@ The following fields are used in `order` object:
 ]}
 ```
 
+
+### <a name="usertrades"/>/api/1/trading/trades
+
+<i>Summary:</i> returns the trading history - an array of user's trades (`trade` objects).
+
+<i>Sample usage at HitBTC site:</i> [https://hitbtc.com/trading-history](https://hitbtc.com/trading-history). Trades for preceding 24 hours see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My trades</b> tab. 
+
+<i>Request:</i> `GET /api/1/trading/trades`
+
+<i>Parameters:</i>
+
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `by` | No |  `trade_id` or `ts` | Selects if filtering and sorting is performed by `trade_id` or by `timestamp` |
+| `start_index` | No | integer | Zero-based index. Default value is 0 |
+| `max_results` | Yes | integer | Maximum quantity of returned results, at most 1000 |
+| `symbols` | No | string | Comma-separated list of currency symbols |
+| `sort` | No | `asc` or `desc` | Trades are sorted ascending (default) or descending |
+| `from` | No | integer | Returns trades with `trade_id` > specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` >= specified timestamp` (if `by=ts`) |
+| `till` | No | integer | Returns trades with `trade_id` < specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` < specified `timestamp` (if `by=ts`)|
+
+The following fields are used in `trade` object:
+
+| Field	|Required | Type | Description |
+| --- | --- | --- | --- |
+| `tradeId` | Yes | integer | Trade ID on the exchange |
+| `execPrice` | Yes | decimal | Trade price | 
+| `timestamp` |  Yes | integer | Timestamp, in milliseconds |
+| `originalOrderId` | No | integer | Order ID on the exchange |
+| `fee` | No | decimal | Fee for the trade, negative value means rebate |
+| `clientOrderId` | No | string | Unique order ID generated by client. From 8 to 32 characters |
+| `symbol` | No | string | Currency symbol |
+| `side` | No | `buy` or `sell` | Side of a trade |
+| `execQuantity` | No | integer | Trade size, in lots |
+
+
+<i>Example response:</i>
+
+``` json
+{"trades": [
+  {
+    "tradeId": 39,
+    "execPrice": 150,
+    "timestamp": 1395231854030,
+    "originalOrderId": "114",
+    "fee": 0.03,
+    "clientOrderId": "FTO18jd4ou41--25",
+    "symbol": "BTCUSD",
+    "side": "sell",
+    "execQuantity": 10
+  },
+  {
+    "tradeId": 38,
+    "execPrice": 140.1,
+    "timestamp": 1395231853882,
+    "originalOrderId": "112",
+    "fee": 0.028,
+    "clientOrderId": "FTO18jd4ou3n--15",
+    "symbol": "BTCUSD",
+    "side": "buy",
+    "execQuantity": 10
+  },
+  {
+    "tradeId": 2,
+    "execPrice": 150,
+    "timestamp": 1394789991659,
+    "originalOrderId": "24",
+    "fee": 0.03,
+    "clientOrderId": "FTO18ivvcbvt--25",
+    "symbol": "BTCUSD",
+    "side": "sell",
+    "execQuantity": 10
+  },
+  {
+    "tradeId": 1,
+    "execPrice": 140,
+    "timestamp": 1394789991527,
+    "originalOrderId": "22",
+    "fee": 0.028,
+    "clientOrderId": "FTO18ivvcbvj--15",
+    "symbol": "BTCUSD",
+    "side": "buy",
+    "execQuantity": 10
+  }
+]}
+```
+
+
 ## <a name="paymentsrestful"/>Payment RESTful API
 
 RESTful API allows to manage funds with the following methods:
@@ -819,7 +847,24 @@ Payment operations require [authentication](#authentication)
 <i>Example response:</i>
 
 ``` json
-{"balance": [{"currency_code": "USD", "balance": 13.12}, {"currency_code": "EUR", "balance": 0}, {"currency_code": "LTC", "balance": 1.07}, {"currency_code": "BTC", "balance": 11.9}]}
+{
+  "balance": [
+  {
+    "currency_code": "USD",
+    "balance": 13.12
+  },
+  {
+    "currency_code": "EUR",
+    "balance": 0
+  },
+  {
+    "currency_code": "LTC",
+    "balance": 1.07
+  }, 
+  {"currency_code": "BTC", 
+  "balance": 11.9
+  }
+]}
 ```
 
 ### <a name="transfer"/>/api/1/payment/transfer_to_trading and /api/1/payment/transfer_to_main
