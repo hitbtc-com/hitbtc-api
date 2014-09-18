@@ -356,7 +356,10 @@ The following fields are used in the `ticker` object:
 | `format_item` | No | `array` or `object` | Format of items returned: as an array (default) or as a list of objects|
 | `side` | No | `true` or `false` | Selects if the side of a trade is returned|
 
-<i>Example:</i> `GET api/1/public/LTCEUR/trades/recent?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object`
+<i>Example:</i> 
+```
+api/1/public/LTCEUR/trades/recent?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object
+```
 
 <i>Example response:</i>
 
