@@ -358,7 +358,7 @@ The following fields are used in the `ticker` object:
 
 <i>Example:</i> 
 ```
-api/1/public/LTCEUR/trades/recent?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object
+/api/1/public/LTCEUR/trades/recent?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object
 ```
 
 <i>Example response:</i>
