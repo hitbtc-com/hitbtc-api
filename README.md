@@ -348,17 +348,13 @@ The following fields are used in the `ticker` object:
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
-| `from` | No | integer | Returns trades with `trade_id` > specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` >= specified timestamp` (if `by=ts`) |
-| `by` | No |  `trade_id` or `ts` | Selects if filtering and sorting is performed by `trade_id` or by `timestamp` |
-| `sort` | No| `asc` or `desc`| Trades are sorted ascending or descending (default)|
-| `start_index` | No | integer | Zero-based index. Default value is 0 |
 | `max_results` | Yes | integer | Maximum quantity of returned results, at most 1000 |
 | `format_item` | No | `array` or `object` | Format of items returned: as an array (default) or as a list of objects|
 | `side` | No | `true` or `false` | Selects if the side of a trade is returned|
 
 <i>Example:</i> 
 ```
-/api/1/public/LTCEUR/trades/recent?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object
+/api/1/public/LTCEUR/trades/recent?max_results=100&format_item=object
 ```
 
 <i>Example response:</i>
