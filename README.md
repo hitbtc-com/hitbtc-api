@@ -337,7 +337,7 @@ The following fields are used in the `ticker` object:
 
 ### <a name="recenttrades"/>/api/1/public/:symbol/trades/recent
 
-<i>Summary:</i> returns recent trades for the specified currency symbol.
+<i>Summary:</i> returns recent trades for the specified currency symbol, sorted by trade id desc.
 
 <i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Market trades</b> tab. Select the currency pair at top of the tab.
 
@@ -346,19 +346,21 @@ The following fields are used in the `ticker` object:
 
 <i>Parameters:</i>
 
-| Parameter | Required | Type | Description |
+| Parameter | Reqired | Type | Description | 
 | --- | --- | --- | --- |
-| `from` | No | integer | Returns trades with `trade_id` > specified `trade_id` (if `by=trade_id`) or returns trades with `timestamp` >= specified timestamp` (if `by=ts`) |
-| `by` | No |  `trade_id` or `ts` | Selects if filtering and sorting is performed by `trade_id` or by `timestamp` |
-| `sort` | No| `asc` or `desc`| Trades are sorted ascending or descending (default)|
-| `start_index` | No | integer | Zero-based index. Default value is 0 |
-| `max_results` | Yes | integer | Maximum quantity of returned results, at most 1000 |
-| `format_item` | No | `array` or `object` | Format of items returned: as an array (default) or as a list of objects|
+| `max_results` | No| integer | Maximum quantity of returned items, at most 1000|
+| `format_item` | No | `array` or `object` | Format of items returned: as an array (default) or as a list of objects |
+| `format_price` | No | `string` or `number`| Format of prices returned: as a string (default) or as a number |
+| `format_amount` | No | `string` or `number` | Format of amount returned: as a string (default) or as a number  |
+| `format_amount_unit` | No | `currency` or `lot` | Units of amount returned: in currency units (default) or in lots|
+| `format_tid` | No | `string` or `number`| Format of trade ID returned: as a string or as a number (default)|
+| `format_timestamp` | No | `millisecond` or `second` | Format of trade timestamp returned: in milliseconds (default) or in seconds|
+| `format_wrap `| No | `true` or `false` | Selects if the line wrappnig is used in item returned. Default value - `true`|
 | `side` | No | `true` or `false` | Selects if the side of a trade is returned|
 
 <i>Example:</i> 
 ```
-/api/1/public/LTCEUR/trades/recent?from=0&by=trade_id&sort=desc&start_index=0&max_results=100&format_item=object
+/api/1/public/LTCEUR/trades/recent?max_results=100&format_item=object&side=true
 ```
 
 <i>Example response:</i>
