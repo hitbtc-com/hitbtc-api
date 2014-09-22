@@ -747,8 +747,8 @@ The following fields are used in `order` object:
 
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
-| `by` | No |  `trade_id` or `ts` | Selects if filtering and sorting is performed by `trade_id` or by `timestamp` |
-| `start_index` | No | integer | Zero-based index. Default value is 0 |
+| `by` | Yes |  `trade_id` or `ts` | Selects if filtering and sorting is performed by `trade_id` or by `timestamp` |
+| `start_index` | Yes | integer | Zero-based index. Default value is 0 |
 | `max_results` | Yes | integer | Maximum quantity of returned results, at most 1000 |
 | `symbols` | No | string | Comma-separated list of currency symbols |
 | `sort` | No | `asc` or `desc` | Trades are sorted ascending (default) or descending |
