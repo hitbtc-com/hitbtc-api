@@ -1021,16 +1021,16 @@ API links:
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
-URL: <wss://api.hitbtc.com:8080>
-Demo URL: <ws://demo-api.hitbtc.com:8080>
-Once client connects to this URL the session is started. 
-
 Streaming API provides an access to: 
   - market data. See [Market data streaming end-point](#marketstreaming)  
   - trading operations. See [Trading streaming end-point](#tradingstreaming)
 
 
 ## <a name="marketstreaming"/>Market data streaming end-point
+
+URL: <ws://api.hitbtc.com:80>
+Demo URL: <ws://demo-api.hitbtc.com:80>
+Once client connects to this URL the session is started. 
 
 The server broadcasts the following types of messages:
 * [MarketDataSnapshotFullRefresh](#MarketDataSnapshotFullRefresh) message contains a full snapshot of the order book.
@@ -1160,8 +1160,6 @@ The following fields are used in `MarketDataIncrementalRefresh` object:
 
 
 ## <a name="tradingstreaming"/>Trading streaming end-point
-
-Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
 URL: <wss://api.hitbtc.com:8080>
 
