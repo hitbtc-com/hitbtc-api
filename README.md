@@ -1028,8 +1028,10 @@ Streaming API provides an access to:
 
 ## <a name="marketstreaming"/>Market data streaming end-point
 
-URL: <ws://api.hitbtc.com:80>
-Demo URL: <ws://demo-api.hitbtc.com:80>
+API links:
+* URL: <ws://api.hitbtc.com:80>
+* Demo URL: <ws://demo-api.hitbtc.com:80>
+* 
 Once client connects to this URL the session is started. 
 
 The server broadcasts the following types of messages:
@@ -1161,9 +1163,9 @@ The following fields are used in `MarketDataIncrementalRefresh` object:
 
 ## <a name="tradingstreaming"/>Trading streaming end-point
 
-URL: <wss://api.hitbtc.com:8080>
-
-Demo URL: <ws://demo-api.hitbtc.com:8080>
+API links:
+* URL: <wss://api.hitbtc.com:8080>
+* Demo URL: <ws://demo-api.hitbtc.com:8080>
 
 Trading endpoint requires sending login message after connection established. All client messages should be signed and should contain valid and active API key (see [API keys and message signatures](#authenticationwebsocket)).
 
