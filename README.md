@@ -1031,7 +1031,7 @@ Streaming API provides an access to:
 API links:
 * URL: <ws://api.hitbtc.com:80>
 * Demo URL: <ws://demo-api.hitbtc.com:80>
-* 
+
 Once client connects to this URL the session is started. 
 
 The server broadcasts the following types of messages:
