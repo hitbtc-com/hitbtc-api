@@ -1882,10 +1882,6 @@ post data: clientOrderId=11111112&amp;cancelRequestClientOrderId=382578257983495
 
 <p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
 
-<p>URL: wss://api.hitbtc.com:8080
-Demo URL: ws://demo-api.hitbtc.com:8080
-Once client connects to this URL the session is started. </p>
-
 <p>Streaming API provides an access to: </p>
 
 <ul>
@@ -1896,6 +1892,13 @@ Once client connects to this URL the session is started. </p>
 </ul><h2>
 <a name="market-data-streaming-end-point" class="anchor" href="#market-data-streaming-end-point"><span class="octicon octicon-link"></span></a>
 <a name="marketstreaming"></a>Market data streaming end-point</h2>
+
+<p>API links:</p>
+
+<ul>
+<li>URL: ws://api.hitbtc.com:80</li>
+<li>Demo URL: ws://demo-api.hitbtc.com:80</li>
+</ul><p>Once client connects to this URL the session is started. </p>
 
 <p>The server broadcasts the following types of messages:</p>
 
@@ -2077,13 +2080,12 @@ Once client connects to this URL the session is started. </p>
 <a name="trading-streaming-end-point" class="anchor" href="#trading-streaming-end-point"><span class="octicon octicon-link"></span></a>
 <a name="tradingstreaming"></a>Trading streaming end-point</h2>
 
-<p>Streaming API is based on <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>. All messages are in JSON format.</p>
+<p>API links:</p>
 
-<p>URL: wss://api.hitbtc.com:8080</p>
-
-<p>Demo URL: ws://demo-api.hitbtc.com:8080</p>
-
-<p>Trading endpoint requires sending login message after connection established. All client messages should be signed and should contain valid and active API key (see <a href="#authenticationwebsocket">API keys and message signatures</a>).</p>
+<ul>
+<li>URL: wss://api.hitbtc.com:8080</li>
+<li>Demo URL: ws://demo-api.hitbtc.com:8080</li>
+</ul><p>Trading endpoint requires sending login message after connection established. All client messages should be signed and should contain valid and active API key (see <a href="#authenticationwebsocket">API keys and message signatures</a>).</p>
 
 <p>The following message types are supported:</p>
 
