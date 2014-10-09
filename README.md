@@ -100,6 +100,8 @@ RESTful API provides access to the market data with following methods:
 
 <i>Summary:</i> Simbols returns the actual list of currency symbols traded on HitBTC exchange with their characteristics:
 
+| Field | Description |
+| --- | --- |
 | symbol | Symbol name |
 | step | Price step parameter |
 | lot | Lot size parameter |
