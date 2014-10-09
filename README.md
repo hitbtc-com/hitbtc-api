@@ -143,6 +143,8 @@ Sample usage at HitBTC site: see [https://hitbtc.com/market-overview](https://hi
     "high": "600.1",
     "low": "400.7",
     "volume": "567.9",
+    "open": "449.73",
+    "volume_quote": "289002.81"
     "timestamp": 1393492619000
 }
 ```
@@ -157,6 +159,8 @@ The following fields are used in the `ticker` object:
 | high | Highest trade price per last 24h + last incomplete minute | 
 | low | Lowest trade price per last 24h + last incomplete minute |
 | volume | Volume per last 24h + last incomplete minute |
+| open | Price in which instrument open |
+| volume_quote | Volume in second commodity per last 24h + last incomplete minute |
 | timestamp | Server time in UNIX timestamp format |
 
 
