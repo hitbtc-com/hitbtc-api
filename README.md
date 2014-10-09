@@ -98,7 +98,13 @@ RESTful API provides access to the market data with following methods:
 
 ### <a name="symbols"/>/api/1/public/symbols
 
-<i>Summary:</i> returns the actual list of currency symbols traded on HitBTC exchange, their lot sizes (`lot`  parameter) and price step (`step` parameter).
+<i>Summary:</i> Simbols returns the actual list of currency symbols traded on HitBTC exchange with their characteristics:
+
+| symbol | Symbol name |
+| step | Price step parameter |
+| lot | Lot size parameter |
+| currency | Value of this symbol |
+| commodity | Second value of thos symbol |
 
 <i>Request:</i> `GET /api/1/public/symbols`
 
@@ -112,11 +118,19 @@ RESTful API provides access to the market data with following methods:
             "symbol": "BTCUSD",
             "step": "0.01",
             "lot": "0.01",
+            "currency": "USD",
+            "commodity": "BTC",
+            "takeLiquidityRate": "0.002",
+            "provideLiquidityRate": "0.002"
         },
         {
             "symbol": "BTCEUR",
             "step": "0.01",
             "lot": "0.01",
+            "currency": "EUR",
+            "commodity": "BTC",
+            "takeLiquidityRate": "0.002",
+            "provideLiquidityRate": "0.002"
         },
         ...
     ]
@@ -144,8 +158,8 @@ Sample usage at HitBTC site: see [https://hitbtc.com/market-overview](https://hi
     "low": "400.7",
     "volume": "567.9",
     "open": "449.73",
-    "volume_quote": "289002.81"
-    "timestamp": "1393492619000"
+    "volume_quote": "289002.81",
+    "timestamp": 1393492619000
 }
 ```
 
