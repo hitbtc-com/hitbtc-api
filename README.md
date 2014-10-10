@@ -162,7 +162,8 @@ Sample usage at HitBTC site: see [https://hitbtc.com/market-overview](https://hi
     "volume": "567.9",
     "open": "449.73",
     "volume_quote": "289002.81",
-    "timestamp": 1393492619000,
+    "timestamp": 1393492619000
+    
 }
 ```
 
