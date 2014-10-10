@@ -427,7 +427,7 @@ Each request should include the following parameters:
 Signature generation pseudo-code:
 
 ```
-uri = path + '?' + query (example: /api/1/trading/orders/active?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d&symbols=EURUSD)
+uri = path + '?' + query (example: /api/1/trading/orders/active?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d&symbols=BTCUSD)
 message = uri + postData
 signature = lower_case(hex(hmac_sha512(message, secret_key)))
 ```
