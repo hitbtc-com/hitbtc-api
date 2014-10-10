@@ -106,7 +106,9 @@ RESTful API provides access to the market data with following methods:
 | step | Price step parameter |
 | lot | Lot size parameter |
 | currency | Value of this symbol |
-| commodity | Second value of thos symbol |
+| commodity | Second value of this symbol |
+| takeLiquidityRate | Liquidity taker fee |
+| provideLiquidityRate | Liquidity provider rebate |
 
 <i>Request:</i> `GET /api/1/public/symbols`
 
@@ -176,7 +178,7 @@ The following fields are used in the `ticker` object:
 | low | Lowest trade price per last 24h + last incomplete minute |
 | volume | Volume per last 24h + last incomplete minute |
 | open | Price in which instrument open |
-| volume_quote | Volume in second commodity per last 24h + last incomplete minute |
+| volume_quote | Volume in second currency per last 24h + last incomplete minute |
 | timestamp | Server time in UNIX timestamp format |
 
 
