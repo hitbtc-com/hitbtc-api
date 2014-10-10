@@ -42,7 +42,6 @@ The following currency symbols are traded on HitBTC exchange.
 | LTCBTC | 0.1 LTC |	0.00001 |
 | LTCUSD | 0.1 LTC |	0.001 |
 | LTCEUR | 0.1 LTC |	0.001 |
-| EURUSD | 1 EUR |	0.0001 |
 | DOGEBTC | 1000 DOGE |	0.000000001 |
 | XMRBTC | 0.01 XMR |	0.01 |
 | BCNBTC | 100 BCN | 0.000000001 |
