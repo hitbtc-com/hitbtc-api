@@ -13,6 +13,9 @@
   — [Market data](#marketstreaming) <br>
   — [Trading](#tradingstreaming)<br>
   — [Sample code](#sample)
+* [Exapmles](#examples)<br>
+  — [PHP Library](https://github.com/hitbtc-com/hitbtc-php-sdk)<br>
+  — [NodeJs](http://jsfiddle.net/bmknight/RqbYB)
 
 # <a name="summary"/>Summary
 
