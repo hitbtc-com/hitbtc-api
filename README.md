@@ -1037,6 +1037,7 @@ Payment operations require [authentication](#authentication)
 | `amount` | Yes | decimal | Funds amount to withdraw |
 | `currency_code` | Yes | string | Currency symbol, e.g. `BTC`|
 | `address` | Yes | string | BTC/LTC address to withdraw to |
+| `extra_id` | No | string | payment id for cryptonote |
 
 <i>Example:</i> ```amount=0.001&currency_code=BTC&address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5```
 
