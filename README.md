@@ -480,7 +480,7 @@ The following fields are used in `ExecutionReport` object:
 | `timestamp` | No | integer | UTC timestamp in milliseconds |
 | `price` | No | decimal | Price of an order|
 | `quantity` | Yes | integer | Order quantity in lots |
-| `type` | Yes| `limit` | Type of an order. Only `limit` orders are currently supported |
+| `type` | Yes| `limit`, `stopLimit`, `stopMarket`, `market` | Type of an order. |
 | `timeInForce` | Yes | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day orders< | Time in force |
 | `tradeId` | Yes - for trades| integer | Trade ID on the exchange |
 | `lastQuantity` | Yes - for trades | integer | Last quantity |
@@ -588,8 +588,9 @@ The following fields are used in `ExecutionReport` object:
 | `side` | Yes | `buy` or `sell`| Side of a trade |
 | `price` | Yes - for limit orders | decimal | Order price |
 | `quantity` | No | integer | Order quantity in lots |
-| `type` | No | `limit` or `market` | Order type |
-| `timeInForce` | No | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | Time in force. Default value - `GTC` |
+| `type` | No | `limit`, `stopLimit`, `stopMarket`, `market` | Order type |
+| `timeInForce` | No | `GTC` - Good-Til-Canceled <br> `IOC` - Immediate-Or-Cancel <br> `FOK` - Fill-Or-Kill <br> `DAY` - day | Time in force. Default value - `GTC` |
+| `stopPrice` | Yes - for `stopLimit`, `stopMarket` | string | Stop price |
 
 <i>Example:</i>
 
