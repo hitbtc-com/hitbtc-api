@@ -232,7 +232,7 @@ The following fields are used in the `ticker` object:
 
 <i>Summary:</i> returns a list of open orders for specified currency symbol: their prices and sizes.
 
-<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Order book</b> tab.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/exchange](https://hitbtc.com/exchange), <b>Order book</b> tab.
 
 <i>Request:</i> `GET /api/1/public/:symbol/orderbook`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
@@ -295,7 +295,7 @@ The following fields are used in the `ticker` object:
 
 <i>Summary:</i> returns data on trades for specified currency symbol in specified ID or timestamp interval.
 
-<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Market trades</b> tab.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/reports/all-trades](https://hitbtc.com/reports/all-trades).
 
 <i>Request:</i> `GET /api/1/public/:symbol/trades`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
@@ -364,7 +364,7 @@ The following fields are used in the `ticker` object:
 
 <i>Summary:</i> returns recent trades for the specified currency symbol.
 
-<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Market trades</b> tab. Select the currency pair at top of the tab.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/reports/all-trades](https://hitbtc.com/reports/all-trades), <b>Market trades</b> tab. Select the currency pair at top of the tab.
 
 <i>Request:</i> `/api/1/public/:symbol/trades/recent`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
@@ -448,6 +448,8 @@ Javascript code (example):
 Useful examples provided by the community:
 * C# example code: https://gist.github.com/hitbtc-com/9808530
 * PHP example code: https://gist.github.com/hitbtc-com/10885873 
+* PHP SDK: https://github.com/hitbtc-com/hitbtc-php-sdk
+* JAVA example code: https://gist.github.com/hitbtc-com/2765a1431a2384975c01
 
 ### <a name="errors"/>Error codes
 
