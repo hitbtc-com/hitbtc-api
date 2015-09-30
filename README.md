@@ -232,7 +232,7 @@ The following fields are used in the `ticker` object:
 
 <i>Summary:</i> returns a list of open orders for specified currency symbol: their prices and sizes.
 
-<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Order book</b> tab.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/exchange](https://hitbtc.com/exchange), <b>Order book</b> tab.
 
 <i>Request:</i> `GET /api/1/public/:symbol/orderbook`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
@@ -295,7 +295,7 @@ The following fields are used in the `ticker` object:
 
 <i>Summary:</i> returns data on trades for specified currency symbol in specified ID or timestamp interval.
 
-<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Market trades</b> tab.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/reports/all-trades](https://hitbtc.com/reports/all-trades).
 
 <i>Request:</i> `GET /api/1/public/:symbol/trades`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
@@ -364,7 +364,7 @@ The following fields are used in the `ticker` object:
 
 <i>Summary:</i> returns recent trades for the specified currency symbol.
 
-<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>Market trades</b> tab. Select the currency pair at top of the tab.
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/reports/all-trades](https://hitbtc.com/reports/all-trades), <b>Market trades</b> tab. Select the currency pair at top of the tab.
 
 <i>Request:</i> `/api/1/public/:symbol/trades/recent`
   where `:symbol` is a currency symbol traded on HitBTC exchange (see [Currency symbols](#cursymbols))
@@ -406,6 +406,7 @@ RESTful API allows to perform trading operations with the following methods:
   - get all active orders  - [/api/1/trading/active](#active)
   - place a new order - [/api/1/trading/new_order](#neworder)
   - cancel an order - [/api/1/trading/cancel_order](#cancelorder)
+  - cancel all orders - [/api/1/trading/cancel_orders](#cancelorders)
   - get user's recent orders - [/api/1/trading/recent](#recentorders)
   - get user's trading history - [/api/1/trading/trades](#usertrades)
 
@@ -448,6 +449,8 @@ Javascript code (example):
 Useful examples provided by the community:
 * C# example code: https://gist.github.com/hitbtc-com/9808530
 * PHP example code: https://gist.github.com/hitbtc-com/10885873 
+* PHP SDK: https://github.com/hitbtc-com/hitbtc-php-sdk
+* JAVA example code: https://gist.github.com/hitbtc-com/2765a1431a2384975c01
 
 ### <a name="errors"/>Error codes
 
@@ -459,6 +462,7 @@ Trading RESTful API can return the following errors:
 | 403 | Nonce has been used | Nonce is not monotonous |
 | 403 | Nonce is not valid | Too big number or not a number |
 | 403 | Wrong signature | Specified signature is not correct|
+| 500 | Internal error | Internal error. Try again later |
 
 ### <a name="reports"/>Execution reports
 
@@ -478,7 +482,7 @@ The following fields are used in `ExecutionReport` object:
 | `timestamp` | No | integer | UTC timestamp in milliseconds |
 | `price` | No | decimal | Price of an order|
 | `quantity` | Yes | integer | Order quantity in lots |
-| `type` | Yes| `limit` | Type of an order. Only `limit` orders are currently supported |
+| `type` | Yes| `limit`, `stopLimit`, `stopMarket`, `market` | Type of an order. |
 | `timeInForce` | Yes | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day orders< | Time in force |
 | `tradeId` | Yes - for trades| integer | Trade ID on the exchange |
 | `lastQuantity` | Yes - for trades | integer | Last quantity |
@@ -544,6 +548,7 @@ The following fields are used in `ExecutionReport` object:
 | Parameter | Required | Type | Description |
 | --- | --- | --- | --- |
 | `symbols` | No | string | Comma-separated list of symbols. Default - all symbols|
+| `clientOrderId` | No | string | Unique order ID |
 
 <i>Example response:</i>
 
@@ -585,8 +590,9 @@ The following fields are used in `ExecutionReport` object:
 | `side` | Yes | `buy` or `sell`| Side of a trade |
 | `price` | Yes - for limit orders | decimal | Order price |
 | `quantity` | No | integer | Order quantity in lots |
-| `type` | No | `limit` or `market` | Order type |
-| `timeInForce` | No | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | Time in force. Default value - `GTC` |
+| `type` | No | `limit`, `stopLimit`, `stopMarket`, `market` | Order type |
+| `timeInForce` | No | `GTC` - Good-Til-Canceled <br> `IOC` - Immediate-Or-Cancel <br> `FOK` - Fill-Or-Kill <br> `DAY` - day | Time in force. Default value - `GTC` |
+| `stopPrice` | Yes - for `stopLimit`, `stopMarket` | string | Stop price |
 
 <i>Example:</i>
 
@@ -629,9 +635,9 @@ post data: clientOrderId=11111112&symbol=BTCUSD&side=buy&price=0.1&quantity=100&
 | Parameter | Required| Type | Description |
 | --- | --- | --- | ---| 
 | `clientOrderId` | Yes | string | Order ID, the same as in cancelling order, from 8 to 32 characters|
-| `cancelRequestClientOrderId` | Yes | string | Unqiue ID generated by client, from 8 to 32 characters|
-| `symbol` | Yes | string | Currency symbol, the same as in cancelling order |
-| `side` | Yes | `buy` or `sell`| Side of a trade, the same as in cancelling order |
+| `cancelRequestClientOrderId` | No | string | Unqiue ID generated by client, from 8 to 32 characters|
+| `symbol` | No | string | Currency symbol, the same as in cancelling order |
+| `side` | No | `buy` or `sell`| Side of a trade, the same as in cancelling order |
 
 <i>Example:</i>
 
@@ -669,6 +675,72 @@ post data: clientOrderId=11111112&cancelRequestClientOrderId=3825782579834957894
     "clientOrderId": "11111112",
     "rejectReasonCode": "orderNotFound" 
 } }
+```
+### <a name="cancelorders"/>/api/1/trading/cancel_orders
+
+<i>Summary:</i> cancels all orders. Returns `ExecutionReport` array of JSON object.
+
+<i>Request:</i> `POST /api/1/trading/cancel_orders`
+
+<i>Parameters:</i>
+
+| Parameter | Required| Type | Description |
+| --- | --- | --- | ---| 
+| `symbols` | No | string | Comma-separated list of symbols. Default - all symbols|
+| `side` | No | `buy` or `sell`| Side of a trade |
+
+<i>Example:</i>
+
+```
+post url: /api/1/trading/cancel_orders?nonce=1395049771755&apikey=f6ab189hd7a2007e01d95667de3c493d
+post data: symbols=BTCUSD
+```
+
+<i>Example response:</i>
+``` json
+{
+  "ExecutionReport": [
+    {
+      "orderId": "411459298",
+      "clientOrderId": "7bd65b9cc64e436a89edef57b841f691",
+      "orderStatus": "canceled",
+      "symbol": "BTCUSD",
+      "side": "sell",
+      "price": "280.00",
+      "quantity": 1,
+      "type": "limit",
+      "timeInForce": "GTC",
+      "lastQuantity": 0,
+      "lastPrice": "",
+      "leavesQuantity": 0,
+      "cumQuantity": 0,
+      "averagePrice": "0",
+      "created": 1443530022688,
+      "execReportType": "canceled",
+      "timestamp": 1443530050131
+    },
+    {
+      "orderId": "411459299",
+      "clientOrderId": "a6b41105b54c4304bf7bd8bca29fb060",
+      "orderStatus": "canceled",
+      "symbol": "BTCUSD",
+      "side": "sell",
+      "price": "290.00",
+      "quantity": 15,
+      "type": "limit",
+      "timeInForce": "GTC",
+      "lastQuantity": 0,
+      "lastPrice": "",
+      "leavesQuantity": 0,
+      "cumQuantity": 0,
+      "averagePrice": "0",
+      "created": 1443530030502,
+      "execReportType": "canceled",
+      "timestamp": 1443530050131
+    }
+  ]
+}
+
 ```
 
 ### <a name="recentorders"/>/api/1/trading/orders/recent
@@ -967,6 +1039,7 @@ Payment operations require [authentication](#authentication)
 | `amount` | Yes | decimal | Funds amount to withdraw |
 | `currency_code` | Yes | string | Currency symbol, e.g. `BTC`|
 | `address` | Yes | string | BTC/LTC address to withdraw to |
+| `extra_id` | No | string | payment id for cryptonote |
 
 <i>Example:</i> ```amount=0.001&currency_code=BTC&address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5```
 
