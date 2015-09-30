@@ -1081,6 +1081,7 @@ Payment operations require [authentication](#authentication)
     "commission_percent": 0,
     "bitcoin_address": "1KnVXD1Wc1wZbTHiB1TDgMcnSRi2PnMHAV",
     "bitcoin_return_address": "1QBuhFksjoWTQWJKWUPyQ37wsQohLAhJvK"
+    "external_data": "0b2ac379986cd1872b6a4115ad7a6cf436bdac67080db728579b8282c129a549"
   }
 ]}
 ```
