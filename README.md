@@ -406,6 +406,7 @@ RESTful API allows to perform trading operations with the following methods:
   - get all active orders  - [/api/1/trading/active](#active)
   - place a new order - [/api/1/trading/new_order](#neworder)
   - cancel an order - [/api/1/trading/cancel_order](#cancelorder)
+  - cancel all orders - [/api/1/trading/cancel_orders](#cancelorders)
   - get user's recent orders - [/api/1/trading/recent](#recentorders)
   - get user's trading history - [/api/1/trading/trades](#usertrades)
 
@@ -461,6 +462,7 @@ Trading RESTful API can return the following errors:
 | 403 | Nonce has been used | Nonce is not monotonous |
 | 403 | Nonce is not valid | Too big number or not a number |
 | 403 | Wrong signature | Specified signature is not correct|
+| 500 | Internal error | Internal error. Try again later |
 
 ### <a name="reports"/>Execution reports
 
