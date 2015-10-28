@@ -20,6 +20,9 @@
 | LTCUSD | 0.1 LTC | 0.001 |
 | LTCEUR | 0.1 LTC | 0.001 |
 | EURUSD | 1 EUR | 0.0001 |
+| DSHBTC | | |
+| DSHBTC | | |
+| DSHBTC | | |
 
 ### Document usage
 
