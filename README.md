@@ -408,6 +408,7 @@ RESTful API allows to perform trading operations with the following methods:
   - cancel an order - [/api/1/trading/cancel_order](#cancelorder)
   - cancel all orders - [/api/1/trading/cancel_orders](#cancelorders)
   - get user's recent orders - [/api/1/trading/recent](#recentorders)
+  - get user's orders by clientOrderId - [/api/1/trading/recent](#ordersByClientOrderId)
   - get user's trading history - [/api/1/trading/trades](#usertrades)
 
 Trading operations require [authentication](#authentication).
@@ -832,6 +833,61 @@ The following fields are used in `order` object:
 ]}
 ```
 
+### <a name="ordersByClientOrderId"/>/api/1/trading/order
+
+<i>Summary:</i> returns an array of user's orders (`order` objects).
+
+
+<i>Request:</i> `GET /api/1/trading/order`
+
+<i><i>Parameters:</i></i> 
+
+| Parameter | Required | Type | Description |
+| --- | --- | --- | ---|
+| `client_order_id` | No | string | Unique client-generated ID |
+
+The following fields are used in `order` object:
+
+| Field	| Required | Type | Description |
+| --- | --- | --- | ---|
+| `orderId` | No | integer | Order ID on the exchange |
+| `orderStatus` | No | `new` <br> `partiallyFilled` <br> `filled` <br> `canceled` <br> `expired` <br> `rejected` | Order status |
+| `lastTimestamp` | Yes | integer | UTC timestamp of the last change, in milliseconds |
+| `orderPrice` | Yes - for limit orders | decimal | Order price | 
+| `orderQuantity` | Yes | integer | Order quantity, in lots |
+| `avgPrice` | Yes | decimal | Average price | 
+| `quantityLeaves` | Yes | integer | Remaining quantity, in lots | 
+| `type` | No | `limit` or `market` | Type of an order |
+| `timeInForce` | No | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill<br>`DAY` - day | Time in force |
+| `clientOrderId` | No | string | Unique client-generated ID |
+| `symbol` | No | string | Currency symbol |
+| `side` | No | `buy` or `sell` | Side of a trade |
+| `execQuantity` | No | integer | Last executed quantity, in lots |
+
+<i>Example response:</i>
+
+``` json
+{
+  "orders": [
+    {
+      "orderId": 425817975,
+      "orderStatus": "filled",
+      "lastTimestamp": 1446740176886,
+      "orderPrice": "0.0000000729",
+      "orderQuantity": 10,
+      "avgPrice": "0.0000000810",
+      "quantityLeaves": 0,
+      "type": "market",
+      "timeInForce": "FOK",
+      "cumQuantity": 10,
+      "clientOrderId": "afe8b9901b0e4914991291a49175a380",
+      "symbol": "BCNBTC",
+      "side": "sell",
+      "execQuantity": 10
+    }
+  ]
+}
+```
 
 ### <a name="usertrades"/>/api/1/trading/trades
 
