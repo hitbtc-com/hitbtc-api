@@ -20,6 +20,10 @@
 | LTCUSD | 0.1 LTC | 0.001 |
 | LTCEUR | 0.1 LTC | 0.001 |
 | EURUSD | 1 EUR | 0.0001 |
+| DSHBTC | 1 DSH | 0.00000001 |
+| ETHBTC | 0.001 ETH | 0.000001 |
+| QCNBTC | 0.01 QCN | 0.000001 |
+| FCNBTC | 0.01 FCN | 0.000001 |
 
 ### Document usage
 
