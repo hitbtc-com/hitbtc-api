@@ -984,6 +984,7 @@ RESTful API allows to manage funds with the following methods:
   - get the last created incoming cryptocurrency address or create a new one -  [/api/1/payment/address/ (GET)](#getaddress), [/api/1/payment/address/ (POST)](#postaddress),
   - create an outgoing crypotocurrency transaction - [/api/1/payment/payout](#payout)
   - get a list of payment transactions - [/api/1/payment/transactions](#transactions)
+  - get a payment transaction - [/api/1/payment/transactions/:id](#transaction)
  
 Payment operations require [authentication](#authentication)
 
@@ -1143,6 +1144,41 @@ Payment operations require [authentication](#authentication)
 ]}
 ```
 
+### <a name="transaction"/>/api/1/payment/transactions/:id
+
+<i>Summary:</i> returns payment transaction and its status.
+
+<i>Sample usage at HitBTC site:</i> see [https://hitbtc.com/account](https://hitbtc.com/account), <b>History</b> panel.
+
+<i>Request:</i> `GET /api/1/payment/transactions/89229-171-97181`
+
+<i>Parameters:</i>
+
+| Parameter | Required | Type | Description |
+| --- | --- | --- | --- |
+| `id` | Yes | string | Transaction Id |
+
+<i>Example response:</i>
+```json
+{
+  "transaction": {
+    "id": "89229-171-97181",
+    "type": "payin",
+    "status": "finished",
+    "created": 1438768402,
+    "finished": 1438768943,
+    "amount_from": 1000,
+    "currency_code_from": "BCN",
+    "amount_to": 1000,
+    "currency_code_to": "BCN",
+    "destination_data": "b744ab8c87d83b6469770926cb5388e3f389f067730af7f506d1f08cbef46d86",
+    "commission_percent": 0,
+    "bitcoin_address": null,
+    "bitcoin_return_address": null,
+    "external_data": "3b598fd882902d8be14bd72d2b31f692f34700bf133e62c442d487911465b72e"
+  }
+}
+```
 
 # <a name="socketio"/>socket.io Market Data
 
