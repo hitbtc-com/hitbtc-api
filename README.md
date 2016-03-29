@@ -10,7 +10,7 @@
 * [SOCKET.IO API](#socketio)<br>
   — [Market Data](#socketio)
 * [STREAMING API](#streaming)<br>
-  — [Market data](#marketstreaming) <br>t
+  — [Market data](#marketstreaming) <br>
   — [Trading](#tradingstreaming)<br>
   — [Sample code](#sample)
 * [Exapmles](#examples)<br>
