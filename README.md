@@ -10,7 +10,7 @@
 * [SOCKET.IO API](#socketio)<br>
   — [Market Data](#socketio)
 * [STREAMING API](#streaming)<br>
-  — [Market data](#marketstreaming) <br>
+  — [Market data](#marketstreaming) <br>t
   — [Trading](#tradingstreaming)<br>
   — [Sample code](#sample)
 * [Exapmles](#examples)<br>
@@ -69,7 +69,7 @@ Endpoint URL: [http://api.hitbtc.com](http://api.hitbtc.com).
 
 HitBTC provides a <b>demo trading</b> option.  You can enable demo mode and acquire demo API keys on the  [Settings](https://hitbtc.com/settings) page.<br>Demo endpoint address: [http://demo-api.hitbtc.com](http://demo-api.hitbtc.com)
 
-Trading and payment operations require [authentication](#authentication). See also [error codes](#errors) and [reports representing order status changes](#reports).
+Trading and payment operations require [authentication](#authenticationrestful). See also [error codes](#errors) and [reports representing order status changes](#reports).
 
 ## <a name="marketrestful"/>Market data RESTful API
 
@@ -411,7 +411,7 @@ RESTful API allows to perform trading operations with the following methods:
   - get user's orders by clientOrderId - [/api/1/trading/recent](#ordersByClientOrderId)
   - get user's trading history - [/api/1/trading/trades](#usertrades)
 
-Trading operations require [authentication](#authentication).
+Trading operations require [authentication](#authenticationrestful).
 
 [Error codes](#errors) and [reports representing order status changes](#reports) are described below.
 
@@ -893,7 +893,7 @@ The following fields are used in `order` object:
 
 <i>Summary:</i> returns the trading history - an array of user's trades (`trade` objects).
 
-<i>Sample usage at HitBTC site:</i> [https://hitbtc.com/trading-history](https://hitbtc.com/trading-history). Trades for preceding 24 hours see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My trades</b> tab. 
+<i>Sample usage at HitBTC site:</i> [https://hitbtc.com/reports/trades](https://hitbtc.com/reports/trades). Trades for preceding 24 hours see [https://hitbtc.com/terminal](https://hitbtc.com/terminal), <b>My trades</b> tab. 
 
 <i>Request:</i> `GET /api/1/trading/trades`
 
@@ -986,7 +986,7 @@ RESTful API allows to manage funds with the following methods:
   - get a list of payment transactions - [/api/1/payment/transactions](#transactions)
   - get a payment transaction - [/api/1/payment/transactions/:id](#transaction)
  
-Payment operations require [authentication](#authentication)
+Payment operations require [authentication](#authenticationrestful)
 
 ### <a name="paymentbalance"/>/api/1/payment/balance
 
