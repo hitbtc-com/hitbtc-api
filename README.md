@@ -452,7 +452,6 @@ Useful examples provided by the community:
 * PHP example code: https://gist.github.com/hitbtc-com/10885873 
 * PHP SDK: https://github.com/hitbtc-com/hitbtc-php-sdk
 * JAVA example code: https://gist.github.com/hitbtc-com/2765a1431a2384975c01
-* Python example code: https://gist.github.com/hitbtc-com/e265a49c38a86c610294
 
 ### <a name="errors"/>Error codes
 
@@ -1139,7 +1138,6 @@ Payment operations require [authentication](#authentication)
     "commission_percent": 0,
     "bitcoin_address": "1KnVXD1Wc1wZbTHiB1TDgMcnSRi2PnMHAV",
     "bitcoin_return_address": "1QBuhFksjoWTQWJKWUPyQ37wsQohLAhJvK"
-    "external_data": "0b2ac379986cd1872b6a4115ad7a6cf436bdac67080db728579b8282c129a549"
   }
 ]}
 ```
