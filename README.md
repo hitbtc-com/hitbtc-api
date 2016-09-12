@@ -1357,7 +1357,7 @@ The following fields are used in `MarketDataIncrementalRefresh` object:
 
 API links:
 * URL: <wss://api.hitbtc.com:8080>
-* Demo URL: <ws://demo-api.hitbtc.com:8080>
+* Demo URL: <wss://demo-api.hitbtc.com:8080>
 
 Trading endpoint requires sending login message after connection established. All client messages should be signed and should contain valid and active API key (see [API keys and message signatures](#authenticationwebsocket)).
 
