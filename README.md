@@ -42,7 +42,7 @@ The following currency symbols are traded on HitBTC exchange.
 | --- | --- | --- |
 | BTCUSD | 0.01 BTC | 0.01 |
 | BTCEUR | 0.01 BTC | 0.01 |
-| LTCBTC2 | 0.1 LTC | 0.00001 |
+| LTCBTC | 0.1 LTC | 0.00001 |
 | LTCUSD | 0.1 LTC | 0.001 |
 | LTCEUR | 0.1 LTC | 0.001 |
 | DSHBTC | 1 DSH | 0.00000001 |
