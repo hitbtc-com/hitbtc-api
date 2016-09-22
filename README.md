@@ -40,15 +40,27 @@ The following currency symbols are traded on HitBTC exchange.
 
 | Symbol	| Lot size | Price step
 | --- | --- | --- |
-| BTCUSD |	0.01 BTC |	0.01 |
-| BTCEUR |	0.01 BTC |	0.01 |
-| LTCBTC | 0.1 LTC |	0.00001 |
-| LTCUSD | 0.1 LTC |	0.001 |
-| LTCEUR | 0.1 LTC |	0.001 |
-| DOGEBTC | 1000 DOGE |	0.000000001 |
-| XMRBTC | 0.01 XMR |	0.01 |
-| BCNBTC | 100 BCN | 0.000000001 |
-| XDNBTC | 100 XDN | 0.000000001 |
+| BTCUSD | 0.01 BTC | 0.01 |
+| BTCEUR | 0.01 BTC | 0.01 |
+| LTCBTC2 | 0.1 LTC | 0.00001 |
+| LTCUSD | 0.1 LTC | 0.001 |
+| LTCEUR | 0.1 LTC | 0.001 |
+| DSHBTC | 1 DSH | 0.00000001 |
+| ETHBTC | 0.001 ETH | 0.000001 |
+| QCNBTC | 0.01 QCN | 0.000001 |
+| FCNBTC | 0.01 FCN | 0.000001 |
+| LSKBTC | 1 LSK    | 0.0000001 |
+| LSKEUR | 1 LSK    | 0.0001 |
+| STEEMBTC | 0.001 STEEM | 0.00001 |
+| STEEMEUR | 0.001 STEEM | 0.0001 |
+| SBDBTC | 0.001 SBD | 0.00001 |
+| DASHBTC | 0.001 DASH | 0.000001 |
+| XEMBTC | 1 XEM | 0.00000001 |
+| XEMEUR | 1 XEM | 0.0000001 |
+| EMCBTC | 0.1 EMC | 0.00000001 |
+| EMCEUR | 0.01 EMC | 0.00001 |
+| SCBTC | 100 SC | 0.000000001 |
+| SCUSD | 1100 SC | 0.000001 |
 
 The actual list of symbols can be obtained by [/api/1/public/symbols](#symbols) method.
 
@@ -402,7 +414,7 @@ The following fields are used in the `ticker` object:
 ## <a name="tradingrestful"/>Trading RESTful API
 
 RESTful API allows to perform trading operations with the following methods:
-  - get the trading balance - [/api/1/trading/time](#tradingbalance)
+  - get the trading balance - [/api/1/trading/balance](#tradingbalance)
   - get all active orders  - [/api/1/trading/active](#active)
   - place a new order - [/api/1/trading/new_order](#neworder)
   - cancel an order - [/api/1/trading/cancel_order](#cancelorder)
