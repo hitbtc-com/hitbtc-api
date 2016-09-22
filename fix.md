@@ -24,6 +24,18 @@
 | ETHBTC | 0.001 ETH | 0.000001 |
 | QCNBTC | 0.01 QCN | 0.000001 |
 | FCNBTC | 0.01 FCN | 0.000001 |
+| LSKBTC | 1 LSK    | 0.0000001 |
+| LSKEUR | 1 LSK    | 0.0001 |
+| STEEMBTC | 0.001 STEEM | 0.00001 |
+| STEEMEUR | 0.001 STEEM | 0.0001 |
+| SBDBTC | 0.001 SBD | 0.00001 |
+| DASHBTC | 0.001 DASH | 0.000001 |
+| XEMBTC | 1 XEM | 0.00000001 |
+| XEMEUR | 1 XEM | 0.0000001 |
+| EMCBTC | 0.1 EMC | 0.00000001 |
+| EMCEUR | 0.01 EMC | 0.00001 |
+| SCBTC | 100 SC | 0.000000001 |
+| SCUSD | 1100 SC | 0.000001 |
 
 ### Document usage
 
@@ -262,7 +274,7 @@ Unsubscribe:
 | 44 | Price | | for limit orders |
 | 32 | LastQty | | for Trades | 
 | 31 | LastPx | | for Trades | 
-| 851 | LastLiquidityInв | | for Trades |
+| 851 | LastLiquidityIn | | for Trades |
 | 151 | LeavesQty | | |
 | 14 | CumQty | | |
 | 6 | AvgPx | | |
