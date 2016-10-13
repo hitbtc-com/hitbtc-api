@@ -17,7 +17,7 @@
   — [PHP Library](https://github.com/hitbtc-com/hitbtc-php-sdk)<br>
   — [NodeJs](http://jsfiddle.net/bmknight/RqbYB)
 
-# <a name="summary"/>Summary
+# <a name="summary">Summary</a>
 
 This document provides the complete reference for [HitBTC](https://hitbtc.com) API.
 
@@ -34,7 +34,7 @@ HitBTC API has several interfaces to implement them in a custom software:
 Trading and payment operations require user's authentication: each request or message should have a signature. 
 You should get your API key and Secret key on the [Settings](https://hitbtc.com/settings) page. See details in [RESTful API authentication](#authenticationrestful) and [WebSocket API authentication](#authenticationwebsocket).
 
-### <a name="cursymbols"/>Currency symbols
+### <a name="cursymbols">Currency symbols</a>
 
 The following currency symbols are traded on HitBTC exchange.
 
@@ -69,7 +69,7 @@ Size representation:
 * Size values in RESTful market data are represented in money (e.g. in coins or in USD). 
 * Size values in RESTful trade are represented in lots (e.g. 1 means 0.01 BTC for BTCUSD)
 
-# <a name="restful"/>RESTful API
+# <a name="restful">RESTful API</a>
 
 RESTful API provides the most functional access to HitBTC facilities.
 RESTful API allows: 
@@ -83,7 +83,7 @@ HitBTC provides a <b>demo trading</b> option.  You can enable demo mode and acqu
 
 Trading and payment operations require [authentication](#authenticationrestful). See also [error codes](#errors) and [reports representing order status changes](#reports).
 
-## <a name="marketrestful"/>Market data RESTful API
+## <a name="marketrestful"/>Market data RESTful API</a>
 
 RESTful API provides access to the market data with following methods:
   - get the timestamp- [/api/1/public/time](#time)
@@ -95,7 +95,7 @@ RESTful API provides access to the market data with following methods:
   - get recent trades for specified symbol  - [/api/1/public/:symbol/trades/recent](#recenttrades)
 
 
-### <a name="time"/>/api/1/public/time
+### <a name="time">/api/1/public/time</a>
 
 <i>Summary:</i> returns the server time in UNIX timestamp format
 
@@ -110,7 +110,7 @@ RESTful API provides access to the market data with following methods:
 }
 ```
 
-### <a name="symbols"/>/api/1/public/symbols
+### <a name="symbols">/api/1/public/symbols</a>
 
 <i>Summary:</i> Simbols returns the actual list of currency symbols traded on HitBTC exchange with their characteristics:
 
@@ -155,7 +155,7 @@ RESTful API provides access to the market data with following methods:
 }
 ```
 
-### <a name="ticker"/>/api/1/public/:symbol/ticker
+### <a name="ticker">/api/1/public/:symbol/ticker</a>
 
 <i>Summary:</i> returns the actual data on exchange rates of the specified cryptocurrency.
 
@@ -197,7 +197,7 @@ The following fields are used in the `ticker` object:
 | timestamp | Server time in UNIX timestamp format |
 
 
-### <a name="alltickers"/>/api/1/public/ticker
+### <a name="alltickers">/api/1/public/ticker</a>
 
 <i>Summary:</i> returns the actual data on exchange rates for all traded cryptocurrencies - all tickers.
 
@@ -240,7 +240,7 @@ The following fields are used in the `ticker` object:
 }
 ```
 
-### <a name="orderbook"/>/api/1/public/:symbol/orderbook
+### <a name="orderbook">/api/1/public/:symbol/orderbook</a>
 
 <i>Summary:</i> returns a list of open orders for specified currency symbol: their prices and sizes.
 
@@ -303,7 +303,7 @@ The following fields are used in the `ticker` object:
 }
 ```
 
-### <a name="trades"/>/api/1/public/:symbol/trades
+### <a name="trades">/api/1/public/:symbol/trades</a>
 
 <i>Summary:</i> returns data on trades for specified currency symbol in specified ID or timestamp interval.
 
@@ -372,7 +372,7 @@ The following fields are used in the `ticker` object:
 ]
 ```
 
-### <a name="recenttrades"/>/api/1/public/:symbol/trades/recent
+### <a name="recenttrades">/api/1/public/:symbol/trades/recent</a>
 
 <i>Summary:</i> returns recent trades for the specified currency symbol.
 
@@ -411,7 +411,7 @@ The following fields are used in the `ticker` object:
 ]
 ```
 
-## <a name="tradingrestful"/>Trading RESTful API
+## <a name="tradingrestful">Trading RESTful API</a>
 
 RESTful API allows to perform trading operations with the following methods:
   - get the trading balance - [/api/1/trading/balance](#tradingbalance)
@@ -428,7 +428,7 @@ Trading operations require [authentication](#authenticationrestful).
 [Error codes](#errors) and [reports representing order status changes](#reports) are described below.
 
 
-### <a name="authenticationrestful"/>Authentication
+### <a name="authenticationrestful">Authentication</a>
 
 RESTful Trading API requires HMAC-SHA512 signatures for each request.
 
@@ -466,7 +466,7 @@ Useful examples provided by the community:
 * JAVA example code: https://gist.github.com/hitbtc-com/2765a1431a2384975c01
 * Python example code: https://gist.github.com/hitbtc-com/e265a49c38a86c610294
 
-### <a name="errors"/>Error codes
+### <a name="errors">Error codes</a>
 
 Trading RESTful API can return the following errors:
 
@@ -478,7 +478,7 @@ Trading RESTful API can return the following errors:
 | 403 | Wrong signature | Specified signature is not correct|
 | 500 | Internal error | Internal error. Try again later |
 
-### <a name="reports"/>Execution reports
+### <a name="reports">Execution reports</a>
 
 The API uses `ExecutionReport` as an object that represents change of order status.
 
@@ -529,7 +529,7 @@ The following fields are used in `ExecutionReport` object:
 ```
 
 
-### <a name="tradingbalance"/>/api/1/trading/balance
+### <a name="tradingbalance">/api/1/trading/balance</a>
 
 <i>Summary:</i> returns trading balance.
 
@@ -549,7 +549,7 @@ The following fields are used in `ExecutionReport` object:
 ]}
 ```
 
-### <a name="active"/>/api/1/trading/orders/active
+### <a name="active">/api/1/trading/orders/active</a>
 
 <i>Summary:</i> returns all orders in status `new` or `partiallyFilled`.
 
@@ -587,7 +587,7 @@ The following fields are used in `ExecutionReport` object:
 ]}
 ```
 
-### <a name="neworder"/>/api/1/trading/new_order
+### <a name="neworder">/api/1/trading/new_order</a>
 
 <i>Summary:</i> place a new order. Returns a JSON object `ExecutionReport` that respresent a status of the order.
 
@@ -636,7 +636,7 @@ post data: clientOrderId=11111112&symbol=BTCUSD&side=buy&price=0.1&quantity=100&
      "averagePrice": 0 } }
 ```
 
-### <a name="cancelorder"/>/api/1/trading/cancel_order
+### <a name="cancelorder">/api/1/trading/cancel_order</a>
 
 <i>Summary:</i> cancels an order. Returns `ExecutionReport` JSON object or `CancelReject` JSON object.
 
@@ -690,7 +690,7 @@ post data: clientOrderId=11111112&cancelRequestClientOrderId=3825782579834957894
     "rejectReasonCode": "orderNotFound" 
 } }
 ```
-### <a name="cancelorders"/>/api/1/trading/cancel_orders
+### <a name="cancelorders">/api/1/trading/cancel_orders</a>
 
 <i>Summary:</i> cancels all orders. Returns `ExecutionReport` array of JSON object.
 
@@ -757,7 +757,7 @@ post data: symbols=BTCUSD
 
 ```
 
-### <a name="recentorders"/>/api/1/trading/orders/recent
+### <a name="recentorders">/api/1/trading/orders/recent</a>
 
 <i>Summary:</i> returns an array of user's recent orders (`order` objects) for last 24 hours, sorted by order update time.
 
@@ -845,7 +845,7 @@ The following fields are used in `order` object:
 ]}
 ```
 
-### <a name="ordersByClientOrderId"/>/api/1/trading/order
+### <a name="ordersByClientOrderId">/api/1/trading/order</a>
 
 <i>Summary:</i> returns an array of user's orders (`order` objects).
 
@@ -901,7 +901,7 @@ The following fields are used in `order` object:
 }
 ```
 
-### <a name="usertrades"/>/api/1/trading/trades
+### <a name="usertrades">/api/1/trading/trades</a>
 
 <i>Summary:</i> returns the trading history - an array of user's trades (`trade` objects).
 
@@ -988,7 +988,7 @@ The following fields are used in `trade` object:
 ```
 
 
-## <a name="paymentsrestful"/>Payment RESTful API
+## <a name="paymentsrestful">Payment RESTful API</a>
 
 RESTful API allows to manage funds with the following methods:
   - get multi-currency balance of the main account - [/api/1/payment/balance](#paymentbalance)
@@ -1000,7 +1000,7 @@ RESTful API allows to manage funds with the following methods:
  
 Payment operations require [authentication](#authenticationrestful)
 
-### <a name="paymentbalance"/>/api/1/payment/balance
+### <a name="paymentbalance">/api/1/payment/balance</a>
 
 <i>Summary:</i> returns multi-currency balance of the main account.
 
@@ -1033,7 +1033,7 @@ Payment operations require [authentication](#authenticationrestful)
 ]}
 ```
 
-### <a name="transfer"/>/api/1/payment/transfer_to_trading and /api/1/payment/transfer_to_main
+### <a name="transfer">/api/1/payment/transfer_to_trading and /api/1/payment/transfer_to_main</a>
 
 <i>Request:</i> `POST /api/1/payment/transfer_to_trading, /api/1/payment/transfer_to_main`
 
@@ -1058,7 +1058,7 @@ Payment operations require [authentication](#authenticationrestful)
 {"transaction": "52976-103925-18443984"}
 ```
 
-### <a name="getaddress"/>/api/1/payment/address/ (GET)
+### <a name="getaddress">/api/1/payment/address/ (GET)</a>
 
 <i>Summary:</i> returns the last created incoming cryptocurrency address that can be used to deposit cryptocurrency to your account. 
 
@@ -1076,7 +1076,7 @@ Payment operations require [authentication](#authenticationrestful)
 {"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
 ```
 
-### <a name="postaddress"/>/api/1/payment/address/ (POST)
+### <a name="postaddress">/api/1/payment/address/ (POST)</a>
 
 <i>Summary:</i> creates an address that can be used to deposit cryptocurrency to your account; returns a new cryptocurrency address.
 
@@ -1094,7 +1094,7 @@ Payment operations require [authentication](#authenticationrestful)
 {"address":"1HDtDgG9HYpp1YJ6kFYSB6NgaG2haKnxUH"}
 ```
 
-### <a name="payout"/>/api/1/payment/payout
+### <a name="payout">/api/1/payment/payout</a>
 
 <i>Summary:</i> withdraws money and creates an outgoing crypotocurrency transaction; returns a transaction ID on the exchange or an error.
 
@@ -1118,7 +1118,7 @@ Payment operations require [authentication](#authenticationrestful)
 {"transaction": "51545-103004-18442681"}
 ```
 
-### <a name="transactions"/>/api/1/payment/transactions
+### <a name="transactions">/api/1/payment/transactions</a>
 
 <i>Summary:</i> returns a list of payment transactions and their statuses (array of transactions).
 
@@ -1156,7 +1156,7 @@ Payment operations require [authentication](#authenticationrestful)
 ]}
 ```
 
-### <a name="transaction"/>/api/1/payment/transactions/:id
+### <a name="transaction">/api/1/payment/transactions/:id</a>
 
 <i>Summary:</i> returns payment transaction and its status.
 
@@ -1192,7 +1192,7 @@ Payment operations require [authentication](#authenticationrestful)
 }
 ```
 
-# <a name="socketio"/>socket.io Market Data
+# <a name="socketio">socket.io Market Data</a>
 
 The API provides socket.io version 1.0.x protocol for receiving market data. It supports:
 * WebSocket and xhr-polling transport
@@ -1207,7 +1207,7 @@ API links:
 * socket.io demo URL: `http://demo-api.hitbtc.com:8081`
 * live example (both demo and primary API): `http://jsfiddle.net/rn7zy75n/1/`
 
-### <a name="tradesnamespace"/>`trades` namespace
+### <a name="tradesnamespace">`trades` namespace</a>
 
 <i>Namespace:</i> `trades`
 
@@ -1221,7 +1221,7 @@ API links:
 ```
 
 
-# <a name="streaming"/>Streaming API
+# <a name="streaming">Streaming API</a>
 
 Streaming API is based on [WebSocket protocol](http://en.wikipedia.org/wiki/WebSocket). All messages are in JSON format.
 
@@ -1230,7 +1230,7 @@ Streaming API provides an access to:
   - trading operations. See [Trading streaming end-point](#tradingstreaming)
 
 
-## <a name="marketstreaming"/>Market data streaming end-point
+## <a name="marketstreaming">Market data streaming end-point</a>
 
 API links:
 * URL: <ws://api.hitbtc.com:80>
@@ -1247,7 +1247,7 @@ Some recommendations to consider:
 * It's recommended to invalidate a state of the application periodically using snapshots.
 * It's recommended to check sequence numbers and to drop updates with non-monotonous sequence numbers.
 
-### <a name="MarketDataSnapshotFullRefresh"/>MarketDataSnapshotFullRefresh message
+### <a name="MarketDataSnapshotFullRefresh">MarketDataSnapshotFullRefresh message</a>
 
 <i>Summary:</i> contains a full snapshot of the order book.
 
@@ -1326,7 +1326,7 @@ The following fields are used in `MarketDataSnapshotFullRefresh` object:
 | `exchangeStatus` | Exchange status: `on` - trading is open; `off` - trading is suspended |
 | `ask`, `bid` | Sorted arrays of price levels in the order book; full snapshot (all price levels) is provided |
 
-### <a name="MarketDataIncrementalRefresh"/>MarketDataIncrementalRefresh message
+### <a name="MarketDataIncrementalRefresh">MarketDataIncrementalRefresh message</a>
 
 <i>Summary:</i> contains incremental changes of the order book and individual trades.
 
@@ -1365,7 +1365,7 @@ The following fields are used in `MarketDataIncrementalRefresh` object:
 | `ask`, `bid`, `trade` | An array of changes in the order book where `price` is a price, `size` is new size. `size`=0 means that the price level has been removed |
 
 
-## <a name="tradingstreaming"/>Trading streaming end-point
+## <a name="tradingstreaming">Trading streaming end-point</a>
 
 API links:
 * URL: <wss://api.hitbtc.com:8080>
@@ -1385,7 +1385,7 @@ The following message types are supported:
 | [CancelReject](#CancelReject) | Server -> Client |
 
 
-### <a name="authenticationwebsocket"/>API keys and message signatures
+### <a name="authenticationwebsocket">API keys and message signatures</a>
 
 All client messages should be signed in the following manner:
 
@@ -1408,7 +1408,7 @@ All client messages should be signed in the following manner:
 |`nonce` | Unique monotonous number that should be generated on the client. Should be monotonous within the same connection |
 | `signature` | Signature - hash-based message authentication code: base64 [hmac-sha512](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code) (binary representation of the message) |
 
-### <a name="Login"/>Login 
+### <a name="Login">Login</a> 
 
 <i>Example:</i>
 ```json
@@ -1428,7 +1428,7 @@ All client messages should be signed in the following manner:
 
 If client doesn't send valid logon message in 10 second the connection will be dropped.
 
-### <a name="NewOrder"/>NewOrder
+### <a name="NewOrder">NewOrder</a>
 
 <i>Example:</i>
 
@@ -1465,7 +1465,7 @@ If client doesn't send valid logon message in 10 second the connection will be d
 | `price`	| decimal | Price, in currency units, consider price steps |
 | `timeInForce` | `GTC` - Good-Til-Canceled <br>`IOC` - Immediate-Or-Cancel<br>`FOK` - Fill-Or-Kill | Time in force |  |
 
-### <a name="OrderCancel"/>OrderCancel
+### <a name="OrderCancel">OrderCancel</a>
 
 <i>Example:</i>
 
@@ -1498,7 +1498,7 @@ If client doesn't send valid logon message in 10 second the connection will be d
 | `type` | `limit` or `market` | Order type. Only `limit` orders are currently supported |
 
 
-### <a name="ExecutionReport"/>ExecutionReport
+### <a name="ExecutionReport">ExecutionReport</a>
 
 <i>Example:</i>
 
@@ -1544,7 +1544,7 @@ The following fields are used in `ExecutionReport` object:
 | `averagePrice` | No | decimal | Average price. Equals 0 if `cumQuantity`=0|
 
 
-### <a name="CancelReject"/>CancelReject
+### <a name="CancelReject">CancelReject</a>
 
 <i>Example:</i>
 ```json
@@ -1567,7 +1567,7 @@ The following fields are used in `CancelReject` object:
 | `rejectReasonText` | No | string | Optional text explaining reject reason |
 
 
-## <a name="sample"/>Sample code
+## <a name="sample">Sample code</a>
 
 ### Node.js snippet: message signature
 
