@@ -61,7 +61,7 @@ The following currency symbols are traded on HitBTC exchange.
 | EMCEUR | 0.01 EMC | 0.00001 |
 | SCBTC | 100 SC | 0.000000001 |
 | SCUSD | 1100 SC | 0.000001 |
-| ARDR | 1 ARDR | 0.000000001 |
+| ARDRBTC | 1 ARDR | 0.000000001 |
 
 The actual list of symbols can be obtained by [/api/1/public/symbols](#symbols) method.
 
