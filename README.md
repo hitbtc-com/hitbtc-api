@@ -47,6 +47,12 @@ The following currency symbols are traded on HitBTC exchange.
 | LTCEUR | 0.1 LTC | 0.001 |
 | DSHBTC | 1 DSH | 0.00000001 |
 | ETHBTC | 0.001 ETH | 0.000001 |
+| ETHEUR | 0.001 ETH | 0.0001 |
+| NXTBTC | 1 NXT | 0.00000001 |
+| BCNBTC | 100 BCN | 0.0000000001 |
+| XDNBTC | 100 XDN | 0.0000000001 |
+| DOGEBTC | 1000 DOGE | 0.000000001 |
+| XMRBTC | 0.01 XMR | 0.000001 |
 | QCNBTC | 0.01 QCN | 0.000001 |
 | FCNBTC | 0.01 FCN | 0.000001 |
 | LSKBTC | 1 LSK    | 0.0000001 |
@@ -56,12 +62,10 @@ The following currency symbols are traded on HitBTC exchange.
 | SBDBTC | 0.001 SBD | 0.00001 |
 | DASHBTC | 0.001 DASH | 0.000001 |
 | XEMBTC | 1 XEM | 0.00000001 |
-| XEMEUR | 1 XEM | 0.0000001 |
 | EMCBTC | 0.1 EMC | 0.00000001 |
-| EMCEUR | 0.01 EMC | 0.00001 |
 | SCBTC | 100 SC | 0.000000001 |
-| SCUSD | 1100 SC | 0.000001 |
 | ARDRBTC | 1 ARDR | 0.000000001 |
+| ZECBTC | 0.001 ZEC | 0.000001 |
 
 The actual list of symbols can be obtained by [/api/1/public/symbols](#symbols) method.
 
