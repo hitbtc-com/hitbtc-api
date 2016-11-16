@@ -66,6 +66,7 @@ The following currency symbols are traded on HitBTC exchange.
 | SCBTC | 100 SC | 0.000000001 |
 | ARDRBTC | 1 ARDR | 0.000000001 |
 | ZECBTC | 0.001 ZEC | 0.000001 |
+| WAVESBTC | 0.01 WAVES | 0.0000001 |
 
 The actual list of symbols can be obtained by [/api/1/public/symbols](#symbols) method.
 
