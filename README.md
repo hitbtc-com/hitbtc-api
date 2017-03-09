@@ -1195,6 +1195,7 @@ Payment operations require [authentication](#authenticationrestful)
 | `currency_code` | Yes | string | Currency symbol, e.g. `BTC`|
 | `address` | Yes | string | BTC/LTC address to withdraw to |
 | `extra_id` | No | string | payment id for cryptonote |
+| `recommended_fee` | No | boolean | use recommended network fee instead of flat, e.g. `0` or `1` |
 
 <i>Example:</i> ```amount=0.001&currency_code=BTC&address=1LuWvENyuPNHsHWjDgU1QYKWUYN9xxy7n5```
 
