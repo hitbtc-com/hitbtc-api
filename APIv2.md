@@ -11,15 +11,14 @@ HitBTC REST & Streaming API provides programmatic access to HitBTC’s next gene
 | Environment | REST                              | Streaming |
 |-------------|:---------------------------------|:-----|
 | PROD        | https://api.hitbtc.com/api/2      | wss://api.hitbtc.com/api/2 | 
-| DEMO        | https://demo-api.hitbtc.com/api/2 | wss://demo-api.hitbtc.com/api/2 | 
 
 ### DateTime Format
 
-All timestamp are returned in ISO8601 format in UTC. Example: "2017-04-03T10:20:49.315Z"
+All timestamps are returned in ISO8601 format in UTC. Example: "2017-04-03T10:20:49.315Z"
 
 ### Number Format
 
-All finance data: price, quantity, fee and others, should be arbitrary precision numbers and string representation. Example: "10.2000058"
+All finance data - price, quantity, fee and others, should be arbitrary precision numbers and string representation. Example: "10.2000058"
 
 ### Pagination
 
@@ -31,8 +30,8 @@ Parameters:
 | offset | Number of results offset. Default 0 |
 | sort | Sort direction. Accepted values: ASC, DESC. Default DESC |
 | by | Filtration definition. Accepted values: id, timestamp | 
-| from | If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise object id |
-| till | If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise object id |
+| from | If filter by timestamp, then datetime. Otherwise object id |
+| till | If filter by timestamp, then datetime. Otherwise object id |
 
 
 ## BEST PRACTICES
@@ -40,7 +39,7 @@ Parameters:
 The HIitBTC API development team strives to bring the best overall experience for our API users. Here is a set of best practices to use the API as efficiently as possible.
 
 ### HTTP Persistent Connection
-This keeps the underlying TCP connection active for multiple requests/responses. Subsequent requests will result in reduced latency as the TCP handshaking process is no longer required.
+It keeps the underlying TCP connection active for multiple requests/responses. Subsequent requests will result in reduced latency as the TCP handshaking process is no longer required.
     
 If you are using an HTTP 1.0 client, ensure it supports the keep-alive directive and submit the header Connection: Keep-Alive with your request.
     
@@ -52,7 +51,7 @@ Use Streaming API for real time updates of your orders and trades, any transacti
 
 ## REST API Reference
 
-### Http Status codes
+### HTTP Status codes
 
  * 200 OK Successful request
  * 400 Bad Request. Returns JSON with the error message
@@ -66,7 +65,7 @@ Use Streaming API for real time updates of your orders and trades, any transacti
 
 ### Error response
 
-All error response have error `code` and human readable `message` fields. Some errors contain additional `description` field.
+All error responses have error `code` and human readable `message` fields. Some errors contain additional `description` field.
 
 **Example error response:**
          
@@ -85,22 +84,22 @@ All error response have error `code` and human readable `message` fields. Some e
 | 403   | 401 | Action is forbidden for account | |     
 | 429   | 429 | Too many requests | Action is being rate limited for account |
 | 500   | 500 | Internal Server Error | |
-| 503   | 503 | Service Unavailable | Try again your request later |
-| 504   | 504 | Gateway Timeout | Check result of your request later |
+| 503   | 503 | Service Unavailable | Try it again later |
+| 504   | 504 | Gateway Timeout | Check the result of your request later |
 | 1001  | 401 | Authorisation required | |    
 | 1002  | 401 | Authorisation failed | |    
-| 1003  | 403 | Action is forbidden for this API key | Check permissions for api key |    
+| 1003  | 403 | Action is forbidden for this API key | Check permissions for API key |    
 | 1004  | 401 | Unsupported authorisation method | Use Basic authentication |    
 | 2001  | 400 | Symbol not found |  |
 | 2002  | 400 | Currency not found |  |
 | 20001 | 400 | Insufficient funds | Insufficient funds for creating order or any account operation |
-| 20002 | 400 | Order not found | On request active order. Trying cancel not existing order. Cancel already filled or expired order. |
+| 20002 | 400 | Order not found | Attempt to get active order that  not existing, filled, canceled or expired. Attempt to cancel not existing order. Attempt to cancel already filled or expired order. |
 | 20003 | 400 | Limit exceeded | Withdrawal limit exceeded |
 | 10001 | 400 | Validation error | Input not valid, see more in `message` field| |
 
 ### API Explorer
 
-You can explore api using SwaggerUI (https://api.hitbtc.com/api/2/explore/)
+You can explore API using SwaggerUI (https://api.hitbtc.com/api/2/explore/)
 
 ### API Sample code
 
@@ -115,7 +114,7 @@ You can explore api using SwaggerUI (https://api.hitbtc.com/api/2/explore/)
 `GET /api/2/public/symbol/{symbol}`
 
 Return the actual list of currency symbols (currency pairs) traded on HitBTC exchange.
-The first listed currency of a symbol is called the base currency, and the second currency is called the quote currency
+The first listed currency of a symbol is called the base currency, and the second currency is called the quote currency.
 The currency pair indicates how much of the quote currency is needed to purchase one unit of the base currency.
 [Read more](http://www.investopedia.com/terms/c/currencypair.asp)
  
@@ -162,11 +161,11 @@ Responses:
 | ask | Number | Best ask price |
 | bid | Number | Best bid price |
 | last | Number | Last trade price |
-| open | Number | Last trade price 24 hour ago |
-| low | Number | Lowest trade price within 24 hour |
-| high | Number | Highest trade price within 24 hour |
-| volume | Number | Total trading amount within 24 hour in base currency |
-| volumeQuote | Number | Total trading amount within 24 hour in quote currency |
+| open | Number | Last trade price 24 hours ago |
+| low | Number | Lowest trade price within 24 hours |
+| high | Number | Highest trade price within 24 hours |
+| volume | Number | Total trading amount within 24 hours in base currency |
+| volumeQuote | Number | Total trading amount within 24 hours in quote currency |
 | timestamp | Datetime | Last update or refresh ticker timestamp |
 | symbol | String |  |
  
@@ -193,14 +192,12 @@ Example data:
 
 Parameters:
 
-Parameters:
-
 | Name | Type | Description |
 |:---|:---:|:---|
 | sort | String | Default DESC |
 | by | String | Filtration definition. Accepted values: id, timestamp. Default timestamp |
-| from | Number or Datetime | If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id |
-| till | Number or Datetime | If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id |
+| from | Number or Datetime | |
+| till | Number or Datetime | |
 | limit | Number | | 
 | offset | Number | |
 
@@ -283,9 +280,9 @@ Example response:
 
 ### Authentication
 
-Public market data available without authentication, for other requests required authentication.
+Public market data available without authentication, for other requests authentication is required.
  
-Using [HitBTC API Setting](https://hitbtc.com/settings/api-keys) you must create API keys. You can create multiple API keys with different permissions for your applications.
+You should create API keys on [HitBTC API Setting](https://hitbtc.com/settings/api-keys) page. You can create multiple API keys with different permissions for your applications.
  
 Use Basic Authentication to access REST API.
  
@@ -393,7 +390,7 @@ Parameters:
 
 | Name | Type | Description |
 |:---|:---:|:---|
-| wait | Number | Optional parameter. Time in milliseconds. Max 60000. Default none. Use long polling request, if order filled, canceled or expired return order info instantly, or after specify wait time return actual order info |
+| wait | Number | Optional parameter. Time in milliseconds. Max 60000. Default none. Use long polling request, if order is filled, canceled or expired return order info instantly, or after specified wait time returns actual order info |
 
 Response: Order
 
@@ -422,7 +419,7 @@ Example response:
 
 **Price accuracy and quantity.**
 
-Symbol config contain `tickSize` parameter which means that `price` should divide on `tickSize` without residue. `Quantity` should divide on `quantityIncrement` without residue. By default, if `strictValidate` not enabled, server round half down `price` and `quantity` for `tickSize` and `quantityIncrement`.
+Symbol config contain `tickSize` parameter which means that `price` should be divide by `tickSize` without residue. `Quantity` should be divide by `quantityIncrement` without residue. By default, if `strictValidate` not enabled, server round half down `price` and `quantity` for `tickSize` and `quantityIncrement`.
 
 Example for ETHBTC: `tickSize` = '0.000001' then price '0.046016' - valid, '0.0460165' - invalid    
 
@@ -434,9 +431,9 @@ For buy orders you must have enough available balance including fees. `Available
 
 **Result order status**
 
-For orders with `timeInForce` `IOC` or `FOK` rest api return final order state: filled or expired. 
+For orders with `timeInForce` `IOC` or `FOK` REST API returns final order state: filled or expired. 
  
-If order can instantly executed, then REST API return filled or partiallyFilled order info. 
+If order can be instantly executed, then REST API return filled or partiallyFilled order's info. 
 
 Parameters: 
 
@@ -451,7 +448,7 @@ Parameters:
 | price | Number | Order price. Required for limit types. |
 | stopPrice | Number | Required for stop types. |
 | expireTime | Datetime | Required for GTD timeInForce. |    
-| strictValidate | boolean | Price and quantity will be check that they increment within tick size and quantity step. See symbol `tickSize` and `quantityIncrement` |
+| strictValidate | boolean | Price and quantity will be checked that they increment within tick size and quantity step. See symbol `tickSize` and `quantityIncrement` |
 
 Response: Order
 
@@ -465,7 +462,7 @@ Python 3 example:
 
     > {'id': 0, 'side': 'sell', 'clientOrderId': 'd8574207d9e3b16a4a5511753eeef175', 'updatedAt': '2017-05-15T17:01:05.092Z', 'symbol': 'ETHBTC', 'type': 'limit', 'quantity': '0.063', 'price': '0.046016', 'status': 'new', 'cumQuantity': '0.000', 'createdAt': '2017-05-15T17:01:05.092Z', 'timeInForce': 'GTC'}
     
-Example success create response:
+Example success created response:
     
     {
         "id": 0,
@@ -548,7 +545,7 @@ Please note, that trading history may be updated with delay up to 30 seconds, wi
 
 `GET /api/2/history/order`
 
-All orders older 24 hours without trades are deleted.
+All orders older then 24 hours without trades are deleted.
 
 Parameters: 
     
@@ -591,7 +588,7 @@ Responses:
 | side | String | **sell**  **buy** |
 | quantity | Number | Trade quantity | 
 | price | Number | Trade price |
-| fee | Number | Trade commission. Could be negative - reward. Fee currency see in symbol config |
+| fee | Number | Trade commission. Could be negative – reward. Fee currency see in symbol config |
 | timestamp | Datetime | Trade timestamp |
 
 
@@ -651,7 +648,7 @@ Response example:
       }
     ]
 
-#### Deposit crypro address
+#### Deposit crypto address
 
 `GET /api/2/account/crypto/address/{currency}` - Get current address
 
@@ -662,7 +659,7 @@ Responses:
 | Name | Type | Description |
 |:---|:---:|:---|
 | address | String | Address for deposit |
-| paymentId | String | Optional addition parameter. Required for deposit if persist |
+| paymentId | String | Optional additional parameter. Required for deposit if persist |
 
 Response example:
 
@@ -672,7 +669,7 @@ Response example:
     }
 
 
-#### Withdraw crypro
+#### Withdraw crypto
 
 `POST /api/2/account/crypto/withdraw`
  
