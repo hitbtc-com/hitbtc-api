@@ -36,6 +36,8 @@ You should get your API key and Secret key on the [Settings](https://hitbtc.com/
 
 ### <a name="cursymbols">Currency symbols</a>
 
+<b>Please note that USD stands for USDT cryptocurrency [tether.to](http://tether.to).</b>
+
 The following currency symbols are traded on HitBTC exchange.
 
 | Symbol	| Lot size | Price step
