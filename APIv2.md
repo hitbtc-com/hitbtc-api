@@ -1719,37 +1719,36 @@ Example response:
 Method: `getTradingBalance`   
 
 Example:
-
 ```json
-    {
-      "method": "getTradingBalance",
-      "params": {},
-      "id": 123
-    }
+{
+  "method": "getTradingBalance",
+  "params": {},
+  "id": 123
+}
 ```
-
+    
+    
 Example response:
-
 ```json
+{
+  "jsonrpc": "2.0",
+  "result": [
     {
-      "jsonrpc": "2.0",
-      "result": [
-        {
-          "currency": "BCN",
-          "available": "100.000000000",
-          "reserved": "0"
-        },
-        {
-          "currency": "BTC",
-          "available": "0.013634021",
-          "reserved": "0"
-        },
-        {
-          "currency": "ETH",
-          "available": "0",
-          "reserved": "0.00200000"
-        }
-      ],
-      "id": 123
+      "currency": "BCN",
+      "available": "100.000000000",
+      "reserved": "0"
+    },
+    {
+      "currency": "BTC",
+      "available": "0.013634021",
+      "reserved": "0"
+    },
+    {
+      "currency": "ETH",
+      "available": "0",
+      "reserved": "0.00200000"
     }
+  ],
+  "id": 123
+}
 ```
