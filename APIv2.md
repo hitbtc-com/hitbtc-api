@@ -16,6 +16,7 @@ By using HitBTC API you confirm that you've read and accept [API License Agreeme
         * [Tickers](#tickers)
         * [Trades](#trades)
         * [Orderbook](#orderbook)
+        * [Candles](#candles)
     * [Authentication](#authentication)
     * Trading
         * [Get trading balance](#trading-balance)
@@ -24,13 +25,15 @@ By using HitBTC API you confirm that you've read and accept [API License Agreeme
         * [Create new order](#create-new-order)   
         * [Cancel order](#cancel-order-by-clientorderid)   
         * [Cancel all orders](#cancel-orders)
+        * [Trading commission](#get-trading-commission)
     * [Trading history](#trading-history)
         * [Orders history](#orders-history)
-        * [Trades history](#trades-history)
+        * [Trades history](#trades-history)    
     * [Account](#account-information)
         * [Account balance](#account-balance)
         * [Deposit address](#deposit-crypto-address)
         * [Withdraw crypto](#withdraw-crypto)
+        * [Commit or Rollback Withdraw crypto](#withdraw-crypto-commit-or-rollback)
         * [Transfer between trading and account](#transfer-money-between-trading-and-account)
         * [Transactions](#get-transactions-history)    
  * [Socket API Reference](#socket-api-reference)
@@ -117,14 +120,15 @@ Use Streaming API for real time updates of your orders and trades, any transacti
 All error responses have error `code` and human readable `message` fields. Some errors contain additional `description` field.
 
 **Example error response:**
-         
-    {
-        'error': {
-            'code': 20001, 
-            'message': 'Insufficient funds', 
-            'description': 'Check that the funds are sufficient, given commissions'
-        }
-    }
+```json
+{
+  "error": {
+    "code": 20001,
+    "message": "Insufficient funds",
+    "description": "Check that the funds are sufficient, given commissions"
+  }
+}
+```
     
 **List of errors**
     
@@ -180,31 +184,32 @@ Responses:
 
 
 Example data:
-
-    [
-       {
-          "id": "BTC",
-          "fullName": "Bitcoin",
-          "crypto": true,
-          "payinEnabled": true,
-          "payinPaymentId": false,
-          "payinConfirmations": 2,
-          "payoutEnabled": true,
-          "payoutIsPaymentId": false,
-          "transferEnabled": true
-       },
-       {
-          "id": "ETH",
-          "fullName": "Ethereum",
-          "crypto": true,
-          "payinEnabled": true,
-          "payinPaymentId": false,
-          "payinConfirmations": 2,
-          "payoutEnabled": true,
-          "payoutIsPaymentId": false,
-          "transferEnabled": true
-       }
-    ]
+```json
+[
+   {
+      "id": "BTC",
+      "fullName": "Bitcoin",
+      "crypto": true,
+      "payinEnabled": true,
+      "payinPaymentId": false,
+      "payinConfirmations": 2,
+      "payoutEnabled": true,
+      "payoutIsPaymentId": false,
+      "transferEnabled": true
+   },
+   {
+      "id": "ETH",
+      "fullName": "Ethereum",
+      "crypto": true,
+      "payinEnabled": true,
+      "payinPaymentId": false,
+      "payinConfirmations": 2,
+      "payoutEnabled": true,
+      "payoutIsPaymentId": false,
+      "transferEnabled": true
+   }
+]
+```
  
 #### Symbols
 
@@ -231,18 +236,20 @@ Responses:
 | feeCurrency | String | |
 
 Example data:
-
-    [      
-      {
-        "id": "ETHBTC",
-        "baseCurrency": "ETH",
-        "quoteCurrency": "BTC",
-        "quantityIncrement": "0.001",
-        "tickSize": "0.000001",
-        "takeLiquidityRate": "0.001",
-        "provideLiquidityRate": "-0.0001",
-        "feeCurrency": "BTC"
-      },
+```json
+[      
+  {
+    "id": "ETHBTC",
+    "baseCurrency": "ETH",
+    "quoteCurrency": "BTC",
+    "quantityIncrement": "0.001",
+    "tickSize": "0.000001",
+    "takeLiquidityRate": "0.001",
+    "provideLiquidityRate": "-0.0001",
+    "feeCurrency": "BTC"
+  }
+]
+```
     
     
 #### Tickers
@@ -269,21 +276,22 @@ Responses:
 | symbol | String |  |
  
 Example data: 
-
-    [
-      {
-        "ask": "0.050043",
-        "bid": "0.050042",
-        "last": "0.050042",
-        "open": "0.047800",
-        "low": "0.047052",
-        "high": "0.051679",
-        "volume": "36456.720",
-        "volumeQuote": "1782.625000",
-        "timestamp": "2017-05-12T14:57:19.999Z",
-        "symbol": "ETHBTC"
-      }
-    ]
+```json
+[
+  {
+    "ask": "0.050043",
+    "bid": "0.050042",
+    "last": "0.050042",
+    "open": "0.047800",
+    "low": "0.047052",
+    "high": "0.051679",
+    "volume": "36456.720",
+    "volumeQuote": "1782.625000",
+    "timestamp": "2017-05-12T14:57:19.999Z",
+    "symbol": "ETHBTC"
+  }
+]
+```
 
 #### Trades
 
@@ -312,23 +320,24 @@ Responses:
 
 
 Example response:
-
-    [
-      {
-        "id": 9533117,
-        "price": "0.046001",
-        "quantity": "0.220",
-        "side": "sell",
-        "timestamp": "2017-04-14T12:18:40.426Z"
-      },
-      {
-        "id": 9533116,
-        "price": "0.046002",
-        "quantity": "0.022",
-        "side": "buy",
-        "timestamp": "2017-04-14T11:56:37.027Z"
-      }
-    ]
+```json
+[
+  {
+    "id": 9533117,
+    "price": "0.046001",
+    "quantity": "0.220",
+    "side": "sell",
+    "timestamp": "2017-04-14T12:18:40.426Z"
+  },
+  {
+    "id": 9533116,
+    "price": "0.046002",
+    "quantity": "0.022",
+    "side": "buy",
+    "timestamp": "2017-04-14T11:56:37.027Z"
+  }
+]
+```
     
 #### Orderbook
 
@@ -354,29 +363,80 @@ Responses:
 
 
 Example response:
-
+```json
+{
+  "ask": [
     {
-      "ask": [
-        {
-          "price": "0.046002",
-          "size": "0.088"
-        },
-        {
-          "price": "0.046800",
-          "size": "0.200"
-        }
-      ],
-      "bid": [
-        {
-          "price": "0.046001",
-          "size": "0.005"
-        },
-        {
-          "price": "0.046000",
-          "size": "0.200"
-        }
-      ]
+      "price": "0.046002",
+      "size": "0.088"
+    },
+    {
+      "price": "0.046800",
+      "size": "0.200"
     }
+  ],
+  "bid": [
+    {
+      "price": "0.046001",
+      "size": "0.005"
+    },
+    {
+      "price": "0.046000",
+      "size": "0.200"
+    }
+  ]
+}
+```
+#### Candles
+
+`GET /api/2/public/candles/{symbol}`
+
+An candles used for [OHLC](https://en.wikipedia.org/wiki/Open-high-low-close_chart) a specific symbol.
+
+Parameters: 
+
+| Name | Type | Description |
+|:---|:---:|:---|
+| limit | Number | Limit of candles, default 100. |
+| period | String | One of: M1 (one minute), M3, M5, M15, M30, H1, H4, D1, D7, 1M (one month). Default is M30 (30 minutes). |
+
+Responses:
+
+| Name | Type | Description |
+|:---|:---:|:---|
+| timestamp | Datetime |  |
+| open | Number | Open price |
+| close | Number | Close price |
+| min | Number | Min price |
+| max | Number | Max price |
+| volume | Number | Volume in base currency |
+| volumeQuote | Number | Volume in quote currency |
+
+> Result contain candles only with non zero volume
+
+Example response:
+```json
+[
+  {
+    "timestamp": "2017-10-20T20:00:00.000Z",
+    "open": "0.050459",
+    "close": "0.050087",
+    "min": "0.050000",
+    "max": "0.050511",
+    "volume": "1326.628",
+    "volumeQuote": "66.555987736"
+  },
+  {
+    "timestamp": "2017-10-20T20:30:00.000Z",
+    "open": "0.050108",
+    "close": "0.050139",
+    "min": "0.050068",
+    "max": "0.050223",
+    "volume": "87.515",
+    "volumeQuote": "4.386062831"
+  }
+]
+```
 
 ### Authentication
 
@@ -399,34 +459,36 @@ Responses:
 | Name | Type | Description |
 |:---|:---:|:---|
 | currency | String |  |
-| amount | Number | Amount available for trading or transfer to main account |
+| available | Number | Amount available for trading or transfer to main account |
 | reserved | Number | Amount reserved for active orders or incomplete transfers to main account |
 
 Example response:    
-    
+```json
     [
       {
         "currency": "ETH",
-        "amount": "10.000000000",
+        "available": "10.000000000",
         "reserved": "0.560000000"
       },
       {
         "currency": "BTC",
-        "amount": "0.010205869",
+        "available": "0.010205869",
         "reserved": "0"
       }
     ]
+```
       
 Curl example:
       
     curl -X GET -u "ff20f250a7b3a414781d1abe11cd8cee:fb453577d11294359058a9ae13c94713" "https://api.hitbtc.com/api/2/trading/balance"
       
 Python 3 example:
-      
+```python3
     import requests    
     
     r = requests.get('https://api.hitbtc.com/api/2/trading/balance', auth=('ff20f250a7b3a414781d1abe11cd8cee', 'fb453577d11294359058a9ae13c94713'))    
     print(r.json())
+```      
 
 ### Trading
     
@@ -464,23 +526,24 @@ Parameters:
 Response: Array of orders
 
 Example response:
-
-    [
-      {
-        "id": 840450210,
-        "clientOrderId": "c1837634ef81472a9cd13c81e7b91401",
-        "symbol": "ETHBTC",
-        "side": "buy",
-        "status": "partiallyFilled",
-        "type": "limit",
-        "timeInForce": "GTC",
-        "quantity": "0.020",
-        "price": "0.046001",
-        "cumQuantity": "0.005",
-        "createdAt": "2017-05-12T17:17:57.437Z",
-        "updatedAt": "2017-05-12T17:18:08.610Z"
-      }
-    ]
+```json
+[
+  {
+    "id": 840450210,
+    "clientOrderId": "c1837634ef81472a9cd13c81e7b91401",
+    "symbol": "ETHBTC",
+    "side": "buy",
+    "status": "partiallyFilled",
+    "type": "limit",
+    "timeInForce": "GTC",
+    "quantity": "0.020",
+    "price": "0.046001",
+    "cumQuantity": "0.005",
+    "createdAt": "2017-05-12T17:17:57.437Z",
+    "updatedAt": "2017-05-12T17:18:08.610Z"
+  }
+]
+```
 
 #### Get Active order by clientOrderId
     
@@ -495,22 +558,22 @@ Parameters:
 Response: Order
 
 Example response:
-   
-    {
-        "id": 840450210,
-        "clientOrderId": "c1837634ef81472a9cd13c81e7b91401",
-        "symbol": "ETHBTC",
-        "side": "buy",
-        "status": "partiallyFilled",
-        "type": "limit",
-        "timeInForce": "GTC",
-        "quantity": "0.020",
-        "price": "0.046001",
-        "cumQuantity": "0.005",
-        "createdAt": "2017-05-12T17:17:57.437Z",
-        "updatedAt": "2017-05-12T17:18:08.610Z"
-    }
-    
+```json
+{
+    "id": 840450210,
+    "clientOrderId": "c1837634ef81472a9cd13c81e7b91401",
+    "symbol": "ETHBTC",
+    "side": "buy",
+    "status": "partiallyFilled",
+    "type": "limit",
+    "timeInForce": "GTC",
+    "quantity": "0.020",
+    "price": "0.046001",
+    "cumQuantity": "0.005",
+    "createdAt": "2017-05-12T17:17:57.437Z",
+    "updatedAt": "2017-05-12T17:18:08.610Z"
+}
+```
         
 #### Create New Order
 
@@ -553,7 +616,7 @@ Parameters:
 Response: Order
 
 Python 3 example:
-    
+```python3
     import requests
     
     orderData = {'symbol':'ethbtc', 'side': 'sell', 'quantity': '0.063', 'price': '0.046016' }
@@ -561,9 +624,11 @@ Python 3 example:
     print(r.json())
 
     > {'id': 0, 'side': 'sell', 'clientOrderId': 'd8574207d9e3b16a4a5511753eeef175', 'updatedAt': '2017-05-15T17:01:05.092Z', 'symbol': 'ETHBTC', 'type': 'limit', 'quantity': '0.063', 'price': '0.046016', 'status': 'new', 'cumQuantity': '0.000', 'createdAt': '2017-05-15T17:01:05.092Z', 'timeInForce': 'GTC'}
+
+```
     
 Example success created response:
-    
+```json
     {
         "id": 0,
         "clientOrderId": "d8574207d9e3b16a4a5511753eeef175",
@@ -578,16 +643,18 @@ Example success created response:
         "createdAt": "2017-05-15T17:01:05.092Z",
         "updatedAt": "2017-05-15T17:01:05.092Z"
     }
+```    
     
 Example error **Insufficient funds** response:
-    
-    {
-      "error": {
-        "code": 20001,
-        "message": "Insufficient funds",
-        "description": "Check that the funds are sufficient, given commissions"
-      }
-    }
+```json
+{
+  "error": {
+    "code": 20001,
+    "message": "Insufficient funds",
+    "description": "Check that the funds are sufficient, given commissions"
+  }
+}
+```    
     
 #### Cancel orders
 
@@ -611,31 +678,46 @@ Response: Array of Orders
 Response: Order
 
 Example response:
-   
-    {
-      "id": 0,
-      "clientOrderId": "d8574207d9e3b16a4a5511753eeef175",
-      "symbol": "ETHBTC",
-      "side": "sell",
-      "status": "canceled",
-      "type": "limit",
-      "timeInForce": "GTC",
-      "quantity": "0.000",
-      "price": "0.046016",
-      "cumQuantity": "0.000",
-      "createdAt": "2017-05-15T17:01:05.092Z",
-      "updatedAt": "2017-05-15T18:08:57.226Z"
-    }
+```json
+{
+  "id": 0,
+  "clientOrderId": "d8574207d9e3b16a4a5511753eeef175",
+  "symbol": "ETHBTC",
+  "side": "sell",
+  "status": "canceled",
+  "type": "limit",
+  "timeInForce": "GTC",
+  "quantity": "0.000",
+  "price": "0.046016",
+  "cumQuantity": "0.000",
+  "createdAt": "2017-05-15T17:01:05.092Z",
+  "updatedAt": "2017-05-15T18:08:57.226Z"
+}
+```
     
 Example error **Order not found** response:
+```json
+{
+  "error": {
+    "code": 20002,
+    "message": "Order not found",
+    "description": ""
+  }
+} 
+```    
+#### Get trading commission
     
-    {
-      "error": {
-        "code": 20002,
-        "message": "Order not found",
-        "description": ""
-      }
-    } 
+`GET /api/2/trading/fee/{symbol}`
+
+Get personal trading commission rate.
+
+Example response:
+```json
+{
+  "takeLiquidityRate": "0.001",
+  "provideLiquidityRate": "-0.0001"
+}
+```
 
 ### Trading history
 
@@ -693,36 +775,38 @@ Responses:
 
 
 Example response:
-
-    [
-      {
-        "id": 9535486,
-        "clientOrderId": "f8dbaab336d44d5ba3ff578098a68454",
-        "orderId": 816088377,
-        "symbol": "ETHBTC",
-        "side": "sell",
-        "quantity": "0.061",
-        "price": "0.045487",
-        "fee": "0.000002775",
-        "timestamp": "2017-05-17T12:32:57.848Z"
-      },
-      {
-        "id": 9535437,
-        "clientOrderId": "27b9bfc068b44194b1f453c7af511ed6",
-        "orderId": 816088021,
-        "symbol": "ETHBTC",
-        "side": "buy",
-        "quantity": "0.038",
-        "price": "0.046000",
-        "fee": "-0.000000174",
-        "timestamp": "2017-05-17T12:30:57.848Z"
-      }
-    ]
+```json
+[
+  {
+    "id": 9535486,
+    "clientOrderId": "f8dbaab336d44d5ba3ff578098a68454",
+    "orderId": 816088377,
+    "symbol": "ETHBTC",
+    "side": "sell",
+    "quantity": "0.061",
+    "price": "0.045487",
+    "fee": "0.000002775",
+    "timestamp": "2017-05-17T12:32:57.848Z"
+  },
+  {
+    "id": 9535437,
+    "clientOrderId": "27b9bfc068b44194b1f453c7af511ed6",
+    "orderId": 816088021,
+    "symbol": "ETHBTC",
+    "side": "buy",
+    "quantity": "0.038",
+    "price": "0.046000",
+    "fee": "-0.000000174",
+    "timestamp": "2017-05-17T12:30:57.848Z"
+  }
+]
+```
     
     
 ### Account information
 
 #### Account balance
+
 `GET /api/2/account/balance`
 
 Responses:
@@ -730,23 +814,24 @@ Responses:
 | Name | Type | Description |
 |:---|:---:|:---|
 | currency | String |  |
-| amount | Number | Amount available for withdraw or transfer to trading account |
+| available | Number | Amount available for withdraw or transfer to trading account |
 | reserved | Number | Amount reserved for incomplete transactions |
 
 Response example:
-
-    [
-      {
-        "currency": "BTC",
-        "available": "0.0504600",
-        "reserved": "0.0000000"
-      },
-      {
-        "currency": "ETH",
-        "available": "30.8504600",
-        "reserved": "0.0000000"
-      }
-    ]
+```json
+[
+  {
+    "currency": "BTC",
+    "available": "0.0504600",
+    "reserved": "0.0000000"
+  },
+  {
+    "currency": "ETH",
+    "available": "30.8504600",
+    "reserved": "0.0000000"
+  }
+]
+```
 
 #### Deposit crypto address
 
@@ -762,11 +847,12 @@ Responses:
 | paymentId | String | Optional additional parameter. Required for deposit if persist |
 
 Response example:
-
-    {
-      "address": "NXT-G22U-BYF7-H8D9-3J27W",
-      "paymentId": "616598347865"
-    }
+```json
+{
+  "address": "NXT-G22U-BYF7-H8D9-3J27W",
+  "paymentId": "616598347865"
+}
+```
 
 
 #### Withdraw crypto
@@ -783,7 +869,7 @@ Parameters:
 | paymentId | String | Optional parameter |
 | networkFee | Number or String | Optional parameter. Too low and too high commission value will be rounded to valid values. |
 | includeFee | Boolean | Default false. If set true then total will be spent the specified amount, fee and networkFee will be deducted from the amount |
-
+| autoCommit | Boolean | Default true. If set false then you should commit or rollback transaction in an hour. Used in two phase commit schema. |
 
 Responses:
 
@@ -792,11 +878,31 @@ Responses:
 | id | String | Unique identifier for Transaction as assigned by exchange |
  
 Response example:
+```json
+{
+  "id": "d2ce578f-647d-4fa0-b1aa-4a27e5ee597b"
+}
+```
+#### Withdraw crypto commit or rollback
+ 
+`PUT /api/2/account/crypto/withdraw/{id}` - Commit
 
-    {
-      "id": "d2ce578f-647d-4fa0-b1aa-4a27e5ee597b"
-    }
-    
+`DELETE /api/2/account/crypto/withdraw/{id}` - Rollback
+
+> Both methods idempotent
+
+Responses:
+
+| Name | Type | Description |
+|:---|:---:|:---|
+| result | Boolean | True of request completed |
+
+Response example:
+```json
+{
+  "result": true
+}
+```
  
 #### Transfer money between trading and account
 
@@ -817,10 +923,11 @@ Responses:
 | id | String | Unique identifier for Transaction as assigned by exchange |
  
 Response example:
-
-    {
-      "id": "d2ce578f-647d-4fa0-b1aa-4a27e5ee597b"
-    }
+```json
+{
+  "id": "d2ce578f-647d-4fa0-b1aa-4a27e5ee597b"
+}
+```
     
 
 #### Get transactions history
@@ -835,8 +942,9 @@ Parameters:
 |:---|:---:|:---|
 | currency | String | Currency |
 | sort | String | `DESC` or `ASC`. Default value `DESC` |
-| from | Datetime | |
-| till | Datetime | |
+| by | String | `timestamp` or `index`. Default value `timestamp` |
+| from | Datetime or Number | If sort by timestamp then Datetime, otherwise Number of index value |
+| till | Datetime or Number | If sort by timestamp then Datetime, otherwise Number of index value |
 | limit | Number | Default 100 |
 | offset | Number | |
 
@@ -860,24 +968,24 @@ Responses:
 | updatedAt | Datetime |  |
 
 Example response:
-      
-   
-    [
-      {
-        "id": "6a2fb54d-7466-490c-b3a6-95d8c882f7f7",
-        "index": 20400458,
-        "currency": "ETH",
-        "amount": "38.616700000000000000000000",
-        "fee": "0.000880000000000000000000",
-        "networkFee": "0.000420000000000000000000",
-        "address": "0xfaEF4bE10dDF50B68c220c9ab19381e20B8EEB2B",        
-        "hash": "eece4c17994798939cea9f6a72ee12faa55a7ce44860cfb95c7ed71c89522fe8",
-        "status": "pending",
-        "type": "payout",
-        "createdAt": "2017-05-18T18:05:36.957Z",
-        "updatedAt": "2017-05-18T19:21:05.370Z"
-      }
-    ]
+```json
+[
+  {
+    "id": "6a2fb54d-7466-490c-b3a6-95d8c882f7f7",
+    "index": 20400458,
+    "currency": "ETH",
+    "amount": "38.616700000000000000000000",
+    "fee": "0.000880000000000000000000",
+    "networkFee": "0.000420000000000000000000",
+    "address": "0xfaEF4bE10dDF50B68c220c9ab19381e20B8EEB2B",        
+    "hash": "eece4c17994798939cea9f6a72ee12faa55a7ce44860cfb95c7ed71c89522fe8",
+    "status": "pending",
+    "type": "payout",
+    "createdAt": "2017-05-18T18:05:36.957Z",
+    "updatedAt": "2017-05-18T19:21:05.370Z"
+  }
+]
+```
 
 ## Socket API Reference
 
@@ -910,492 +1018,506 @@ The Response is expressed as a single JSON Object, with the following members:
  
 ### Market Data
 
+The parameters of requests, responses, and errors correspond to REST, but usage flow differ. 
+First you should subscribe for interested data. 
+Then server send full snapshot of data, after that server send update notification.
+
+Server response for every request. On success subscription response is true. Example:
+```json
+{
+  "jsonrpc": "2.0",
+  "result": true,
+  "id": 123
+}
+```
+
+
 #### Get Currencies
 
 **Request**:
 
-Method: `getCurrencies`
-
-Method: `getCurrency`
+Methods: **getCurrencies**,**getCurrency**
 
 Example:
-
-    {
-      "method": "getCurrency",
-      "params": {
-        "currency": "ETH"
-      },
-      "id": 123
-    }
+```json
+{
+  "method": "getCurrency",
+  "params": {
+    "currency": "ETH"
+  },
+  "id": 123
+}
+```
     
 **Response**
 
 Example:
-
-    {
-      "jsonrpc": "2.0",
-      "result": {
-        "id": "ETH",
-        "fullName": "Ethereum",
-        "crypto": true,
-        "payinEnabled": true,
-        "payinPaymentId": false,
-        "payinConfirmations": 2,
-        "payoutEnabled": true,
-        "payoutIsPaymentId": false,
-        "transferEnabled": true
-      },
-      "id": 123
-    }  
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "id": "ETH",
+    "fullName": "Ethereum",
+    "crypto": true,
+    "payinEnabled": true,
+    "payinPaymentId": false,
+    "payinConfirmations": 2,
+    "payoutEnabled": true,
+    "payoutIsPaymentId": false,
+    "transferEnabled": true
+  },
+  "id": 123
+}
+```
 
 #### Get Symbols
 
 **Request**
 
-Method: `getSymbols`
-
-Method: `getSymbol`
+Methods: **getSymbols**,**getSymbol**
 
 Example:
-    
-    {
-      "method": "getSymbol",
-      "params": {
-        "symbol": "ETHBTC"
-      },
-      "id": 123
-    }
+```json
+{
+  "method": "getSymbol",
+  "params": {
+    "symbol": "ETHBTC"
+  },
+  "id": 123
+}
+```
 
 **Response**
 
 Example:
-    
-    {
-      "jsonrpc": "2.0",
-      "result": {
-        "id": "ETHBTC",
-        "baseCurrency": "ETH",
-        "quoteCurrency": "BTC",
-        "quantityIncrement": "0.001",
-        "tickSize": "0.000001",
-        "takeLiquidityRate": "0.001",
-        "provideLiquidityRate": "-0.0001",
-        "feeCurrency": "BTC"
-      },
-      "id": 123
-    }
-    
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "id": "ETHBTC",
+    "baseCurrency": "ETH",
+    "quoteCurrency": "BTC",
+    "quantityIncrement": "0.001",
+    "tickSize": "0.000001",
+    "takeLiquidityRate": "0.001",
+    "provideLiquidityRate": "-0.0001",
+    "feeCurrency": "BTC"
+  },
+  "id": 123
+}
+```
+
 
 ### Subscribe to Ticker
 
 **Request**:
 
-Method: `subscribeTicker`, `unsubscribeTicker` 
+Methods: **subscribeTicker**, **unsubscribeTicker** 
 
-Params:
-
-| Name | Type | Description |
-|:---|:---:|:---|
-| symbol | String |  |
 
 Example:
-
-    {
-      "method": "subscribeTicker",
-      "params": {
-        "symbol": "ETHBTC"
-      },
-      "id": 123
-    }
+```json
+{
+  "method": "subscribeTicker",
+  "params": {
+    "symbol": "ETHBTC"
+  },
+  "id": 123
+}
+```
 
 **Notification**:
 
-Method: `ticker`
-
-Params:
-
-| Name | Type | Description |
-|:---|:---:|:---|
-| ask | Number | Best ask price |
-| bid | Number | Best bid price |
-| last | Number | Last trade price |
-| open | Number | Last trade price 24 hours ago |
-| low | Number | Lowest trade price within 24 hours |
-| high | Number | Highest trade price within 24 hours |
-| volume | Number | Total trading amount within 24 hours in base currency |
-| volumeQuote | Number | Total trading amount within 24 hours in quote currency |
-| timestamp | Datetime | Last update or refresh ticker timestamp |
-| symbol | String |  |
+Method: **ticker**
 
 Example:
-
-    {
-      "jsonrpc": "2.0",
-      "method": "ticker",
-      "params": {
-        "ask": "0.054464",
-        "bid": "0.054463",
-        "last": "0.054463",
-        "open": "0.057133",
-        "low": "0.053615",
-        "high": "0.057559",
-        "volume": "33068.346",
-        "volumeQuote": "1832.687530809",
-        "timestamp": "2017-10-19T15:45:44.941Z",
-        "symbol": "ETHBTC"
-      }
-    }
-
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "ticker",
+  "params": {
+    "ask": "0.054464",
+    "bid": "0.054463",
+    "last": "0.054463",
+    "open": "0.057133",
+    "low": "0.053615",
+    "high": "0.057559",
+    "volume": "33068.346",
+    "volumeQuote": "1832.687530809",
+    "timestamp": "2017-10-19T15:45:44.941Z",
+    "symbol": "ETHBTC"
+  }
+}
+```
 
 ### Subscribe to Orderbook
 
 **Request**
 
-Method: `subscribeOrderbook`, `unsubscribeOrderbook`
+Methods: **subscribeOrderbook**, **unsubscribeOrderbook**
 
 Example:
-
-    {
-      "method": "subscribeOrderbook",
-      "params": {
-        "symbol": "ETHBTC"
-      },
-      "id": 123
-    }
+```json
+{
+  "method": "subscribeOrderbook",
+  "params": {
+    "symbol": "ETHBTC"
+  },
+  "id": 123
+}
+```
 
 **Notification snapshot**
 
-Message contains a full snapshot of orderbook.
+Message contains a full snapshot of order book.
 
-Method: `snapshotOrderbook`
+Method: **snapshotOrderbook**
 
 Example:
-
-    {
-      "jsonrpc": "2.0",
-      "method": "snapshotOrderbook",
-      "params": {
-        "ask": [
-          {
-            "price": "0.054588",
-            "size": "0.245"
-          },
-          {
-            "price": "0.054590",
-            "size": "0.000"
-          },
-          {
-            "price": "0.054591",
-            "size": "2.784"
-          },
-          {
-            "price": "0.054592",
-            "size": "35.000"
-          },
-          {
-            "price": "0.054595",
-            "size": "20.000"
-          },
-          {
-            "price": "0.054600",
-            "size": "0.030"
-          }
-        ],
-        "bid": [
-          {
-            "price": "0.054558",
-            "size": "0.500"
-          },
-          {
-            "price": "0.054557",
-            "size": "0.076"
-          },
-          {
-            "price": "0.054524",
-            "size": "7.725"
-          },
-          {
-            "price": "0.054523",
-            "size": "0.522"
-          },
-          {
-            "price": "0.054520",
-            "size": "20.000"
-          }
-        ],
-        "symbol": "ETHBTC",
-        "sequence": 8073827
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "snapshotOrderbook",
+  "params": {
+    "ask": [
+      {
+        "price": "0.054588",
+        "size": "0.245"
+      },
+      {
+        "price": "0.054590",
+        "size": "0.000"
+      },
+      {
+        "price": "0.054591",
+        "size": "2.784"
+      },
+      {
+        "price": "0.054592",
+        "size": "35.000"
+      },
+      {
+        "price": "0.054595",
+        "size": "20.000"
+      },
+      {
+        "price": "0.054600",
+        "size": "0.030"
       }
-    }
+    ],
+    "bid": [
+      {
+        "price": "0.054558",
+        "size": "0.500"
+      },
+      {
+        "price": "0.054557",
+        "size": "0.076"
+      },
+      {
+        "price": "0.054524",
+        "size": "7.725"
+      },
+      {
+        "price": "0.054523",
+        "size": "0.522"
+      },
+      {
+        "price": "0.054520",
+        "size": "20.000"
+      }
+    ],
+    "symbol": "ETHBTC",
+    "sequence": 8073827
+  }
+}
+```
 
 **Notification update**
 
 Message contains incremental changes
 
-Method: `updateOrderbook`
+> **size = 0** means that level was deleted
+
+> **sequence** is monotone increasing for each update, each symbol has its own sequence
+
+Method: **updateOrderbook**
 
 Example:
-
-    {
-      "jsonrpc": "2.0",
-      "method": "updateOrderbook",
-      "params": {
-        "data": {
-          "ask": [
-            {
-              "price": "0.054590",
-              "size": "0.000"
-            },
-            {
-              "price": "0.054591",
-              "size": "0.000"
-            },
-            {
-              "price": "0.054639",
-              "size": "2.113"
-            }
-          ],
-          "bid": [
-            {
-              "price": "0.054521",
-              "size": "2.887"
-            },
-            {
-              "price": "0.054504",
-              "size": "0.000"
-            }
-          ],
-          "symbol": "ETHBTC",
-          "sequence": 8073830
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "updateOrderbook",
+  "params": {
+    "data": {
+      "ask": [
+        {
+          "price": "0.054590",
+          "size": "0.000"
+        },
+        {
+          "price": "0.054591",
+          "size": "0.000"
+        },
+        {
+          "price": "0.054639",
+          "size": "2.113"
         }
-      }
+      ],
+      "bid": [
+        {
+          "price": "0.054521",
+          "size": "2.887"
+        },
+        {
+          "price": "0.054504",
+          "size": "0.000"
+        }
+      ],
+      "symbol": "ETHBTC",
+      "sequence": 8073830
     }
-
+  }
+}
+```
 
 ### Subscribe to Trades
 
 Request
 
-Method: `subscribeTrades`, `unsubscribeTrades`
+Methods: **subscribeTrades**, **unsubscribeTrades**
 
 Example:
-
-    {"method":"subscribeTrades","params":{"symbol":"ETHBTC"},"id":123}
-    
+```json
+{
+  "method": "subscribeTrades",
+  "params": {
+    "symbol": "ETHBTC"
+  },
+  "id": 123
+}
+```    
     
 Notification
 
-Method: 
+Method: **snapshotTrades**
 
 Example:
-
-    {
-      "jsonrpc": "2.0",
-      "method": "snapshotTrades",
-      "params": {
-        "data": [
-          {
-            "id": 54469456,
-            "price": "0.054656",
-            "quantity": "0.057",
-            "side": "buy",
-            "timestamp": "2017-10-19T16:33:42.821Z"
-          },
-          {
-            "id": 54469497,
-            "price": "0.054656",
-            "quantity": "0.092",
-            "side": "buy",
-            "timestamp": "2017-10-19T16:33:48.754Z"
-          },
-          {
-            "id": 54469697,
-            "price": "0.054669",
-            "quantity": "0.002",
-            "side": "buy",
-            "timestamp": "2017-10-19T16:34:13.288Z"
-          }
-        ],
-        "symbol": "ETHBTC"
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "snapshotTrades",
+  "params": {
+    "data": [
+      {
+        "id": 54469456,
+        "price": "0.054656",
+        "quantity": "0.057",
+        "side": "buy",
+        "timestamp": "2017-10-19T16:33:42.821Z"
+      },
+      {
+        "id": 54469497,
+        "price": "0.054656",
+        "quantity": "0.092",
+        "side": "buy",
+        "timestamp": "2017-10-19T16:33:48.754Z"
+      },
+      {
+        "id": 54469697,
+        "price": "0.054669",
+        "quantity": "0.002",
+        "side": "buy",
+        "timestamp": "2017-10-19T16:34:13.288Z"
       }
-    }
+    ],
+    "symbol": "ETHBTC"
+  }
+}
+```
 
-Notification
+Notification update
 
-Method:
+Method: **updateTrades**
 
 Example:
-
-    {
-      "jsonrpc": "2.0",
-      "method": "updateTrades",
-      "params": {
-        "data": [
-          {
-            "id": 54469813,
-            "price": "0.054670",
-            "quantity": "0.183",
-            "side": "buy",
-            "timestamp": "2017-10-19T16:34:25.041Z"
-          }
-        ],
-        "symbol": "ETHBTC"
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "updateTrades",
+  "params": {
+    "data": [
+      {
+        "id": 54469813,
+        "price": "0.054670",
+        "quantity": "0.183",
+        "side": "buy",
+        "timestamp": "2017-10-19T16:34:25.041Z"
       }
-    }    
+    ],
+    "symbol": "ETHBTC"
+  }
+}    
+```
 
 ### Get Trades
 
 Request
 
-Method: `getTrades`
+Method: **getTrades**
 
-Params:
+> Use use the same parameters as for REST 
 
 Example:
-    
-    {
-      "method": "getTrades",
-      "params": {
-        "symbol": "ETHBTC",
-        "limit": 3,
-        "sort": "DESC",
-        "by": "id"
-      },
-      "id": 123
-    }
+```json
+{
+  "method": "getTrades",
+  "params": {
+    "symbol": "ETHBTC",
+    "limit": 3,
+    "sort": "DESC",
+    "by": "id"
+  },
+  "id": 123
+}
+```
 
 Response
 
 Example:
-
-    {
-      "jsonrpc": "2.0",
-      "result": {
-        "data": [
-          {
-            "id": 54472171,
-            "price": "0.054443",
-            "quantity": "2.213",
-            "side": "sell",
-            "timestamp": "2017-10-19T16:39:20.796Z"
-          },
-          {
-            "id": 54472170,
-            "price": "0.054453",
-            "quantity": "0.030",
-            "side": "sell",
-            "timestamp": "2017-10-19T16:39:20.796Z"
-          },
-          {
-            "id": 54472169,
-            "price": "0.054454",
-            "quantity": "0.052",
-            "side": "sell",
-            "timestamp": "2017-10-19T16:39:20.796Z"
-          }
-        ],
-        "symbol": "ETHBTC"
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "data": [
+      {
+        "id": 54472171,
+        "price": "0.054443",
+        "quantity": "2.213",
+        "side": "sell",
+        "timestamp": "2017-10-19T16:39:20.796Z"
       },
-      "id": 123
-    }
+      {
+        "id": 54472170,
+        "price": "0.054453",
+        "quantity": "0.030",
+        "side": "sell",
+        "timestamp": "2017-10-19T16:39:20.796Z"
+      },
+      {
+        "id": 54472169,
+        "price": "0.054454",
+        "quantity": "0.052",
+        "side": "sell",
+        "timestamp": "2017-10-19T16:39:20.796Z"
+      }
+    ],
+    "symbol": "ETHBTC"
+  },
+  "id": 123
+}
+```
 
 ### Subscribe to Candles
 
 Request
 
-Method: `subscribeCandles`, `unsubscribeCandles`
+Method: **subscribeCandles**, **unsubscribeCandles**
 
 Params:
 
 Example:
-
-    {
-      "method": "subscribeCandles",
-      "params": {
-        "symbol": "ETHBTC",
-        "period": "M30"
-      },
-      "id": 123
-    }     
+```json
+{
+  "method": "subscribeCandles",
+  "params": {
+    "symbol": "ETHBTC",
+    "period": "M30"
+  },
+  "id": 123
+}     
+```
     
-Notification
+Notification snapshot
 
-Method: `snapshotCandles`
-
-Example:
-
-    {
-      "jsonrpc": "2.0",
-      "method": "snapshotCandles",
-      "params": {
-        "data": [
-          {
-            "timestamp": "2017-10-19T15:00:00.000Z",
-            "open": "0.054801",
-            "close": "0.054625",
-            "min": "0.054601",
-            "max": "0.054894",
-            "volume": "380.750",
-            "volumeQuote": "20.844237223"
-          },
-          {
-            "timestamp": "2017-10-19T15:30:00.000Z",
-            "open": "0.054616",
-            "close": "0.054618",
-            "min": "0.054420",
-            "max": "0.054724",
-            "volume": "348.527",
-            "volumeQuote": "19.011854364"
-          },
-          {
-            "timestamp": "2017-10-19T16:00:00.000Z",
-            "open": "0.054587",
-            "close": "0.054626",
-            "min": "0.054408",
-            "max": "0.054768",
-            "volume": "194.014",
-            "volumeQuote": "10.595416973"
-          },
-          {
-            "timestamp": "2017-10-19T16:30:00.000Z",
-            "open": "0.054614",
-            "close": "0.054443",
-            "min": "0.054339",
-            "max": "0.054724",
-            "volume": "141.213",
-            "volumeQuote": "7.706358298"
-          }
-        ],
-        "symbol": "ETHBTC",
-        "period": "M30"
-      }
-    }
-
-Notification
-
-Method: `updateCandles`
+Method: **snapshotCandles**
 
 Example:
-
-    {
-      "jsonrpc": "2.0",
-      "method": "updateCandles",
-      "params": {
-        "data": [
-          {
-            "timestamp": "2017-10-19T16:30:00.000Z",
-            "open": "0.054614",
-            "close": "0.054465",
-            "min": "0.054339",
-            "max": "0.054724",
-            "volume": "141.268",
-            "volumeQuote": "7.709353873"
-          }
-        ],
-        "symbol": "ETHBTC",
-        "period": "M30"
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "snapshotCandles",
+  "params": {
+    "data": [
+      {
+        "timestamp": "2017-10-19T15:00:00.000Z",
+        "open": "0.054801",
+        "close": "0.054625",
+        "min": "0.054601",
+        "max": "0.054894",
+        "volume": "380.750",
+        "volumeQuote": "20.844237223"
+      },
+      {
+        "timestamp": "2017-10-19T15:30:00.000Z",
+        "open": "0.054616",
+        "close": "0.054618",
+        "min": "0.054420",
+        "max": "0.054724",
+        "volume": "348.527",
+        "volumeQuote": "19.011854364"
+      },
+      {
+        "timestamp": "2017-10-19T16:00:00.000Z",
+        "open": "0.054587",
+        "close": "0.054626",
+        "min": "0.054408",
+        "max": "0.054768",
+        "volume": "194.014",
+        "volumeQuote": "10.595416973"
+      },
+      {
+        "timestamp": "2017-10-19T16:30:00.000Z",
+        "open": "0.054614",
+        "close": "0.054443",
+        "min": "0.054339",
+        "max": "0.054724",
+        "volume": "141.213",
+        "volumeQuote": "7.706358298"
       }
-    }
+    ],
+    "symbol": "ETHBTC",
+    "period": "M30"
+  }
+}
+```
+
+Notification update
+
+Method: **updateCandles**
+
+Example:
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "updateCandles",
+  "params": {
+    "data": [
+      {
+        "timestamp": "2017-10-19T16:30:00.000Z",
+        "open": "0.054614",
+        "close": "0.054465",
+        "min": "0.054339",
+        "max": "0.054724",
+        "volume": "141.268",
+        "volumeQuote": "7.709353873"
+      }
+    ],
+    "symbol": "ETHBTC",
+    "period": "M30"
+  }
+}
+```
 
 ### Authentication Session
     
@@ -1403,7 +1525,7 @@ You should authentication session once before request requires authorisation.
     
 Request
 
-Method: `login`
+Method: **login**
 
 Params:
 
@@ -1416,27 +1538,29 @@ Params:
 | signature | String | HMAC SHA256 sign nonce with API secret key, required on HS256 algo |
 
 Example BASIC:
-    
-    {
-      "method": "login",
-      "params": {
-        "algo": "BASIC",
-        "pKey": "3ef4a9f8c8bf04bd8f09884b98403eae",
-        "sKey": "2deb570ab58fd553a4ed3ee249fd2d51"
-      }
-    }
+```json
+{
+  "method": "login",
+  "params": {
+    "algo": "BASIC",
+    "pKey": "3ef4a9f8c8bf04bd8f09884b98403eae",
+    "sKey": "2deb570ab58fd553a4ed3ee249fd2d51"
+  }
+}
+```    
     
 Example HS256:
-    
-    {
-      "method": "login",
-      "params": {
-        "algo": "HS256",
-        "pKey": "3ef4a9f8c8bf04bd8f09884b98403eae",
-        "nonce": "N1g287gL8YOwDZr",
-        "signature": "b1c0ae399c2d341866a214f7d3ed755b821c1c36fc6f17083ef05fbb55b7f986"
-      }
-    }
+```json
+{
+  "method": "login",
+  "params": {
+    "algo": "HS256",
+    "pKey": "3ef4a9f8c8bf04bd8f09884b98403eae",
+    "nonce": "N1g287gL8YOwDZr",
+    "signature": "b1c0ae399c2d341866a214f7d3ed755b821c1c36fc6f17083ef05fbb55b7f986"
+  }
+}
+```    
     
 ### Socket Trading
 
@@ -1449,75 +1573,107 @@ Trade via socket have powerful changes to compared with REST:
 
 Request:
 
-Method: `subscribeReports`
+Method: **subscribeReports**
 
 Example: 
+```json
+{
+  "method": "subscribeReports",
+  "params": {}
+}
+```
 
-    {"method":"subscribeReports", "params":{}}
-    
 Notification snapshot:
 
-Send after subscription. Contains state active orders.
+> Notification with active orders send after subscription or on any service maintain.
 
-Method: `activeOrders`
+Method: **activeOrders**
 
 Example:
-    
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "activeOrders",
+  "params": [
     {
-      "jsonrpc": "2.0",
-      "method": "activeOrders",
-      "params": [
-        {
-          "id": "4345613661",
-          "clientOrderId": "57d5525562c945448e3cbd559bd068c3",
-          "symbol": "BCCBTC",
-          "side": "sell",
-          "status": "new",
-          "type": "limit",
-          "timeInForce": "GTC",
-          "quantity": "0.013",
-          "price": "0.100000",
-          "cumQuantity": "0.000",
-          "createdAt": "2017-10-20T12:17:12.245Z",
-          "updatedAt": "2017-10-20T12:17:12.245Z",
-          "reportType": "status"
-        }
-      ]
+      "id": "4345613661",
+      "clientOrderId": "57d5525562c945448e3cbd559bd068c3",
+      "symbol": "BCCBTC",
+      "side": "sell",
+      "status": "new",
+      "type": "limit",
+      "timeInForce": "GTC",
+      "quantity": "0.013",
+      "price": "0.100000",
+      "cumQuantity": "0.000",
+      "createdAt": "2017-10-20T12:17:12.245Z",
+      "updatedAt": "2017-10-20T12:17:12.245Z",
+      "reportType": "status"
     }
+  ]
+}
+```
     
 Notification report
 
-Method: `report`
+Method: **report**
+
+Params:
+
+| Name | Type | Description |
+|:---|:---:|:---|    
+| id | Number | Unique identifier for Order as assigned by exchange |
+| clientOrderId | String | Unique identifier for Order as assigned by trader. |
+| symbol| String| Trading symbol |
+| side | String | **sell** or  **buy** |
+| status | String | new, suspended, partiallyFilled, filled, canceled, expired |
+| type | String | Enum: limit, market, stopLimit, stopMarket |
+| timeInForce | String | Time in force is a special instruction used when placing a trade to indicate how long an order will remain active before it is executed or expires <br> **GTC** - Good till cancel.  GTC order won't close until it is filled. <br> **IOC** - An immediate or cancel order is an order to buy or sell that must be executed immediately, and any portion of the order that cannot be immediately filled is cancelled. <br> **FOK** - Fill or kill is a type of time-in-force designation used in securities trading that instructs a brokerage to execute a transaction immediately and completely or not at all. <br> **Day** - keeps the order active until the end of the trading day in UTC. <br> **GTD** - Good till date specified in `expireTime`. |
+| quantity | Number | Order quantity | 
+| price | Number | Order price |
+| cumQuantity | Number | Cumulative executed quantity |
+| createdAt | Datetime | |
+| updatedAt | Datetime | |
+| stopPrice | Number | |
+| expireTime | Datetime |  |   
+| **reportType** | String | One of: status, new, canceled, expired, suspended, trade, replaced |
+| tradeId | Number | Required for reportType = trade. Trade Id. |   
+| tradeQuantity | Number | Required for reportType = trade. Quantity of trade.  |   
+| tradePrice | Number | Required for reportType = trade. Trade price.  |   
+| tradeFee | Number | Required for reportType = trade. Fee paid for trade. |   
+| originalRequestClientOrderId | String | Identifier of replaced order. |   
+   
     
 Example:
-    
-    {
-      "jsonrpc": "2.0",
-      "method": "report",
-      "params": {
-        "id": "4345697765",
-        "clientOrderId": "53b7cf917963464a811a4af426102c19",
-        "symbol": "ETHBTC",
-        "side": "sell",
-        "status": "filled",
-        "type": "limit",
-        "timeInForce": "GTC",
-        "quantity": "0.001",
-        "price": "0.053868",
-        "cumQuantity": "0.001",
-        "createdAt": "2017-10-20T12:20:05.952Z",
-        "updatedAt": "2017-10-20T12:20:38.708Z",
-        "reportType": "trade",
-        "tradeQuantity": "0.001",
-        "tradePrice": "0.053868",
-        "tradeId": 55051694,
-        "tradeFee": "-0.000000005"
-      }
-    }
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "report",
+  "params": {
+    "id": "4345697765",
+    "clientOrderId": "53b7cf917963464a811a4af426102c19",
+    "symbol": "ETHBTC",
+    "side": "sell",
+    "status": "filled",
+    "type": "limit",
+    "timeInForce": "GTC",
+    "quantity": "0.001",
+    "price": "0.053868",
+    "cumQuantity": "0.001",
+    "createdAt": "2017-10-20T12:20:05.952Z",
+    "updatedAt": "2017-10-20T12:20:38.708Z",
+    "reportType": "trade",
+    "tradeQuantity": "0.001",
+    "tradePrice": "0.053868",
+    "tradeId": 55051694,
+    "tradeFee": "-0.000000005"
+  }
+}
+```
 
 #### Place New Order
 
-Method: `newOrder`
+Method: **newOrder**
 
 Params:
 
@@ -1536,88 +1692,95 @@ Params:
 
 
 Example:
-
-    {
-      "method": "newOrder",
-      "params": {
-        "clientOrderId": "57d5525562c945448e3cbd559bd068c4",
-        "symbol": "ETHBTC",
-        "side": "sell",
-        "price": "0.059837",
-        "quantity": "0.015"
-      },
-      "id": 123
-    }
+```json
+{
+  "method": "newOrder",
+  "params": {
+    "clientOrderId": "57d5525562c945448e3cbd559bd068c4",
+    "symbol": "ETHBTC",
+    "side": "sell",
+    "price": "0.059837",
+    "quantity": "0.015"
+  },
+  "id": 123
+}
+```
 
 Example error response:
-
-    {
-      "jsonrpc": "2.0",
-      "error": {
-        "code": 20001,
-        "message": "Insufficient funds",
-        "description": "Check that the funds are sufficient, given commissions"
-      },
-      "id": 123
-    }
+```json
+{
+  "jsonrpc": "2.0",
+  "error": {
+    "code": 20001,
+    "message": "Insufficient funds",
+    "description": "Check that the funds are sufficient, given commissions"
+  },
+  "id": 123
+}
+```
 
 Example success response:
-    
-    {
-      "jsonrpc": "2.0",
-      "result": {
-        "id": "4345947689",
-        "clientOrderId": "57d5525562c945448e3cbd559bd068c4",
-        "symbol": "ETHBTC",
-        "side": "sell",
-        "status": "new",
-        "type": "limit",
-        "timeInForce": "GTC",
-        "quantity": "0.001",
-        "price": "0.093837",
-        "cumQuantity": "0.000",
-        "createdAt": "2017-10-20T12:29:43.166Z",
-        "updatedAt": "2017-10-20T12:29:43.166Z",
-        "reportType": "new"
-      },
-      "id": 123
-    }
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "id": "4345947689",
+    "clientOrderId": "57d5525562c945448e3cbd559bd068c4",
+    "symbol": "ETHBTC",
+    "side": "sell",
+    "status": "new",
+    "type": "limit",
+    "timeInForce": "GTC",
+    "quantity": "0.001",
+    "price": "0.093837",
+    "cumQuantity": "0.000",
+    "createdAt": "2017-10-20T12:29:43.166Z",
+    "updatedAt": "2017-10-20T12:29:43.166Z",
+    "reportType": "new"
+  },
+  "id": 123
+}
+```
+
+> Notification `report` will  arrived  before request result
 
 #### Cancel Order
 
-Method: `cancelOrder`
+Method: **cancelOrder**
 
 Example:
-
-    {
-      "method": "cancelOrder",
-      "params": {
-        "clientOrderId": "57d5525562c945448e3cbd559bd068c4"
-      },
-      "id": 123
-    }
+```json
+{
+  "method": "cancelOrder",
+  "params": {
+    "clientOrderId": "57d5525562c945448e3cbd559bd068c4"
+  },
+  "id": 123
+}
+```
     
 Example response:
-    
-    {
-      "jsonrpc": "2.0",
-      "result": {
-        "id": "4345947689",
-        "clientOrderId": "57d5525562c945448e3cbd559bd068c4",
-        "symbol": "ETHBTC",
-        "side": "sell",
-        "status": "canceled",
-        "type": "limit",
-        "timeInForce": "GTC",
-        "quantity": "0.001",
-        "price": "0.093837",
-        "cumQuantity": "0.000",
-        "createdAt": "2017-10-20T12:29:43.166Z",
-        "updatedAt": "2017-10-20T12:31:26.174Z",
-        "reportType": "canceled"
-      },
-      "id": 123
-    }
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "id": "4345947689",
+    "clientOrderId": "57d5525562c945448e3cbd559bd068c4",
+    "symbol": "ETHBTC",
+    "side": "sell",
+    "status": "canceled",
+    "type": "limit",
+    "timeInForce": "GTC",
+    "quantity": "0.001",
+    "price": "0.093837",
+    "cumQuantity": "0.000",
+    "createdAt": "2017-10-20T12:29:43.166Z",
+    "updatedAt": "2017-10-20T12:31:26.174Z",
+    "reportType": "canceled"
+  },
+  "id": 123
+}
+```
 
 #### Cancel Replace Orders
 
@@ -1629,7 +1792,7 @@ Do not use this message to cancel the remaining quantity of an outstanding order
 
 Stipulates that a newly entered order is to cancel a prior order entered, but yet to be executed.
 
-Method: `cancelReplaceOrder`
+Method: **cancelReplaceOrder**
 
 Params:
 | Name | Type | Description |
@@ -1641,82 +1804,85 @@ Params:
 | strictValidate | Boolean | Price and quantity will be checked that they increment within tick size and quantity step. See symbol `tickSize` and `quantityIncrement` |
 
 Example:
-
-    {
-      "method": "cancelReplaceOrder",
-      "params": {
-        "clientOrderId": "9cbe79cb6f864b71a811402a48d4b5b1",
-        "requestClientId": "9cbe79cb6f864b71a811402a48d4b5b2",
-        "quantity": "0.002",
-        "price": "0.083837"
-      },
-      "id": 123
-    }
+```json
+{
+  "method": "cancelReplaceOrder",
+  "params": {
+    "clientOrderId": "9cbe79cb6f864b71a811402a48d4b5b1",
+    "requestClientId": "9cbe79cb6f864b71a811402a48d4b5b2",
+    "quantity": "0.002",
+    "price": "0.083837"
+  },
+  "id": 123
+}
+```
 
 Example response:
-
-    {
-      "jsonrpc": "2.0",
-      "result": {
-        "id": "4346371528",
-        "clientOrderId": "9cbe79cb6f864b71a811402a48d4b5b2",
-        "symbol": "ETHBTC",
-        "side": "sell",
-        "status": "new",
-        "type": "limit",
-        "timeInForce": "GTC",
-        "quantity": "0.002",
-        "price": "0.083837",
-        "cumQuantity": "0.000",
-        "createdAt": "2017-10-20T12:47:07.942Z",
-        "updatedAt": "2017-10-20T12:50:34.488Z",
-        "reportType": "replaced",
-        "originalRequestClientOrderId": "9cbe79cb6f864b71a811402a48d4b5b1"
-      },
-      "id": 123
-    }
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "id": "4346371528",
+    "clientOrderId": "9cbe79cb6f864b71a811402a48d4b5b2",
+    "symbol": "ETHBTC",
+    "side": "sell",
+    "status": "new",
+    "type": "limit",
+    "timeInForce": "GTC",
+    "quantity": "0.002",
+    "price": "0.083837",
+    "cumQuantity": "0.000",
+    "createdAt": "2017-10-20T12:47:07.942Z",
+    "updatedAt": "2017-10-20T12:50:34.488Z",
+    "reportType": "replaced",
+    "originalRequestClientOrderId": "9cbe79cb6f864b71a811402a48d4b5b1"
+  },
+  "id": 123
+}
+```
 
 #### Get active Orders
 
-Method: `getOrders`
+Method: **getOrders**
 
 Example:
-    
-    {
-      "method": "getOrders",
-      "params": {},
-      "id": 123
-    }
+```json
+{
+  "method": "getOrders",
+  "params": {},
+  "id": 123
+}
+```
     
 Example response:
-    
+```json
+{
+  "jsonrpc": "2.0",
+  "result": [
     {
-      "jsonrpc": "2.0",
-      "result": [
-        {
-          "id": "4346371528",
-          "clientOrderId": "9cbe79cb6f864b71a811402a48d4b5b2",
-          "symbol": "ETHBTC",
-          "side": "sell",
-          "status": "new",
-          "type": "limit",
-          "timeInForce": "GTC",
-          "quantity": "0.002",
-          "price": "0.083837",
-          "cumQuantity": "0.000",
-          "createdAt": "2017-10-20T12:47:07.942Z",
-          "updatedAt": "2017-10-20T12:50:34.488Z",
-          "reportType": "replaced",
-          "originalRequestClientOrderId": "9cbe79cb6f864b71a811402a48d4b5b1"
-        }
-      ],
-      "id": 123
+      "id": "4346371528",
+      "clientOrderId": "9cbe79cb6f864b71a811402a48d4b5b2",
+      "symbol": "ETHBTC",
+      "side": "sell",
+      "status": "new",
+      "type": "limit",
+      "timeInForce": "GTC",
+      "quantity": "0.002",
+      "price": "0.083837",
+      "cumQuantity": "0.000",
+      "createdAt": "2017-10-20T12:47:07.942Z",
+      "updatedAt": "2017-10-20T12:50:34.488Z",
+      "reportType": "replaced",
+      "originalRequestClientOrderId": "9cbe79cb6f864b71a811402a48d4b5b1"
     }
-
+  ],
+  "id": 123
+}
+```  
     
 #### Get trading balance
    
-Method: `getTradingBalance`   
+Method: **getTradingBalance**
 
 Example:
 ```json
@@ -1726,7 +1892,6 @@ Example:
   "id": 123
 }
 ```
-    
     
 Example response:
 ```json
