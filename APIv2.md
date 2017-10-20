@@ -1720,14 +1720,17 @@ Method: `getTradingBalance`
 
 Example:
 
+```json
     {
       "method": "getTradingBalance",
       "params": {},
       "id": 123
     }
-    
+```
+
 Example response:
-    
+
+```json
     {
       "jsonrpc": "2.0",
       "result": [
@@ -1749,3 +1752,4 @@ Example response:
       ],
       "id": 123
     }
+```
