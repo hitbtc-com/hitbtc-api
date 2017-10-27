@@ -1,10 +1,12 @@
-## GETTING STARTED
+## MEET NEW VERSION OF HITBTC API! 
 
-HitBTC REST & Streaming API provides programmatic access to HitBTC’s next generation trading engine.
+HitBTC REST & Streaming API version 2.0 provides programmatic access to HitBTC’s next generation trading engine.
 
-By using HitBTC API you confirm that you've read and accept [API License Agreement](https://hitbtc.com/api-license-agreement)
+We strongly recommend using APIv2 for new users and switching to this newer version for our current traders to get the best trading experience. 
 
-[APIv1 reference](https://github.com/hitbtc-com/hitbtc-api/blob/master/APIv1.md)
+Please find API version 1.0 here: [APIv1 reference](https://github.com/hitbtc-com/hitbtc-api/blob/master/APIv1.md)
+
+By using HitBTC API you confirm that you have read and accept [API License Agreement](https://hitbtc.com/api-license-agreement)
 
 ## Table of Contents
  * [Development guide](#development-guide)
@@ -71,7 +73,7 @@ All timestamps are returned in ISO8601 format in UTC. Example: "2017-04-03T10:20
 
 ### Number Format
 
-All finance data - price, quantity, fee and others, should be arbitrary precision numbers and string representation. Example: "10.2000058"
+All finance data, i.e. price, quantity, fee etc., should be arbitrary precision numbers and string representation. Example: "10.2000058"
 
 ### Pagination
 
@@ -91,18 +93,18 @@ Parameters:
 
 ## BEST PRACTICES
   
-The HIitBTC API development team strives to bring the best overall experience for our API users. Here is a set of best practices to use the API as efficiently as possible.
+The HitBTC API development team strives to bring the best trading experience for our API users. Here is a set of best practices of using the API as efficiently as possible.
 
 ### HTTP Persistent Connection
 It keeps the underlying TCP connection active for multiple requests/responses. Subsequent requests will result in reduced latency as the TCP handshaking process is no longer required.
     
-If you are using an HTTP 1.0 client, ensure it supports the keep-alive directive and submit the header Connection: Keep-Alive with your request.
+If you are using an HTTP 1.0 client, please ensure it supports the keep-alive directive and submit the header Connection: Keep-Alive with your request.
     
-Keep-Alive is part of the protocol in HTTP 1.1 and enabled by default on compliant clients. However, you will have to ensure your implementation does not set the connection header to other values.
+Keep-Alive is a part of the protocol in HTTP 1.1 and enabled by default on compliant clients. However, you will have to ensure your implementation does not set the connection header to other values.
 
 ### Retrieving and updating account state
 
-Use Streaming API for real time updates of your orders and trades, any transactions changes.
+Use Streaming API for real time updates of your orders and trades and any transactions changes.
 
 ## REST API Reference
 
@@ -112,7 +114,7 @@ Use Streaming API for real time updates of your orders and trades, any transacti
  * 400 Bad Request. Returns JSON with the error message
  * 401 Unauthorized. Authorisation required or failed
  * 403 Forbidden. Action is forbidden for API key
- * 429 Too Many Requests. Your connection is being rate limited
+ * 429 Too Many Requests. Your connection is being rate-limited
  * 500 Internal Server. Internal Server Error
  * 503 Service Unavailable. Service is down for maintenance
  * 504 Gateway Timeout. Request timeout expired
