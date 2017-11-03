@@ -1283,8 +1283,7 @@ Example:
 {
   "jsonrpc": "2.0",
   "method": "updateOrderbook",
-  "params": {
-    "data": {
+  "params": {    
       "ask": [
         {
           "price": "0.054590",
@@ -1311,7 +1310,6 @@ Example:
       ],
       "symbol": "ETHBTC",
       "sequence": 8073830
-    }
   }
 }
 ```
