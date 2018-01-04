@@ -606,7 +606,7 @@ Parameters:
 | symbol| String| Trading symbol |
 | side | String | **sell** **buy** |
 | type | String | Optional. Default - limit. One of: limit, market, stopLimit, stopMarket |
-| timeInForce | String | Optional. Default - GDC. One of: GTC, IOC, FOK, Day, GTD |
+| timeInForce | String | Optional. Default - GTC. One of: GTC, IOC, FOK, Day, GTD |
 | quantity | Number | Order quantity | 
 | price | Number | Order price. Required for limit types. |
 | stopPrice | Number | Required for stop types. |
