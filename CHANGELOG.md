@@ -1,3 +1,7 @@
+### 2.1.2 (19 february 2018)
+ - add default withdraw fee for currency
+ - add delisted attribute for currency
+
 ### 2.1.1 (8 february 2018) 
  - fix timeout on place stopLimit order
  - change default TimeInForce for market orders for `IOK`, for limit orders default `GTC`
