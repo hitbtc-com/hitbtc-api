@@ -936,6 +936,8 @@ Response example:
  
 `GET /api/2/account/transactions/{id}` - get transaction by transaction id
   
+Requires the "Payment information" API key permission.
+  
 Parameters: 
     
 | Name | Type | Description |
