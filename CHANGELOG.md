@@ -1,3 +1,9 @@
+### 2.2.1 (5 april 2018)
+ - add deposit address into account transaction history
+
+### 2.2.0 (22 match 2018)
+ - add rate limiting
+ 
 ### 2.1.2 (19 february 2018)
  - add default withdraw fee for currency
  - add delisted attribute for currency
