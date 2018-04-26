@@ -1,12 +1,8 @@
-## MEET NEW VERSION OF HITBTC API! 
+## GETTING STARTED
 
-HitBTC REST & Streaming API version 2.0 provides programmatic access to HitBTC’s next generation trading engine.
+HitBTC REST & Streaming API provides programmatic access to HitBTC’s next generation trading engine.
 
-We strongly recommend using APIv2 for new users and switching to this newer version for our current traders to get the best trading experience. 
-
-Please find API version 1.0 here: [APIv1 reference](https://github.com/hitbtc-com/hitbtc-api/blob/master/APIv1.md)
-
-By using HitBTC API you confirm that you have read and accept [API License Agreement](https://hitbtc.com/api-license-agreement)
+By using HitBTC API you confirm that you've read and accept [API License Agreement](https://hitbtc.com/api-license-agreement)
 
 ## Table of Contents
  * [Development guide](#development-guide)
@@ -32,8 +28,7 @@ By using HitBTC API you confirm that you have read and accept [API License Agree
         * [Trading commission](#get-trading-commission)
     * [Trading history](#trading-history)
         * [Orders history](#orders-history)
-        * [Trades history](#trades-history)
-        * [Trades by order](#trades-by-order)            
+        * [Trades history](#trades-history)    
     * [Account](#account-information)
         * [Account balance](#account-balance)
         * [Deposit address](#deposit-crypto-address)
@@ -73,7 +68,7 @@ All timestamps are returned in ISO8601 format in UTC. Example: "2017-04-03T10:20
 
 ### Number Format
 
-All finance data, i.e. price, quantity, fee etc., should be arbitrary precision numbers and string representation. Example: "10.2000058"
+All finance data - price, quantity, fee and others, should be arbitrary precision numbers and string representation. Example: "10.2000058"
 
 ### Pagination
 
@@ -93,18 +88,18 @@ Parameters:
 
 ## BEST PRACTICES
   
-The HitBTC API development team strives to bring the best trading experience for our API users. Here is a set of best practices of using the API as efficiently as possible.
+The HIitBTC API development team strives to bring the best overall experience for our API users. Here is a set of best practices to use the API as efficiently as possible.
 
 ### HTTP Persistent Connection
 It keeps the underlying TCP connection active for multiple requests/responses. Subsequent requests will result in reduced latency as the TCP handshaking process is no longer required.
     
-If you are using an HTTP 1.0 client, please ensure it supports the keep-alive directive and submit the header Connection: Keep-Alive with your request.
+If you are using an HTTP 1.0 client, ensure it supports the keep-alive directive and submit the header Connection: Keep-Alive with your request.
     
-Keep-Alive is a part of the protocol in HTTP 1.1 and enabled by default on compliant clients. However, you will have to ensure your implementation does not set the connection header to other values.
+Keep-Alive is part of the protocol in HTTP 1.1 and enabled by default on compliant clients. However, you will have to ensure your implementation does not set the connection header to other values.
 
 ### Retrieving and updating account state
 
-Use Streaming API for real time updates of your orders and trades and any transactions changes.
+Use Streaming API for real time updates of your orders and trades, any transactions changes.
 
 ## REST API Reference
 
@@ -114,7 +109,7 @@ Use Streaming API for real time updates of your orders and trades and any transa
  * 400 Bad Request. Returns JSON with the error message
  * 401 Unauthorized. Authorisation required or failed
  * 403 Forbidden. Action is forbidden for API key
- * 429 Too Many Requests. Your connection is being rate-limited
+ * 429 Too Many Requests. Your connection is being rate limited
  * 500 Internal Server. Internal Server Error
  * 503 Service Unavailable. Service is down for maintenance
  * 504 Gateway Timeout. Request timeout expired
@@ -153,11 +148,6 @@ All error responses have error `code` and human readable `message` fields. Some 
 | 20001 | 400 | Insufficient funds | Insufficient funds for creating order or any account operation |
 | 20002 | 400 | Order not found | Attempt to get active order that  not existing, filled, canceled or expired. Attempt to cancel not existing order. Attempt to cancel already filled or expired order. |
 | 20003 | 400 | Limit exceeded | Withdrawal limit exceeded |
-| 20004 | 400 | Transaction not found | Requested transaction not found |
-| 20005 | 400 | Payout not found |  |
-| 20006 | 400 | Payout already committed |  |
-| 20007 | 400 | Payout already rolled back |  |
-| 20008 | 400 | Duplicate clientOrderId |  |
 | 10001 | 400 | Validation error | Input not valid, see more in `message` field| |
 
 ### API Explorer
@@ -616,7 +606,7 @@ Parameters:
 | symbol| String| Trading symbol |
 | side | String | **sell** **buy** |
 | type | String | Optional. Default - limit. One of: limit, market, stopLimit, stopMarket |
-| timeInForce | String | Optional. Default - GDC. One of: GTC, IOC, FOK, Day, GTD |
+| timeInForce | String | Optional. Default - GTC. One of: GTC, IOC, FOK, Day, GTD |
 | quantity | Number | Order quantity | 
 | price | Number | Order price. Required for limit types. |
 | stopPrice | Number | Required for stop types. |
@@ -811,32 +801,7 @@ Example response:
   }
 ]
 ```
-
-#### Trades by order
-
-`GET /api/2/history/order/{orderId}/trades`
-
-Parameters: 
     
-| Name | Type | Description |
-|:---|:---:|:---|
-| orderId | Number | Order id |
-
-> Provide order id, because clientOrderId can be not uniq during long period.
-
-Responses:
-
-| Name | Type | Description |
-|:---|:---:|:---|
-| id | Number | Unique identifier for Trade as assigned by exchange |
-| orderId | Number | Unique identifier for Order as assigned by exchange |
-| clientOrderId | String | Unique identifier for Order as assigned by trader. |
-| symbol| String| Trading symbol |
-| side | String | **sell**  **buy** |
-| quantity | Number | Trade quantity | 
-| price | Number | Trade price |
-| fee | Number | Trade commission. Could be negative – reward. Fee currency see in symbol config |
-| timestamp | Datetime | Trade timestamp |    
     
 ### Account information
 
@@ -970,6 +935,8 @@ Response example:
 `GET /api/2/account/transactions`
  
 `GET /api/2/account/transactions/{id}` - get transaction by transaction id
+  
+Requires the "Payment information" API key permission.
   
 Parameters: 
     
@@ -1283,7 +1250,8 @@ Example:
 {
   "jsonrpc": "2.0",
   "method": "updateOrderbook",
-  "params": {    
+  "params": {
+    "data": {
       "ask": [
         {
           "price": "0.054590",
@@ -1310,6 +1278,7 @@ Example:
       ],
       "symbol": "ETHBTC",
       "sequence": 8073830
+    }
   }
 }
 ```

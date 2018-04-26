@@ -16,14 +16,31 @@
 | --- | --- | --- |
 | BTCUSD | 0.01 BTC | 0.01 |
 | BTCEUR | 0.01 BTC | 0.01 |
-| LTCBTC2 | 0.1 LTC | 0.00001 |
+| LTCBTC| 0.1 LTC | 0.00001 |
 | LTCUSD | 0.1 LTC | 0.001 |
 | LTCEUR | 0.1 LTC | 0.001 |
-| EURUSD | 1 EUR | 0.0001 |
 | DSHBTC | 1 DSH | 0.00000001 |
 | ETHBTC | 0.001 ETH | 0.000001 |
+| ETHEUR | 0.001 ETH | 0.0001 |
+| NXTBTC | 1 NXT | 0.00000001 |
+| BCNBTC | 100 BCN | 0.0000000001 | 
+| XDNBTC | 100 XDN | 0.0000000001 | 
+| DOGEBTC | 1000 DOGE | 0.000000001 |
+| XMRBTC | 0.01 XMR | 0.000001 |
 | QCNBTC | 0.01 QCN | 0.000001 |
 | FCNBTC | 0.01 FCN | 0.000001 |
+| LSKBTC | 1 LSK    | 0.0000001 |
+| LSKEUR | 1 LSK    | 0.0001 |
+| STEEMBTC | 0.001 STEEM | 0.00001 |
+| STEEMEUR | 0.001 STEEM | 0.0001 |
+| SBDBTC | 0.001 SBD | 0.00001 |
+| DASHBTC | 0.001 DASH | 0.000001 |
+| XEMBTC | 1 XEM | 0.00000001 |
+| EMCBTC | 0.1 EMC | 0.00000001 |
+| SCBTC | 100 SC | 0.000000001 |
+| ARDRBTC | 1 ARDR | 0.000000001 |
+| ZECBTC | 0.001 ZEC | 0.000001 |
+| WAVESBTC | 0.01 WAVES | 0.0000001 |
 
 ### Document usage
 
@@ -262,7 +279,7 @@ Unsubscribe:
 | 44 | Price | | for limit orders |
 | 32 | LastQty | | for Trades | 
 | 31 | LastPx | | for Trades | 
-| 851 | LastLiquidityInв | | for Trades |
+| 851 | LastLiquidityIn | | for Trades |
 | 151 | LeavesQty | | |
 | 14 | CumQty | | |
 | 6 | AvgPx | | |
