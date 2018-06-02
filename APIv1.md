@@ -729,7 +729,7 @@ post data: symbols=BTCUSD
       "orderStatus": "canceled",
       "symbol": "BTCUSD",
       "side": "sell",
-      "price": "280.00",
+      "price": "280.50",
       "quantity": 1,
       "type": "limit",
       "timeInForce": "GTC",
