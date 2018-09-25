@@ -1,3 +1,6 @@
+### 2.3.0 (25 september 2018)
+ - provide get candles history by time period
+
 ### 2.2.1 (5 april 2018)
  - add deposit address into account transaction history
 
