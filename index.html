@@ -7,7 +7,7 @@
     <meta name="description" content="The most advanced cryptocurrency exchange with industry leading API"/>
     <meta name="keywords" content="bitcoin, token, bitcoin exchange, cryptocurrency, low fees, trading terminal, trading api, btc to usdt, robot api, trading bot"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>HitBTC API Reference</title>
+    <title>API Documentation</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -200,10 +200,10 @@
     </style>
     <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
     <link href="stylesheets/print.css" rel="stylesheet" media="print" />
-      <script src="javascripts/all.js"></script>
+      <script src="javascripts/all_nosearch.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;python&quot;]">
+  <body class="index" data-languages="[]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -212,21 +212,19 @@
     </a>
     <div class="toc-wrapper">
       <img src="images/logo.png" class="logo" onclick="window.location = 'https://hitbtc.com'" alt="Logo" />
-        <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="python">python</a>
-        </div>
-        <div class="search">
-          <input type="text" class="search" id="input-search" placeholder="Search">
-        </div>
-        <ul class="search-results"></ul>
       <div id="toc" class="toc-list-h1">
           <li>
-            <a href="#meet-new-version-of-hitbtc-api" class="toc-h1 toc-link" data-title="MEET NEW VERSION OF HITBTC API!">MEET NEW VERSION OF HITBTC API!</a>
+            <a href="#about-companyname-api" class="toc-h1 toc-link" data-title="ABOUT HitBTC API">ABOUT HitBTC API</a>
           </li>
           <li>
             <a href="#development-guide" class="toc-h1 toc-link" data-title="DEVELOPMENT GUIDE">DEVELOPMENT GUIDE</a>
               <ul class="toc-list-h2">
+                  <li>
+                    <a href="#api-explorer" class="toc-h2 toc-link" data-title="API Explorer">API Explorer</a>
+                  </li>
+                  <li>
+                    <a href="#api-sample-code-amp-libraries" class="toc-h2 toc-link" data-title="API Sample code &amp; Libraries">API Sample code &amp; Libraries</a>
+                  </li>
                   <li>
                     <a href="#api-urls" class="toc-h2 toc-link" data-title="API URLs">API URLs</a>
                   </li>
@@ -240,6 +238,9 @@
                     <a href="#pagination" class="toc-h2 toc-link" data-title="Pagination">Pagination</a>
                   </li>
               </ul>
+          </li>
+          <li>
+            <a href="#rate-limiting" class="toc-h1 toc-link" data-title="RATE LIMITING">RATE LIMITING</a>
           </li>
           <li>
             <a href="#best-practices" class="toc-h1 toc-link" data-title="BEST PRACTICES">BEST PRACTICES</a>
@@ -260,12 +261,6 @@
                   </li>
                   <li>
                     <a href="#error-response" class="toc-h2 toc-link" data-title="Error response">Error response</a>
-                  </li>
-                  <li>
-                    <a href="#api-explorer" class="toc-h2 toc-link" data-title="API Explorer">API Explorer</a>
-                  </li>
-                  <li>
-                    <a href="#api-sample-code" class="toc-h2 toc-link" data-title="API Sample code">API Sample code</a>
                   </li>
               </ul>
           </li>
@@ -427,27 +422,26 @@
                   </li>
               </ul>
           </li>
-          <li>
-            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
-          </li>
       </div>
-        <ul class="toc-footer">
-            <li><a href='https://hitbtc.com/settings/api-keys'>Setup a Developer Key</a></li>
-            <li><a href='https://github.com/lord/slate'>Documentation Powered by Slate</a></li>
-        </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='meet-new-version-of-hitbtc-api'>MEET NEW VERSION OF HITBTC API!</h1>
+        <h1 id='about-companyname-api'>ABOUT HitBTC API</h1>
 <p>HitBTC REST &amp; Streaming API version 2.0 provides programmatic access to HitBTC’s next generation trading engine.</p>
 
 <p>We strongly recommend using APIv2 for new users and switching to this newer version for our current traders to get the best trading experience. </p>
 
-<p>Please find API version 1.0 here: <a href="https://github.com/hitbtc-com/hitbtc-api/blob/master/APIv1.md">APIv1 reference</a></p>
-
 <p>By using HitBTC API you confirm that you have read and accept <a href="https://hitbtc.com/api-license-agreement">API License Agreement</a></p>
-<h1 id='development-guide'>DEVELOPMENT GUIDE</h1><h2 id='api-urls'>API URLs</h2>
+<h1 id='development-guide'>DEVELOPMENT GUIDE</h1><h2 id='api-explorer'>API Explorer</h2>
+<p>You can explore API using <a href="https://api.hitbtc.com/api/2/explore/">SwaggerUI</a> including methods requiring authorization.</p>
+<h2 id='api-sample-code-amp-libraries'>API Sample code &amp; Libraries</h2>
+<ul>
+<li>Python rest example <a href="https://github.com/hitbtc-com/hitbtc-api/blob/master/example_rest.py">example_rest.py</a></li>
+<li>Js <a href="https://gist.github.com/hitbtc-com/fc738c1b926d9d7aa7e3bd5247f792a1">WebSocket API 2.0 Client</a></li>
+<li>Python <a href="https://github.com/Crypto-toolbox/hitbtc">WebSocket API 2.0 Client</a> </li>
+</ul>
+<h2 id='api-urls'>API URLs</h2>
 <table><thead>
 <tr>
 <th>Environment</th>
@@ -499,6 +493,13 @@
 <td>If filter by timestamp, then datetime. Otherwise object id</td>
 </tr>
 </tbody></table>
+<h1 id='rate-limiting'>RATE LIMITING</h1>
+<p>Rate Limits apply:
+ * For the Market data,  the limit is 100 requests/second per IP;
+ * For Trading, the limit is 100 request/second per user;
+ * For other requests, including Trading history, the limit is 10 requests/second per user.</p>
+
+<p>Significant excess of the Rate Limits can lead to a suspend.</p>
 <h1 id='best-practices'>BEST PRACTICES</h1>
 <p>The HitBTC API development team strives to bring the best trading experience for our API users. Here is a set of best practices of using the API as efficiently as possible.</p>
 <h2 id='http-persistent-connection'>HTTP Persistent Connection</h2>
@@ -531,13 +532,7 @@
     </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Check that the funds are sufficient, given commissions"</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h2 id='api-explorer'>API Explorer</h2>
-<p>You can explore API using <a href="https://api.hitbtc.com/api/2/explore/">SwaggerUI</a> including methods requiring authorization.</p>
-<h2 id='api-sample-code'>API Sample code</h2>
-<ul>
-<li>Python rest example <a href="https://github.com/hitbtc-com/hitbtc-api/blob/master/example_rest.py">example_rest.py</a></li>
-</ul>
-<h1 id='market-data'>Market data</h1><h2 id='currencies'>Currencies</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/currency"</span>  
+</span></code></pre><h1 id='market-data'>Market data</h1><h2 id='currencies'>Currencies</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/currency"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -552,7 +547,9 @@
       </span><span class="s2">"payinConfirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
       </span><span class="s2">"payoutEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
       </span><span class="s2">"payoutIsPaymentId"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"transferEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="s2">"transferEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"delisted"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"payoutFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.00958"</span><span class="w">
    </span><span class="p">},</span><span class="w">
    </span><span class="p">{</span><span class="w">
       </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ETH"</span><span class="p">,</span><span class="w">
@@ -563,7 +560,9 @@
       </span><span class="s2">"payinConfirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
       </span><span class="s2">"payoutEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
       </span><span class="s2">"payoutIsPaymentId"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"transferEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="s2">"transferEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"delisted"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"payoutFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.001"</span><span class="w">
    </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
@@ -627,8 +626,18 @@
 <td style="text-align: center">Boolean</td>
 <td style="text-align: left">Is allowed to transfer between trading and account (may be disabled on maintain)</td>
 </tr>
+<tr>
+<td style="text-align: left">delisted</td>
+<td style="text-align: center">Boolean</td>
+<td style="text-align: left">True if currency delisted (stopped deposit and trading)</td>
+</tr>
+<tr>
+<td style="text-align: left">payoutFee</td>
+<td style="text-align: center">Number</td>
+<td style="text-align: left">Default withdraw fee</td>
+</tr>
 </tbody></table>
-<h2 id='symbols'>Symbols</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/symbol"</span>  
+<h2 id='symbols'>Symbols</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/symbol"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -650,7 +659,7 @@
 
 <p><code>GET /api/2/public/symbol/{symbol}</code></p>
 
-<p>Return the actual list of currency symbols (currency pairs) traded on HitBTC exchange.
+<p>Return the actual list of currency symbols (currency pairs) traded on exchange.
 The first listed currency of a symbol is called the base currency, and the second currency is called the quote currency.
 The currency pair indicates how much of the quote currency is needed to purchase one unit of the base currency.
 <a href="http://www.investopedia.com/terms/c/currencypair.asp">Read more</a></p>
@@ -705,7 +714,7 @@ The currency pair indicates how much of the quote currency is needed to purchase
 <td style="text-align: left"></td>
 </tr>
 </tbody></table>
-<h2 id='tickers'>Tickers</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/ticker"</span>  
+<h2 id='tickers'>Tickers</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/ticker"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -791,7 +800,7 @@ The currency pair indicates how much of the quote currency is needed to purchase
 <td style="text-align: left"></td>
 </tr>
 </tbody></table>
-<h2 id='trades'>Trades</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/trades/ETHBTC?sort=DESC"</span>  
+<h2 id='trades'>Trades</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/trades/ETHBTC?sort=DESC"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -891,7 +900,7 @@ The currency pair indicates how much of the quote currency is needed to purchase
 <td style="text-align: left">Trade timestamp</td>
 </tr>
 </tbody></table>
-<h2 id='orderbook'>Orderbook</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/orderbook/ETHBTC"</span>  
+<h2 id='orderbook'>Orderbook</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/orderbook/ETHBTC"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -969,7 +978,7 @@ The currency pair indicates how much of the quote currency is needed to purchase
 <td style="text-align: left">Price level</td>
 </tr>
 </tbody></table>
-<h2 id='candles'>Candles</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/candles/ETHBTC?period=M30"</span>  
+<h2 id='candles'>Candles</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.hitbtc.com/api/2/public/candles/ETHBTC?period=M30"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -1009,14 +1018,34 @@ The currency pair indicates how much of the quote currency is needed to purchase
 </tr>
 </thead><tbody>
 <tr>
+<td style="text-align: left">period</td>
+<td style="text-align: center">String</td>
+<td style="text-align: left">One of: M1 (one minute), M3, M5, M15, M30, H1, H4, D1, D7, 1M (one month). Default is M30 (30 minutes).</td>
+</tr>
+<tr>
+<td style="text-align: left">sort</td>
+<td style="text-align: center">String</td>
+<td style="text-align: left">Default ASC</td>
+</tr>
+<tr>
+<td style="text-align: left">from</td>
+<td style="text-align: center">Datetime</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: left">till</td>
+<td style="text-align: center">Datetime</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
 <td style="text-align: left">limit</td>
 <td style="text-align: center">Number</td>
 <td style="text-align: left">Limit of candles, default 100.</td>
 </tr>
 <tr>
-<td style="text-align: left">period</td>
-<td style="text-align: center">String</td>
-<td style="text-align: left">One of: M1 (one minute), M3, M5, M15, M30, H1, H4, D1, D7, 1M (one month). Default is M30 (30 minutes).</td>
+<td style="text-align: left">offset</td>
+<td style="text-align: center">Number</td>
+<td style="text-align: left"></td>
 </tr>
 </tbody></table>
 
@@ -1066,7 +1095,7 @@ The currency pair indicates how much of the quote currency is needed to purchase
 </tr>
 </tbody></table>
 
-<aside class="notice">Result contain candles only with non zero volume.</aside>
+<aside class="notice">Result contain candles only with non zero volume. (No trades - no candles)</aside>
 <h1 id='authentication'>Authentication</h1><pre class="highlight shell tab-shell"><code>curl -u <span class="s2">"publicKey:secretKey"</span> https://api.hitbtc.com/api/2/trading/balance
 </code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 <span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
@@ -1075,7 +1104,7 @@ The currency pair indicates how much of the quote currency is needed to purchase
 </code></pre>
 <p>Public market data available without authentication, for other requests authentication is required.</p>
 
-<p>You should create API keys on <a href="https://hitbtc.com/settings/api-keys">HitBTC API Setting</a> page. You can create multiple API keys with different permissions for your applications.</p>
+<p>You should create API keys on <a href="https://hitbtc.com/settings/api-keys">API Setting</a> page. You can create multiple API keys with different permissions for your applications.</p>
 
 <p>Use Basic Authentication to access REST API.</p>
 <h1 id='trading'>Trading</h1><h2 id='trading-balance'>Trading Balance</h2><pre class="highlight shell tab-shell"><code>curl -X GET -u <span class="s2">"ff20f250a7b3a414781d1abe11cd8cee:fb453577d11294359058a9ae13c94713"</span> <span class="se">\</span>
@@ -1312,7 +1341,7 @@ The currency pair indicates how much of the quote currency is needed to purchase
     <span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
     <span class="n">session</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="p">(</span><span class="s">"ff20f250a7b3a414781d1abe11cd8cee"</span><span class="p">,</span> <span class="s">"fb453577d11294359058a9ae13c94713"</span><span class="p">)</span>
     <span class="n">orderData</span> <span class="o">=</span> <span class="p">{</span><span class="s">'symbol'</span><span class="p">:</span><span class="s">'ethbtc'</span><span class="p">,</span> <span class="s">'side'</span><span class="p">:</span> <span class="s">'sell'</span><span class="p">,</span> <span class="s">'quantity'</span><span class="p">:</span> <span class="s">'0.063'</span><span class="p">,</span> <span class="s">'price'</span><span class="p">:</span> <span class="s">'0.046016'</span> <span class="p">}</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">'https://api.hitbtc.com/api/2/order'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">orderData</span><span class="p">)</span>        
+    <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">'https://api.hitbtc.com/api/2/order'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">orderData</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 
 </code></pre>
@@ -1451,7 +1480,7 @@ The currency pair indicates how much of the quote currency is needed to purchase
 
 <p>Response: Array of Orders</p>
 <h2 id='cancel-order-by-clientorderid'>Cancel order by clientOrderId</h2><pre class="highlight shell tab-shell"><code>curl -X DELETE -u <span class="s2">"ff20f250a7b3a414781d1abe11cd8cee:fb453577d11294359058a9ae13c94713"</span> <span class="se">\</span>
-    <span class="s2">"https://api.hitbtc.com/api/2/order/d8574207d9e3b16a4a5511753eeef175"</span>    
+    <span class="s2">"https://api.hitbtc.com/api/2/order/d8574207d9e3b16a4a5511753eeef175"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -1486,7 +1515,7 @@ The currency pair indicates how much of the quote currency is needed to purchase
 
 <p>Response: Order</p>
 <h2 id='get-trading-commission'>Get trading commission</h2><pre class="highlight shell tab-shell"><code>curl -X GET -u <span class="s2">"ff20f250a7b3a414781d1abe11cd8cee:fb453577d11294359058a9ae13c94713"</span> <span class="se">\</span>
-    <span class="s2">"https://api.hitbtc.com/api/2/trading/fee/ETHBTC"</span>    
+    <span class="s2">"https://api.hitbtc.com/api/2/trading/fee/ETHBTC"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -1504,7 +1533,7 @@ The currency pair indicates how much of the quote currency is needed to purchase
 Please note, that trading history may be updated with delay up to 30 seconds, with mean delay around 1 second.
 </aside>
 <h2 id='orders-history'>Orders history</h2><pre class="highlight shell tab-shell"><code>curl -X GET -u <span class="s2">"ff20f250a7b3a414781d1abe11cd8cee:fb453577d11294359058a9ae13c94713"</span> <span class="se">\</span>
-    <span class="s2">"https://api.hitbtc.com/api/2/history/order?symbol=ETHBTC"</span>    
+    <span class="s2">"https://api.hitbtc.com/api/2/history/order?symbol=ETHBTC"</span>
 </code></pre>
 <p><code>GET /api/2/history/order</code></p>
 
@@ -1553,7 +1582,7 @@ Please note, that trading history may be updated with delay up to 30 seconds, wi
 
 <p>Response: Array of Orders</p>
 <h2 id='trades-history'>Trades history</h2><pre class="highlight shell tab-shell"><code>curl -X GET -u <span class="s2">"ff20f250a7b3a414781d1abe11cd8cee:fb453577d11294359058a9ae13c94713"</span> <span class="se">\</span>
-    <span class="s2">"https://api.hitbtc.com/api/2/history/trades?symbol=ETHBTC"</span>    
+    <span class="s2">"https://api.hitbtc.com/api/2/history/trades?symbol=ETHBTC"</span>
 </code></pre><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9535486</span><span class="p">,</span><span class="w">
@@ -1683,7 +1712,7 @@ Please note, that trading history may be updated with delay up to 30 seconds, wi
 </tr>
 </tbody></table>
 <h2 id='trades-by-order'>Trades by order</h2><pre class="highlight shell tab-shell"><code>curl -X GET -u <span class="s2">"ff20f250a7b3a414781d1abe11cd8cee:fb453577d11294359058a9ae13c94713"</span> <span class="se">\</span>
-    <span class="s2">"https://api.hitbtc.com/api/2/history/order/816088021/trades"</span>    
+    <span class="s2">"https://api.hitbtc.com/api/2/history/order/816088021/trades"</span>
 </code></pre>
 <p><code>GET /api/2/history/order/{orderId}/trades</code></p>
 
@@ -1979,7 +2008,6 @@ Please note, that trading history may be updated with delay up to 30 seconds, wi
     </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ETH"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"38.616700000000000000000000"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"fee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000880000000000000000000"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"networkFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000420000000000000000000"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xfaEF4bE10dDF50B68c220c9ab19381e20B8EEB2B"</span><span class="p">,</span><span class="w">        
     </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eece4c17994798939cea9f6a72ee12faa55a7ce44860cfb95c7ed71c89522fe8"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
@@ -1992,6 +2020,8 @@ Please note, that trading history may be updated with delay up to 30 seconds, wi
 <p><code>GET /api/2/account/transactions</code></p>
 
 <p><code>GET /api/2/account/transactions/{id}</code> - get transaction by transaction id</p>
+
+<p>Requires the &quot;Payment information&quot; API key permission.</p>
 
 <p>Parameters: </p>
 
@@ -2070,11 +2100,6 @@ Please note, that trading history may be updated with delay up to 30 seconds, wi
 </tr>
 <tr>
 <td style="text-align: left">fee</td>
-<td style="text-align: center">Number</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td style="text-align: left">networkFee</td>
 <td style="text-align: center">Number</td>
 <td style="text-align: left"></td>
 </tr>
@@ -2211,7 +2236,9 @@ Then server send full snapshot of data, after that server send update notificati
     </span><span class="s2">"payinConfirmations"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
     </span><span class="s2">"payoutEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
     </span><span class="s2">"payoutIsPaymentId"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"transferEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="s2">"transferEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"delisted"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"payoutFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.001"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -2254,7 +2281,7 @@ Then server send full snapshot of data, after that server send update notificati
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>Request methods: <strong>getSymbols</strong>,<strong>getSymbol</strong></p>
-<h2 id='subscribe-to-ticker'>Subscribe to Ticker</h2><pre class="highlight shell tab-shell"><code>wscat -c wss://api.hitbtc.com/api/2/ws
+<h2 id='subscribe-to-ticker'>Subscribe to Ticker</h2><pre class="highlight shell tab-shell"><code>wscat -c wss://<span class="o">api.hitbtc.com</span>/api/2/ws
 
 <span class="o">{</span>
   <span class="s2">"method"</span>: <span class="s2">"subscribeTicker"</span>,
@@ -2287,7 +2314,7 @@ Then server send full snapshot of data, after that server send update notificati
 <p>Request methods: <strong>subscribeTicker</strong>, <strong>unsubscribeTicker</strong> </p>
 
 <p>Notification method: <strong>ticker</strong></p>
-<h2 id='subscribe-to-orderbook'>Subscribe to Orderbook</h2><pre class="highlight shell tab-shell"><code>wscat -c wss://api.hitbtc.com/api/2/ws
+<h2 id='subscribe-to-orderbook'>Subscribe to Orderbook</h2><pre class="highlight shell tab-shell"><code>wscat -c wss://<span class="o">api.hitbtc.com</span>/api/2/ws
 
 <span class="o">{</span>
   <span class="s2">"method"</span>: <span class="s2">"subscribeOrderbook"</span>,
@@ -2382,7 +2409,7 @@ Then server send full snapshot of data, after that server send update notificati
 <p><strong>sequence</strong> is monotone increasing for each update, each symbol has its own sequence</p>
 
 <p>Notification method: <strong>updateOrderbook</strong></p>
-<h2 id='subscribe-to-trades'>Subscribe to Trades</h2><pre class="highlight shell tab-shell"><code>wscat -c wss://api.hitbtc.com/api/2/ws
+<h2 id='subscribe-to-trades'>Subscribe to Trades</h2><pre class="highlight shell tab-shell"><code>wscat -c wss://<span class="o">api.hitbtc.com</span>/api/2/ws
 
 <span class="o">{</span>
   <span class="s2">"method"</span>: <span class="s2">"subscribeTrades"</span>,
@@ -2451,7 +2478,7 @@ Then server send full snapshot of data, after that server send update notificati
 </span><span class="p">}</span><span class="w">    
 </span></code></pre>
 <p>Notification method: <strong>updateTrades</strong></p>
-<h2 id='get-trades'>Get Trades</h2><pre class="highlight shell tab-shell"><code>wscat -c wss://api.hitbtc.com/api/2/ws
+<h2 id='get-trades'>Get Trades</h2><pre class="highlight shell tab-shell"><code>wscat -c wss://<span class="o">api.hitbtc.com</span>/api/2/ws
 
 <span class="o">{</span>
   <span class="s2">"method"</span>: <span class="s2">"getTrades"</span>,
@@ -2547,7 +2574,7 @@ Then server send full snapshot of data, after that server send update notificati
 </tbody></table>
 <h2 id='subscribe-to-candles'>Subscribe to Candles</h2>
 <p>Request methods: <strong>subscribeCandles</strong>, <strong>unsubscribeCandles</strong></p>
-<pre class="highlight shell tab-shell"><code>wscat -c wss://api.hitbtc.com/api/2/ws
+<pre class="highlight shell tab-shell"><code>wscat -c wss://<span class="o">api.hitbtc.com</span>/api/2/ws
 
 <span class="o">{</span>
   <span class="s2">"method"</span>: <span class="s2">"subscribeCandles"</span>,
@@ -2976,7 +3003,7 @@ Notification with active orders send after subscription or on any service mainta
 <tr>
 <td style="text-align: left">timeInForce</td>
 <td style="text-align: center">String</td>
-<td style="text-align: left">Optional. Default - GDC. One of: GTC, IOC, FOK, Day, GTD</td>
+<td style="text-align: left">Optional. Default - GTC. One of: GTC, IOC, FOK, Day, GTD</td>
 </tr>
 <tr>
 <td style="text-align: left">quantity</td>
@@ -3185,145 +3212,9 @@ Notification `report` will  arrived  before request result
   &quot;id&quot;: 123
 }
 </code></p>
-<h1 id='errors'>Errors</h1>
-<p>The HitBTC API uses the following error codes:</p>
-
-<table><thead>
-<tr>
-<th>Error code</th>
-<th>HTTP Status Code</th>
-<th style="text-align: left">Message</th>
-<th style="text-align: left">Note</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>403</td>
-<td>401</td>
-<td style="text-align: left">Action is forbidden for account</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td>429</td>
-<td>429</td>
-<td style="text-align: left">Too many requests</td>
-<td style="text-align: left">Action is being rate limited for account</td>
-</tr>
-<tr>
-<td>500</td>
-<td>500</td>
-<td style="text-align: left">Internal Server Error</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td>503</td>
-<td>503</td>
-<td style="text-align: left">Service Unavailable</td>
-<td style="text-align: left">Try it again later</td>
-</tr>
-<tr>
-<td>504</td>
-<td>504</td>
-<td style="text-align: left">Gateway Timeout</td>
-<td style="text-align: left">Check the result of your request later</td>
-</tr>
-<tr>
-<td>1001</td>
-<td>401</td>
-<td style="text-align: left">Authorisation required</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td>1002</td>
-<td>401</td>
-<td style="text-align: left">Authorisation failed</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td>1003</td>
-<td>403</td>
-<td style="text-align: left">Action is forbidden for this API key</td>
-<td style="text-align: left">Check permissions for API key</td>
-</tr>
-<tr>
-<td>1004</td>
-<td>401</td>
-<td style="text-align: left">Unsupported authorisation method</td>
-<td style="text-align: left">Use Basic authentication</td>
-</tr>
-<tr>
-<td>2001</td>
-<td>400</td>
-<td style="text-align: left">Symbol not found</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td>2002</td>
-<td>400</td>
-<td style="text-align: left">Currency not found</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td>20001</td>
-<td>400</td>
-<td style="text-align: left">Insufficient funds</td>
-<td style="text-align: left">Insufficient funds for creating order or any account operation</td>
-</tr>
-<tr>
-<td>20002</td>
-<td>400</td>
-<td style="text-align: left">Order not found</td>
-<td style="text-align: left">Attempt to get active order that  not existing, filled, canceled or expired. Attempt to cancel not existing order. Attempt to cancel already filled or expired order.</td>
-</tr>
-<tr>
-<td>20003</td>
-<td>400</td>
-<td style="text-align: left">Limit exceeded</td>
-<td style="text-align: left">Withdrawal limit exceeded</td>
-</tr>
-<tr>
-<td>20004</td>
-<td>400</td>
-<td style="text-align: left">Transaction not found</td>
-<td style="text-align: left">Requested transaction not found</td>
-</tr>
-<tr>
-<td>20005</td>
-<td>400</td>
-<td style="text-align: left">Payout not found</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td>20006</td>
-<td>400</td>
-<td style="text-align: left">Payout already committed</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td>20007</td>
-<td>400</td>
-<td style="text-align: left">Payout already rolled back</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td>20008</td>
-<td>400</td>
-<td style="text-align: left">Duplicate clientOrderId</td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td>10001</td>
-<td>400</td>
-<td style="text-align: left">Validation error</td>
-<td style="text-align: left">Input not valid, see more in <code>message</code> field</td>
-</tr>
-</tbody></table>
 
       </div>
       <div class="dark-box">
-          <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="python">python</a>
-          </div>
       </div>
     </div>
 
