@@ -4,9 +4,9 @@ HitBTC REST & Streaming API version 2.0 provides programmatic access to HitBTCâ€
 
 We strongly recommend using APIv2 for new users and switching to this newer version for our current traders to get the best trading experience. 
 
-Please find API version 1.0 here: [APIv1 reference](https://github.com/hitbtc-com/hitbtc-api/blob/master/APIv1.md)
+Please find API version 1.0 here: [APIv1 reference.](https://github.com/hitbtc-com/hitbtc-api/blob/master/APIv1.md)
 
-By using HitBTC API you confirm that you have read and accept [API License Agreement](https://hitbtc.com/api-license-agreement)
+By using the HitBTC API, you confirm that you have read and accept [API License Agreement.](https://hitbtc.com/api-license-agreement)
 
 ## Table of Contents
  * [Development guide](#development-guide)
@@ -280,8 +280,8 @@ Responses:
 | open | Number | Last trade price 24 hours ago |
 | low | Number | Lowest trade price within 24 hours |
 | high | Number | Highest trade price within 24 hours |
-| volume | Number | Total trading amount within 24 hours in base currency |
-| volumeQuote | Number | Total trading amount within 24 hours in quote currency |
+| volume | Number | Total trading volume within 24 hours in base currency |
+| volumeQuote | Number | Total trading volume within 24 hours in quote currency |
 | timestamp | Datetime | Last update or refresh ticker timestamp |
 | symbol | String |  |
  
@@ -353,7 +353,7 @@ Example response:
 
 `GET /api/2/public/orderbook/{symbol}`
 
-An order book is an electronic list of buy and sell orders for a specific symbol, organized by price level.
+An order book is an electronic list of buy and sell orders for a specific ticker symbol, organized by price level.
 
 Parameters: 
 
@@ -422,7 +422,7 @@ Responses:
 | volume | Number | Volume in base currency |
 | volumeQuote | Number | Volume in quote currency |
 
-> Result contain candles only with non zero volume
+> Result contain candles only with non-zero volume
 
 Example response:
 ```json
@@ -450,7 +450,7 @@ Example response:
 
 ### Authentication
 
-Public market data available without authentication, for other requests authentication is required.
+Public market data available without authentication. For other requests authentication is required.
  
 You should create API keys on [HitBTC API Setting](https://hitbtc.com/settings/api-keys) page. You can create multiple API keys with different permissions for your applications.
  
@@ -512,7 +512,7 @@ Order model:
 | side | String | **sell**  **buy** |
 | status | String | new, suspended, partiallyFilled, filled, canceled, expired |
 | type | String | Enum: limit, market, stopLimit, stopMarket |
-| timeInForce | String | Time in force is a special instruction used when placing a trade to indicate how long an order will remain active before it is executed or expires <br> **GTC** - Good till cancel.  GTC order won't close until it is filled. <br> **IOC** - An immediate or cancel order is an order to buy or sell that must be executed immediately, and any portion of the order that cannot be immediately filled is cancelled. <br> **FOK** - Fill or kill is a type of time-in-force designation used in securities trading that instructs a brokerage to execute a transaction immediately and completely or not at all. <br> **Day** - keeps the order active until the end of the trading day in UTC. <br> **GTD** - Good till date specified in `expireTime`. |
+| timeInForce | String | Time in force is a special instruction used when placing a trade to indicate how long an order will remain active before it is executed or expires <br> **GTC** - Good till cancelled.  GTC order won't close until it is filled. <br> **IOC** - An immediate or cancel order is an order to buy or sell that must be executed immediately, and any portion of the order that cannot be immediately filled is cancelled. <br> **FOK** - Fill or kill is a type of time-in-force designation used in securities trading that instructs a brokerage to execute a transaction immediately and completely or not at all. <br> **Day** - keeps the order active until the end of the trading day in UTC. <br> **GTD** - Good till date specified in `expireTime`. |
 | quantity | Number | Order quantity | 
 | price | Number | Order price |
 | cumQuantity | Number | Cumulative executed quantity |
@@ -600,11 +600,11 @@ Example for ETHBTC: `tickSize` = '0.000001' then price '0.046016' - valid, '0.04
 
 Fee charged in symbol `feeCurrency`. Maker-taker fees offer a transaction rebate `provideLiquidityRate` to those who provide liquidity (the market maker), while charging customers who take that liquidity `takeLiquidityRate`.
 
-For buy orders you must have enough available balance including fees. `Available balance > price * quantity * (1 + takeLiquidityRate)`                                    
+For buy orders, you must have enough available balance including fees. `Available balance > price * quantity * (1 + takeLiquidityRate)`                                    
 
 **Result order status**
 
-For orders with `timeInForce` `IOC` or `FOK` REST API returns final order state: filled or expired. 
+For orders with `timeInForce` `IOC` or `FOK`, REST API returns final order state: filled or expired. 
  
 If order can be instantly executed, then REST API return filled or partiallyFilled order's info. 
 
@@ -612,7 +612,7 @@ Parameters:
 
 | Name | Type | Description |
 |:---|:---:|:---|
-| clientOrderId | String | Optional parameter, if skipped - will be generated by server. Uniqueness must be guaranteed within a single trading day, including all active orders. |
+| clientOrderId | String | Optional parameter. If skipped, it will be generated by the server. Uniqueness must be guaranteed within a single trading day, including all active orders. |
 | symbol| String| Trading symbol |
 | side | String | **sell** **buy** |
 | type | String | Optional. Default - limit. One of: limit, market, stopLimit, stopMarket |
@@ -670,7 +670,7 @@ Example error **Insufficient funds** response:
 
 `DELETE /api/2/order`
 
-Cancel all active orders, or all active orders for specified symbol. 
+Cancel all active orders, or all active orders for a specified symbol. 
 
 Parameters: 
 
@@ -731,13 +731,13 @@ Example response:
 
 ### Trading history
 
-Please note, that trading history may be updated with delay up to 30 seconds, with mean delay around 1 second.
+Please note that trading history may be updated with a delay of up to 30 seconds, with the mean delay around 1 second.
 
 #### Orders history
 
 `GET /api/2/history/order`
 
-All orders older then 24 hours without trades are deleted.
+All orders older than 24 hours without trades are deleted.
 
 Parameters: 
     
@@ -822,7 +822,7 @@ Parameters:
 |:---|:---:|:---|
 | orderId | Number | Order id |
 
-> Provide order id, because clientOrderId can be not uniq during long period.
+> Provide order id, because clientOrderId can be not unique during long period.
 
 Responses:
 
@@ -903,8 +903,8 @@ Parameters:
 | address | String |  |
 | paymentId | String | Optional parameter |
 | networkFee | Number or String | Optional parameter. Too low and too high commission value will be rounded to valid values. |
-| includeFee | Boolean | Default false. If set true then total will be spent the specified amount, fee and networkFee will be deducted from the amount |
-| autoCommit | Boolean | Default true. If set false then you should commit or rollback transaction in an hour. Used in two phase commit schema. |
+| includeFee | Boolean | Default false. If set to true, then total will be spent the specified amount. Fee and networkFee will be deducted from the amount |
+| autoCommit | Boolean | Default true. If set to false, then you should commit or rollback transaction in an hour. Used in two phase commit schema. |
 
 Responses:
 
@@ -1028,12 +1028,12 @@ Use JSON-RPC 2.0 over WebSocket connection as transport.
 
 ### Request object
 
-A rpc call is represented by sending a Request object to a Server. 
+An rpc call is represented by sending a Request object to a Server. 
 
 The Request object has the following members:
  - **method** - A String containing the name of the method to be invoked.
  - **params** - A Structured value that holds the parameter values to be used during the invocation of the method.
- - **id** - An identifier established by the Client that MUST contain a String, Number, or NULL value if included. If it is not included it is assumed to be a notification. The value SHOULD normally not be Null.
+ - **id** - An identifier established by the Client that MUST contain a String, Number, or NULL value if included. If it is not included, it is assumed to be a notification. The value SHOULD normally not be Null.
 
 ### Notification
 
@@ -1045,7 +1045,7 @@ The Notification object has the following members:
  
 ### Response object
 
-When a rpc call is made, the Server MUST reply with a Response, except for in the case of Notifications. 
+When an rpc call is made, the Server MUST reply with a Response, except for in the case of Notifications. 
 
 The Response is expressed as a single JSON Object, with the following members:
  - **result**  - This member is REQUIRED on success. This member MUST NOT exist if there was an error invoking the method. The value of this member is determined by the method invoked on the Server.
@@ -1204,7 +1204,7 @@ Example:
 
 **Notification snapshot**
 
-Message contains a full snapshot of order book.
+Message contains a full snapshot of the order book.
 
 Method: **snapshotOrderbook**
 
