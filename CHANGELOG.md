@@ -1,3 +1,6 @@
+### 2.4.0 (8 november 2018)
+ - provide post-only orders option (If your post-only order would cause a match with a pre-existing order as a taker, then order will be canceled. Useful for market makers)
+
 ### 2.3.0 (25 september 2018)
  - provide get candles history by time period
 
