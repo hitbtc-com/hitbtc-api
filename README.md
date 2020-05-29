@@ -65,7 +65,7 @@ By using HitBTC API you confirm that you have read and accept [API License Agree
 
 | Environment | REST                              | Streaming |
 |-------------|:---------------------------------|:-----|
-| PROD        | https://api.hitbtc.com/api/2      | wss://api.hitbtc.com/api/2/ws | 
+| PROD        | https://api.hitbtc.com/api/2      | wss://api.hitbtc.com/api/2/ws for market data and wss://api.hitbtc.com/api/2/ws/trading for trading (auth required) | 
 
 ### DateTime Format
 
