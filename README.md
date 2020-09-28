@@ -998,7 +998,7 @@ Responses:
 | paymentId | String | |
 | hash | String | Transaction hash  |
 | status | String | **pending**, **failed**, **success** |
-| type | String | One of: **payout** - crypto withdraw transaction, **payin** - crypto deposit transaction, **deposit**, **withdraw**, **bankToExchange**, **exchangeToBank** |
+| type | String | One of: **payout** - crypto withdraw transaction, **payin** - crypto airdrop, **deposit** - user-initiated deposit, **withdraw**, **bankToExchange**, **exchangeToBank** |
 | createdAt | Datetime |  |
 | updatedAt | Datetime |  |
 
