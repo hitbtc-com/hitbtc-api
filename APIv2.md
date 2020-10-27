@@ -73,14 +73,14 @@ By using HitBTC API you confirm that you've read and accept [API License Agreeme
     * [Get withdrawal settings](#get-withdrawal-settings)
     * [Change withdrawal settings](#change-withdrawal-settings)
     * [Get sub-account balance](#get-sub-account-balance)
-    * [Get sub-account crypro address](#get-sub-account-crypto address)
+    * [Get sub-account crypto address](#get-sub-account-crypto-address)
 * [Socket API Reference](#socket-api-reference)
     * [Market Data](#socket-market-data)
     * [Authentication](#socket-authentication-session)
     * [Trading](#socket-trading)
     * [Margin trading](#socket-margin-trading)   
     * [Errors](#errors) 
-    * [Guide & Code samples](#guide-&-code-samples) 
+    * [Guide & Code samples](#guide-and-code-samples) 
     
 # DEVELOPMENT GUIDE
 
@@ -1316,13 +1316,11 @@ Get personal trading commission rate.
 
 Requires the "Place/cancel orders" API key Access Right.
 
-<% if to_show_margin_trading -%>
 # Margin Trading
 
 Margin Account should be understood as Isolated Margin Account regarding this API description.
-<% if read_env() == 'HIT' -%>
+
 Learn how margin trading works at our support center [https://support.hitbtc.com/en/support/solutions/articles/63000225029-what-is-margin-trading](https://support.hitbtc.com/en/support/solutions/articles/63000225029-what-is-margin-trading)
-<% end -%>
 
 ## Isolated Margin Account Model
 
@@ -1914,8 +1912,6 @@ curl -X DELETE -u "publicKey:secretKey" \
 Returns the successfully cancelled margin order.
 
 Requires the "Place/cancel orders" API key Access Right.
-
-<% end -%>
 
 
 # Trading history
@@ -2527,7 +2523,6 @@ Responses:
 | createdAt | Datetime | Transaction creation date |
 | updatedAt | Datetime | Date of transactions's last update  |
 
-<% if to_show_sub_acc -%>
 # Sub-accounts
 
 ## Get sub-accounts list
@@ -3038,7 +3033,6 @@ Following errors are conventional:
 |2001      |400             |Symbol not found                    |                                                              |
 |2002      |400             |Currency not found                  |                                                              |
 |600       |400             |Action is not allowed               |                                                              |
-<% end -%>
 
 # Socket API Reference
 
@@ -4052,9 +4046,6 @@ Method: **getOrders**
 
 Method: **`getTradingBalance`**
 
-
-<% if to_show_margin_trading -%>
-
 # Socket Margin Trading
 
 ## Description
@@ -4853,8 +4844,6 @@ Parameters:
 | price | Number | New order price. |
 | strictValidate | Boolean | Price and quantity will be checked for the incrementation within tick size and quantity step. See symbol's `tickSize` and `quantityIncrement`. |
 
-<% end -%>
-
 # Errors
 
 The HitBTC API uses the following error codes:
@@ -4898,16 +4887,14 @@ The HitBTC API uses the following error codes:
 | 10001 | 400 | Validation error | Input not valid, see more in `message` field |
 | 10021 | 400 | User disabled | Sub-Account API. User cant be changed |
 
-# Guide & Code Samples
+# Guide and Code Samples
 
-<% if read_env() == 'HIT' -%>
 ## API Sample Code & Libraries
 
  * Python rest example [example_rest.py](https://github.com/hitbtc-com/hitbtc-api/blob/master/example_rest.py)
  * Js [WebSocket API 2.0 Client](https://gist.github.com/hitbtc-com/fc738c1b926d9d7aa7e3bd5247f792a1)
  * Python [WebSocket API 2.0 Client](https://github.com/Crypto-toolbox/hitbtc)
 
-<% end -%>
 ## Fetch all public trades
 
 Fetch all trades history for a symbol and keep it updated.
