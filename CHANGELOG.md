@@ -1,3 +1,10 @@
+### 6th June 2020
+
+- Margin trading feature available over REST and socket API
+- New market data only streaming endpoint /api/2/ws/public
+- New trading only streaming endpoint /api/2/ws/trading
+- Single streaming location /api/2/ws is deprecated
+
 ### 3.0.0 (30 may 2020)
  - separated WebSocket endpoint for high performance trading
 
